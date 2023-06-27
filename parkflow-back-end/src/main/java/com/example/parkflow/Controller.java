@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.parkflow;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
     @RequestMapping(path="/")
     public String message(){
-        return "Pomohaci";
+        return "Hello World!";
     }
 }

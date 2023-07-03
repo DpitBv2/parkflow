@@ -1,18 +1,32 @@
-import { StyleSheet, Text, View } from "react-native";
+import * as Font from "expo-font";
+import { useEffect } from "react";
+import { Provider as PaperProvider } from "react-native-paper";
+import { AuthProvider } from "./src/context/authContext";
+import AppNavigation from "./src/navigation/appNavigation";
+import Loading from "./src/screens/loading";
+import { theme } from "./src/theme/theme";
 
-export default function App() {
+const loadFonts = async () => {
+    await Font.loadAsync({
+        AnekLatinRegular: require("./assets/fonts/anekLatin/AnekLatin-Regular.ttf"),
+        AnekLatinBold: require("./assets/fonts/anekLatin/AnekLatin-Bold.ttf"),
+    });
+};
+
+const App = () => {
+    useEffect(() => {
+        loadFonts();
+    }, []);
+
+    if (!Font.isLoaded) return <Loading />;
+
     return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-        </View>
+        <PaperProvider theme={theme()}>
+            <AuthProvider>
+                <AppNavigation />
+            </AuthProvider>
+        </PaperProvider>
     );
-}
+};
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
+export default App;

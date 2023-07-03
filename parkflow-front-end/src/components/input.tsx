@@ -22,7 +22,7 @@ const Input = ({ placeholder, value, onChange, style, hidden }: InputProps) => {
                     backgroundColor: theme().colors.white,
                     borderColor: theme().colors.lightGrey,
                 },
-                isFocused && styles.focusedTextInput,
+                // isFocused && styles.focusedTextInput,
             ]}>
             <TextInput
                 style={styles.input}
@@ -33,6 +33,7 @@ const Input = ({ placeholder, value, onChange, style, hidden }: InputProps) => {
                 placeholderTextColor={theme().colors.lightGrey}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                selectionColor={theme().colors.lightGrey}
             />
         </View>
     );

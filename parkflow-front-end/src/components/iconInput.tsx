@@ -37,7 +37,7 @@ const IconInput = ({
                     backgroundColor: theme().colors.white,
                     borderColor: theme().colors.lightGrey,
                 },
-                isFocused && styles.focusedTextInput,
+                // isFocused && styles.focusedTextInput,
             ]}>
             <View style={styles.iconContainer}>
                 <Icon
@@ -48,7 +48,6 @@ const IconInput = ({
                 />
             </View>
             <TextInput
-                selectionColor={theme().colors.lightGrey}
                 style={{ ...styles.input, letterSpacing: letterSpacing }}
                 secureTextEntry={hidden}
                 onChangeText={(text) => {
@@ -64,6 +63,7 @@ const IconInput = ({
                 placeholderTextColor={theme().colors.lightGrey}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                selectionColor={theme().colors.lightGrey}
             />
         </View>
     );

@@ -8,8 +8,8 @@ import { theme } from "./src/theme/theme";
 
 const loadFonts = async () => {
     await Font.loadAsync({
-        AnekLatinRegular: require("./assets/fonts/anekLatin/AnekLatin-Regular.ttf"),
-        AnekLatinBold: require("./assets/fonts/anekLatin/AnekLatin-Bold.ttf"),
+        "AnekLatinRegular": require("./assets/fonts/anekLatin/AnekLatinRegular.ttf"),
+        "AnekLatinBold": require("./assets/fonts/anekLatin/AnekLatinBold.ttf"),
     });
 };
 

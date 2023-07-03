@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
         //         console.error("Error sending data:", error);
         //     });
 
-        setUserInfo("dawdawdaw");
-        setUserToken("{}");
+        setUserToken("dawdawdaw");
+        setUserInfo("{}");
         AsyncStorage.setItem("userToken", "dawdawdaw");
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
 

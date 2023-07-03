@@ -74,6 +74,7 @@ const PhoneInput = ({
                     cursorColor: theme().colors.lightGrey,
                     selectionColor: theme().colors.lightGrey,
                 }}
+                flagButtonStyle={{ marginTop: -1 }}
             />
         </View>
     );
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: "AnekLatinRegular",
         letterSpacing: 0.5,
-        height: 18,
+        height: 20,
     },
     button: {
         marginLeft: -10,

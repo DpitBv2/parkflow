@@ -13,8 +13,8 @@ interface ButtonProps {
 }
 
 const Button = ({
-    width,
-    height,
+    width=250,
+    height=40,
     bgcolor,
     color,
     style,
@@ -28,8 +28,8 @@ const Button = ({
                 {
                     ...style,
                     ...styles.button,
-                    height: height != undefined ? height : 40,
-                    width: width != undefined ? width : 250,
+                    height: height,
+                    width: width,
                     backgroundColor:
                         bgcolor === undefined
                             ? theme().colors.primary

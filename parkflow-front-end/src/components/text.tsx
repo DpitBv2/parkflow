@@ -1,30 +1,47 @@
 import { Text as DefaultText, StyleSheet } from "react-native";
+import { Font, LetterSpacing } from "../constants/constants";
+import { theme } from "../constants/theme";
 
 interface TextProps {
     children: any;
     style?: any;
     bold?: boolean;
+    inverted?: boolean;
+    color?: string;
+    fontSize?: number;
 }
 
-const Text = ({ children, style, bold }: TextProps) => {
+const Text = ({
+    children,
+    style,
+    bold,
+    inverted = false,
+    color,
+    fontSize = 15,
+}: TextProps) => {
     return (
         <DefaultText
-            style={[style, styles.text, bold ? styles.bold : styles.regular]}>
+            style={[
+                style,
+                bold ? styles.bold : styles.regular,
+                { fontSize: fontSize, letterSpacing: LetterSpacing },
+                inverted
+                    ? { color: theme().colors.light }
+                    : { color: theme().colors.dark },
+                color !== undefined ? { color: color } : {},
+            ]}>
             {children}
         </DefaultText>
     );
 };
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 15,
-        letterSpacing: 0.5,
-    },
     regular: {
-        fontFamily: "AnekLatinRegular",
+        fontFamily: Font.regular,
     },
     bold: {
-        fontFamily: "AnekLatinBold",
+        fontWeight: "bold",
+        fontFamily: Font.bold,
     },
 });
 

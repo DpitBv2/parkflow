@@ -13,6 +13,7 @@ const defaultTheme = {
         lightBlue: "#3b7cf9",
         lightGrey: "#797370",
         darkGrey: "#2d2d2d",
+        danger: "#e83635",
     },
 };
 
@@ -43,8 +44,10 @@ export const darkTheme = {
 };
 
 export const theme = () => {
-    const scheme = useColorScheme();
-    return scheme === "dark" ? darkTheme : lightTheme;
+    // const scheme = useColorScheme();
+    // return scheme === "dark" ? darkTheme : lightTheme;
+    // render more hooks bug
+    return lightTheme;
 };
 
 export const themeType = () => {

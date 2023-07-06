@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import Button from "../components/button";
-import { theme } from "../theme/theme";
+import { theme } from "../constants/theme";
 
 const Onboarding = ({ navigation }: { navigation: any }) => {
     return (

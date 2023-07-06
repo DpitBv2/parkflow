@@ -1,24 +1,21 @@
-import * as Font from "expo-font";
-import { useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
+import { theme } from "./src/constants/theme";
 import { AuthProvider } from "./src/context/authContext";
 import AppNavigation from "./src/navigation/appNavigation";
-import Loading from "./src/screens/loading";
-import { theme } from "./src/theme/theme";
-
-const loadFonts = async () => {
-    await Font.loadAsync({
-        "AnekLatinRegular": require("./assets/fonts/anekLatin/AnekLatinRegular.ttf"),
-        "AnekLatinBold": require("./assets/fonts/anekLatin/AnekLatinBold.ttf"),
-    });
-};
 
 const App = () => {
-    useEffect(() => {
-        loadFonts();
-    }, []);
+    // const [fontLoaded, setFontLoaded] = useState(false);
 
-    if (!Font.isLoaded) return <Loading />;
+    // useEffect(() => {
+    //     Font.loadAsync({
+    //         AnekLatinRegular: require("./assets/fonts/anekLatin/AnekLatinRegular.ttf"),
+    //         AnekLatinBold: require("./assets/fonts/anekLatin/AnekLatinBold.ttf"),
+    //     }).then(() => {
+    //         setFontLoaded(true);
+    //     });
+    // }, []);
+
+    // if (fontLoaded) return <Loading />;
 
     return (
         <PaperProvider theme={theme()}>

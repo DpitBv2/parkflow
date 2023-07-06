@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { View } from "react-native";
 import Button from "../components/button";
 import Text from "../components/text";
+import { theme } from "../constants/theme";
 import { AuthContext } from "../context/authContext";
-import { theme } from "../theme/theme";
 
 const Home = () => {
     const { logout }: any = useContext(AuthContext);

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
-import { Icon } from "react-native-elements";
-import { theme } from "../theme/theme";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { ActiveOpacity, Font, LetterSpacing } from "../constants/constants";
+import { theme } from "../constants/theme";
 
 interface IconInputProps {
     icon: string;
@@ -13,6 +14,7 @@ interface IconInputProps {
     letterSpacing?: number;
     validate?: (value: string) => boolean;
     onValidateChange?: (value: boolean) => void;
+    errorEmpty?: boolean;
 }
 
 const IconInput = ({
@@ -25,8 +27,10 @@ const IconInput = ({
     letterSpacing = 0.5,
     validate,
     onValidateChange,
+    errorEmpty = false,
 }: IconInputProps) => {
     const [isFocused, setIsFocused] = useState(false);
+    const [isHidden, setIsHidden] = useState(hidden);
 
     return (
         <View
@@ -35,9 +39,14 @@ const IconInput = ({
                 style,
                 {
                     backgroundColor: theme().colors.white,
-                    borderColor: theme().colors.lightGrey,
+                    borderWidth: 2,
+                    borderColor: "transparent",
                 },
-                // isFocused && styles.focusedTextInput,
+                // isFocused && { borderColor: theme().colors.lightGrey },
+                errorEmpty && {
+                    borderColor: theme().colors.danger,
+                    borderWidth: 2,
+                },
             ]}>
             <View style={styles.iconContainer}>
                 <Icon
@@ -48,23 +57,43 @@ const IconInput = ({
                 />
             </View>
             <TextInput
-                style={{ ...styles.input, letterSpacing: letterSpacing }}
-                secureTextEntry={hidden}
+                style={[
+                    styles.input,
+                    hidden && styles.password,
+                    { letterSpacing: letterSpacing },
+                    value.length > 20 && { fontSize: 14 },
+                    value.length > 25 && { fontSize: 13 },
+                ]}
+                secureTextEntry={isHidden}
                 onChangeText={(text) => {
                     onChange(text);
-                    if (
-                        validate !== undefined &&
-                        onValidateChange !== undefined
-                    )
-                        onValidateChange(validate(text));
+                    if (validate && onValidateChange)
+                        onValidateChange(validate(value));
                 }}
                 value={value}
                 placeholder={placeholder}
                 placeholderTextColor={theme().colors.lightGrey}
                 onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+                onBlur={() => {
+                    setIsFocused(false);
+                }}
                 selectionColor={theme().colors.lightGrey}
             />
+            {hidden && (
+                <View style={styles.iconContainer}>
+                    <TouchableOpacity
+                        activeOpacity={ActiveOpacity}
+                        onPress={() => {
+                            setIsHidden(!isHidden);
+                        }}>
+                        <Icon
+                            name={isHidden ? "eye" : "eye-off"}
+                            color={theme().colors.lightGrey}
+                            size={24}
+                        />
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     );
 };
@@ -83,7 +112,11 @@ const styles = StyleSheet.create({
         width: 200,
         paddingRight: 2,
         backgroundColor: "transparent",
-        fontFamily: "AnekLatinRegular",
+        fontFamily: Font.regular,
+        letterSpacing: LetterSpacing,
+    },
+    password: {
+        width: 167,
     },
     iconContainer: {
         height: 40,
@@ -91,9 +124,6 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-    },
-    focusedTextInput: {
-        borderWidth: 2,
     },
 });
 

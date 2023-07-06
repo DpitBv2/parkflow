@@ -1,7 +1,8 @@
 import { createElement, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import PInput from "react-native-phone-number-input";
-import { theme, themeType } from "../theme/theme";
+import { Font, LetterSpacing } from "../constants/constants";
+import { theme, themeType } from "../constants/theme";
 
 const EmptyElement = createElement(View);
 
@@ -13,6 +14,7 @@ interface PhoneInputProps {
     setFormattedValue?: (value: string) => void;
     valid: boolean;
     setValid: (value: boolean) => void;
+    errorEmpty?: boolean;
 }
 
 const PhoneInput = ({
@@ -23,6 +25,7 @@ const PhoneInput = ({
     setFormattedValue,
     valid,
     setValid,
+    errorEmpty = false,
 }: any) => {
     const phoneInput = useRef<PInput>(null);
     const [isFocused, setIsFocused] = useState(false);
@@ -32,7 +35,20 @@ const PhoneInput = ({
     };
 
     return (
-        <View style={{ ...style, position: "relative" }}>
+        <View
+            style={[
+                {
+                    ...style,
+                    position: "relative",
+                    borderWidth: 2,
+                    borderColor: "transparent",
+                },
+                errorEmpty && {
+                    borderColor: theme().colors.danger,
+                    borderWidth: 2,
+                    borderRadius: 25,
+                },
+            ]}>
             <PInput
                 ref={phoneInput}
                 defaultValue={value}
@@ -84,7 +100,7 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 25,
         height: 40,
-        width: 250,
+        width: 245,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -96,16 +112,16 @@ const styles = StyleSheet.create({
     },
     input: {
         fontSize: 15,
-        fontFamily: "AnekLatinRegular",
-        letterSpacing: 0.5,
+        fontFamily: Font.regular,
+        letterSpacing: LetterSpacing,
         marginLeft: -5,
         height: 35,
     },
     code: {
         fontSize: 15,
-        fontFamily: "AnekLatinRegular",
-        letterSpacing: 0.5,
-        height: 20,
+        fontFamily: Font.regular,
+        letterSpacing: LetterSpacing,
+        height: 21,
     },
     button: {
         marginLeft: -10,

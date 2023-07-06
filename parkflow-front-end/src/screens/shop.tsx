@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import Text from "../components/text";
-import { theme } from "../theme/theme";
+import { theme } from "../constants/theme";
 
 const Shop = () => {
     return (

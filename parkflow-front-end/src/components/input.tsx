@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { theme } from "../theme/theme";
+import { Font, LetterSpacing } from "../constants/constants";
+import { theme } from "../constants/theme";
 
 interface InputProps {
     placeholder: string;
@@ -8,9 +9,17 @@ interface InputProps {
     onChange: (value: string) => void;
     style?: any;
     hidden?: boolean;
+    errorEmpty?: boolean;
 }
 
-const Input = ({ placeholder, value, onChange, style, hidden }: InputProps) => {
+const Input = ({
+    placeholder,
+    value,
+    onChange,
+    style,
+    hidden,
+    errorEmpty = false,
+}: InputProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
@@ -20,9 +29,14 @@ const Input = ({ placeholder, value, onChange, style, hidden }: InputProps) => {
                 style,
                 {
                     backgroundColor: theme().colors.white,
-                    borderColor: theme().colors.lightGrey,
+                    borderWidth: 2,
+                    borderColor: "transparent",
                 },
-                // isFocused && styles.focusedTextInput,
+                // isFocused && { borderColor: theme().colors.lightGrey },
+                errorEmpty && {
+                    borderColor: theme().colors.danger,
+                    borderWidth: 2,
+                },
             ]}>
             <TextInput
                 style={styles.input}
@@ -31,7 +45,9 @@ const Input = ({ placeholder, value, onChange, style, hidden }: InputProps) => {
                 value={value}
                 placeholder={placeholder}
                 placeholderTextColor={theme().colors.lightGrey}
-                onFocus={() => setIsFocused(true)}
+                onFocus={() => {
+                    setIsFocused(true);
+                }}
                 onBlur={() => setIsFocused(false)}
                 selectionColor={theme().colors.lightGrey}
             />
@@ -55,11 +71,8 @@ const styles = StyleSheet.create({
         paddingRight: 8,
         backgroundColor: "transparent",
         marginLeft: 2,
-        fontFamily: "AnekLatinRegular",
-        letterSpacing: 0.4,
-    },
-    focusedTextInput: {
-        borderWidth: 2,
+        fontFamily: Font.regular,
+        letterSpacing: LetterSpacing,
     },
 });
 

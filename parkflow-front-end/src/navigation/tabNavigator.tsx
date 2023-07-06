@@ -2,12 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import { ActiveOpacity } from "../constants/constants";
+import { theme } from "../constants/theme";
 import Activity from "../screens/activity";
 import Home from "../screens/home";
 import Map from "../screens/map";
 import Profile from "../screens/profile";
 import Shop from "../screens/shop";
-import { theme } from "../theme/theme";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ const TabBarButton = ({
 }) => {
     return (
         <TouchableOpacity
-            activeOpacity={0.8}
+            activeOpacity={ActiveOpacity}
             onPress={onPress}
             style={{
                 ...styles.buttonContainer,

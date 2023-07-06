@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Text from "../components/text";
-import { theme } from "../theme/theme";
+import { ActiveOpacity } from "../constants/constants";
+import { theme } from "../constants/theme";
 
 interface ButtonProps {
     text: string;
@@ -13,8 +14,8 @@ interface ButtonProps {
 }
 
 const Button = ({
-    width=250,
-    height=40,
+    width = 250,
+    height = 40,
     bgcolor,
     color,
     style,
@@ -23,7 +24,7 @@ const Button = ({
 }: ButtonProps) => {
     return (
         <TouchableOpacity
-            activeOpacity={0.8}
+            activeOpacity={ActiveOpacity}
             style={[
                 {
                     ...style,
@@ -38,12 +39,13 @@ const Button = ({
             ]}
             onPress={onClick}>
             <Text
+                inverted={true}
                 style={[
                     styles.text,
-                    {
-                        color:
-                            color === undefined ? theme().colors.light : color,
-                    },
+                    // {
+                    //     color:
+                    //         color === undefined ? theme().colors.light : color,
+                    // },
                 ]}>
                 {text}
             </Text>

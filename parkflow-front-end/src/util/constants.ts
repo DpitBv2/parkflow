@@ -7,3 +7,5 @@ export const Font = {
 };
 
 export const LetterSpacing = 0; // 0.8 for AnekLatin
+
+export const MapDegreesInitial = 0.005;

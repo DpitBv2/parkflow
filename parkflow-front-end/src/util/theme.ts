@@ -8,12 +8,13 @@ const defaultTheme = {
 
         white: "#f2f2f2",
         black: "#1a1a1a",
-        grey: "#4d4d4d",
+        grey: "#7f7f7f",
         blue: "#0a58d1",
         lightBlue: "#3b7cf9",
-        lightGrey: "#797370",
+        lightGrey: "#bebebe",
         darkGrey: "#2d2d2d",
         danger: "#e83635",
+        tomato: "#f5593d",
     },
 };
 
@@ -21,7 +22,7 @@ export const lightTheme = {
     ...defaultTheme,
     colors: {
         ...defaultTheme.colors,
-        primary: "#e83635",
+        primary: "#1B52C1",
         secondary: "#ffdf00",
 
         background: "#ffffff",

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { Font, LetterSpacing } from "../constants/constants";
-import { theme } from "../constants/theme";
+import { Font, LetterSpacing } from "../util/constants";
+import { theme } from "../util/theme";
 
 interface InputProps {
     placeholder: string;
@@ -32,7 +32,7 @@ const Input = ({
                     borderWidth: 2,
                     borderColor: "transparent",
                 },
-                // isFocused && { borderColor: theme().colors.lightGrey },
+                // isFocused && { borderColor: theme().colors.grey },
                 errorEmpty && {
                     borderColor: theme().colors.danger,
                     borderWidth: 2,
@@ -44,12 +44,12 @@ const Input = ({
                 onChangeText={onChange}
                 value={value}
                 placeholder={placeholder}
-                placeholderTextColor={theme().colors.lightGrey}
+                placeholderTextColor={theme().colors.grey}
                 onFocus={() => {
                     setIsFocused(true);
                 }}
                 onBlur={() => setIsFocused(false)}
-                selectionColor={theme().colors.lightGrey}
+                selectionColor={theme().colors.grey}
             />
         </View>
     );

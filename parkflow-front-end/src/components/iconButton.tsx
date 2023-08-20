@@ -7,14 +7,22 @@ interface IconButtonProps {
     color?: string;
     text: string;
     style?: any;
+    onPress?: any;
 }
 
-const IconButton = ({ src, bgcolor, color, text, style }: IconButtonProps) => {
+const IconButton = ({
+    src,
+    bgcolor,
+    color,
+    text,
+    style,
+    onPress,
+}: IconButtonProps) => {
     return (
         <TouchableOpacity
             activeOpacity={0.8}
             style={[{ backgroundColor: bgcolor }, styles.container, style]}
-            onPress={() => {}}>
+            onPress={onPress}>
             <View style={styles.gridContainer}>
                 <View
                     style={[{ backgroundColor: color }, styles.iconContainer]}>

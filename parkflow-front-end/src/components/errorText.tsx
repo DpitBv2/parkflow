@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import { theme } from "../constants/theme";
+import { theme } from "../util/theme";
 import Text from "./text";
 
 const ErrorText = ({ text, style }: { text: string; style?: any }) => {

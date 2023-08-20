@@ -1,8 +1,13 @@
+import { useContext } from "react";
 import { View } from "react-native";
+import Button from "../components/button";
 import Text from "../components/text";
-import { theme } from "../constants/theme";
+import { AuthContext } from "../context/authContext";
+import { theme } from "../util/theme";
 
 const Profile = () => {
+    const { logout }: any = useContext(AuthContext);
+
     return (
         <View
             style={{
@@ -12,6 +17,14 @@ const Profile = () => {
                 backgroundColor: theme().colors.background,
             }}>
             <Text>Profile Screen</Text>
+
+            <Button
+                text="Log out"
+                style={{ marginTop: 10 }}
+                onClick={() => {
+                    logout();
+                }}
+            />
         </View>
     );
 };

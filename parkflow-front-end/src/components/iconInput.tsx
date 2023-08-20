@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ActiveOpacity, Font, LetterSpacing } from "../constants/constants";
-import { theme } from "../constants/theme";
+import { ActiveOpacity, Font, LetterSpacing } from "../util/constants";
+import { theme } from "../util/theme";
 
 interface IconInputProps {
     icon: string;
@@ -42,7 +42,7 @@ const IconInput = ({
                     borderWidth: 2,
                     borderColor: "transparent",
                 },
-                // isFocused && { borderColor: theme().colors.lightGrey },
+                // isFocused && { borderColor: theme().colors.grey },
                 errorEmpty && {
                     borderColor: theme().colors.danger,
                     borderWidth: 2,
@@ -51,7 +51,7 @@ const IconInput = ({
             <View style={styles.iconContainer}>
                 <Icon
                     name={icon}
-                    color={theme().colors.lightGrey}
+                    color={theme().colors.grey}
                     style={{ marginLeft: 5 }}
                     size={24}
                 />
@@ -72,12 +72,12 @@ const IconInput = ({
                 }}
                 value={value}
                 placeholder={placeholder}
-                placeholderTextColor={theme().colors.lightGrey}
+                placeholderTextColor={theme().colors.grey}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => {
                     setIsFocused(false);
                 }}
-                selectionColor={theme().colors.lightGrey}
+                selectionColor={theme().colors.grey}
             />
             {hidden && (
                 <View style={styles.iconContainer}>
@@ -88,7 +88,7 @@ const IconInput = ({
                         }}>
                         <Icon
                             name={isHidden ? "eye" : "eye-off"}
-                            color={theme().colors.lightGrey}
+                            color={theme().colors.grey}
                             size={24}
                         />
                     </TouchableOpacity>

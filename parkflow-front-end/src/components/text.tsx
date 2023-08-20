@@ -1,6 +1,6 @@
 import { Text as DefaultText, StyleSheet } from "react-native";
-import { Font, LetterSpacing } from "../constants/constants";
-import { theme } from "../constants/theme";
+import { Font, LetterSpacing } from "../util/constants";
+import { theme } from "../util/theme";
 
 interface TextProps {
     children: any;
@@ -9,6 +9,8 @@ interface TextProps {
     inverted?: boolean;
     color?: string;
     fontSize?: number;
+    center?: boolean;
+    numberOfLines?: number;
 }
 
 const Text = ({
@@ -18,13 +20,17 @@ const Text = ({
     inverted = false,
     color,
     fontSize = 15,
+    center = false,
+    numberOfLines,
 }: TextProps) => {
     return (
         <DefaultText
+            numberOfLines={numberOfLines}
             style={[
                 style,
                 bold ? styles.bold : styles.regular,
                 { fontSize: fontSize, letterSpacing: LetterSpacing },
+                center ? { textAlign: "center" } : {},
                 inverted
                     ? { color: theme().colors.light }
                     : { color: theme().colors.dark },

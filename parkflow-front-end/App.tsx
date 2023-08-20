@@ -1,7 +1,7 @@
 import { Provider as PaperProvider } from "react-native-paper";
-import { theme } from "./src/constants/theme";
 import { AuthProvider } from "./src/context/authContext";
 import AppNavigation from "./src/navigation/appNavigation";
+import { theme } from "./src/util/theme";
 
 const App = () => {
     // const [fontLoaded, setFontLoaded] = useState(false);

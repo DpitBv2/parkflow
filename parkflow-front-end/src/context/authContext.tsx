@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import api from "../util/api";
 import { LoginURL } from "../util/links";
 
 export const AuthContext = createContext<any>(null);
@@ -19,33 +19,27 @@ export const AuthProvider = ({ children }: { children: any }) => {
         password: string;
     }) => {
         return new Promise((resolve, reject) => {
-            setIsLoading(true);
+            // api.post(LoginURL, {
+            //     email: email,
+            //     password: password,
+            // })
+            //     .then((response) => {
+            //         console.log(response.data);
+            //         setUserInfo(response.data);
+            //         setUserToken(response.data.token);
+            //         AsyncStorage.setItem("userToken", response.data.token);
+            //         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+            //         resolve(response.data);
+            //     })
+            //     .catch((error) => {
+            //         setError(error);
+            //         reject(error);
+            //     });
 
-            axios
-                .post(LoginURL, {
-                    email: email,
-                    password: password,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    setUserInfo(response.data);
-                    setUserToken(response.data.token);
-                    AsyncStorage.setItem("userToken", response.data.token);
-                    AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-                    resolve(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error sending data:", error);
-                    setError(error);
-                    reject(error);
-                });
-
-            setIsLoading(false);
-
-            // setUserToken("dawdawdaw");
-            // setUserInfo("{}");
-            // AsyncStorage.setItem("userToken", "dawdawdaw");
-            // AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+            setUserToken("dawdawdaw");
+            setUserInfo("{}");
+            AsyncStorage.setItem("userToken", "dawdawdaw");
+            AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         });
     };
 
@@ -63,16 +57,13 @@ export const AuthProvider = ({ children }: { children: any }) => {
         phone: string;
     }) => {
         return new Promise((resolve, reject) => {
-            setIsLoading(true);
-
-            axios
-                .post(LoginURL, {
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    password: password,
-                    phone: phone,
-                })
+            api.post(LoginURL, {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                phone: phone,
+            })
                 .then((response) => {
                     console.log(response.data);
                     setUserInfo(response.data);
@@ -86,8 +77,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     setError(error);
                     reject(error);
                 });
-
-            setIsLoading(false);
         });
     };
 

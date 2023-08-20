@@ -2,13 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ActiveOpacity } from "../constants/constants";
-import { theme } from "../constants/theme";
 import Activity from "../screens/activity";
 import Home from "../screens/home";
 import Map from "../screens/map";
 import Profile from "../screens/profile";
 import Shop from "../screens/shop";
+import { ActiveOpacity } from "../util/constants";
+import { theme } from "../util/theme";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +26,7 @@ const TabBarButton = ({
             style={{
                 ...styles.buttonContainer,
                 ...styles.shadow,
-                shadowColor: theme().colors.lightGrey,
+                shadowColor: theme().colors.grey,
                 shadowOffset: {
                     width: 0,
                     height: 5,
@@ -52,7 +52,7 @@ const TabNavigator = () => {
                 tabBarStyle: {
                     ...styles.tabBar,
                     ...styles.shadow,
-                    shadowColor: theme().colors.lightGrey,
+                    shadowColor: theme().colors.grey,
                 },
             }}>
             <Tab.Screen
@@ -66,7 +66,7 @@ const TabNavigator = () => {
                                 color={
                                     focused
                                         ? theme().colors.primary
-                                        : theme().colors.lightGrey
+                                        : theme().colors.grey
                                 }
                                 // style={{ marginLeft: 5 }}
                                 size={24}
@@ -86,7 +86,7 @@ const TabNavigator = () => {
                                 color={
                                     focused
                                         ? theme().colors.primary
-                                        : theme().colors.lightGrey
+                                        : theme().colors.grey
                                 }
                                 size={23}
                             />
@@ -130,7 +130,7 @@ const TabNavigator = () => {
                                 color={
                                     focused
                                         ? theme().colors.primary
-                                        : theme().colors.lightGrey
+                                        : theme().colors.grey
                                 }
                                 size={26}
                             />
@@ -149,7 +149,7 @@ const TabNavigator = () => {
                                 color={
                                     focused
                                         ? theme().colors.primary
-                                        : theme().colors.lightGrey
+                                        : theme().colors.grey
                                 }
                                 size={29}
                             />
@@ -157,27 +157,6 @@ const TabNavigator = () => {
                     ),
                 }}
             />
-            {/* <Tab.Screen
-                name="Settings"
-                component={() => {
-                    return <></>;
-                }}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View style={styles.icon}>
-                            <MCIcon
-                                name="cog"
-                                color={
-                                    focused
-                                        ? theme().colors.primary
-                                        : theme().colors.lightGrey
-                                }
-                                size={25}
-                            />
-                        </View>
-                    ),
-                }}
-            /> */}
         </Tab.Navigator>
     );
 };

@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Text from "../components/text";
-import { ActiveOpacity } from "../constants/constants";
-import { theme } from "../constants/theme";
+import { ActiveOpacity } from "../util/constants";
+import { theme } from "../util/theme";
 
 interface ButtonProps {
     text: string;

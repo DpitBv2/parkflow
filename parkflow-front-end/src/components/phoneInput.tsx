@@ -1,8 +1,8 @@
 import { createElement, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import PInput from "react-native-phone-number-input";
-import { Font, LetterSpacing } from "../constants/constants";
-import { theme, themeType } from "../constants/theme";
+import { Font, LetterSpacing } from "../util/constants";
+import { theme, themeType } from "../util/theme";
 
 const EmptyElement = createElement(View);
 

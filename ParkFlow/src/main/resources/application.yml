@@ -1,0 +1,21 @@
+spring:
+  spring:
+    main:
+      web-application-type: none
+  datasource:
+    url: jdbc:postgresql://localhost:5432/parkflow
+    username: postgres
+    password: test12345
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+  flyway:
+    url: jdbc:postgresql://localhost:5432/parkflow
+    user: postgres
+    password: test12345
+    locations: classpath:src/main/resources/db/migration

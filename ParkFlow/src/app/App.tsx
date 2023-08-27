@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./src/context/authContext";
 import AppNavigation from "./src/navigation/appNavigation";
@@ -18,11 +19,13 @@ const App = () => {
     // if (fontLoaded) return <Loading />;
 
     return (
-        <PaperProvider theme={theme()}>
-            <AuthProvider>
-                <AppNavigation />
-            </AuthProvider>
-        </PaperProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <PaperProvider theme={theme()}>
+                <AuthProvider>
+                    <AppNavigation />
+                </AuthProvider>
+            </PaperProvider>
+        </GestureHandlerRootView>
     );
 };
 

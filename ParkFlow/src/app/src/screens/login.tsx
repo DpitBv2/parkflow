@@ -19,7 +19,16 @@ import { theme } from "../util/theme";
 import { validateEmail } from "../util/validate";
 import Loading from "./loading";
 
-const Login = ({ navigation }: { navigation: any }) => {
+const Login = ({ navigation, route }: { navigation: any; route: any }) => {
+    const [registered, setRegistered] = useState<boolean>(false);
+
+    if (registered == false) {
+        try {
+            const { registered: register } = route.params;
+            setRegistered(true);
+        } catch {}
+    }
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -49,6 +58,12 @@ const Login = ({ navigation }: { navigation: any }) => {
                         style={{
                             width: 240,
                         }}>
+                        {registered && (
+                            <ErrorText
+                                succesful
+                                text="Registered successfully!"
+                            />
+                        )}
                         {showError && error && <ErrorText text={error} />}
                         {showError && error && (
                             <View style={{ marginBottom: 5 }} />

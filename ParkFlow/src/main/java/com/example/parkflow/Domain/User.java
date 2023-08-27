@@ -51,10 +51,6 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<ParkFlowUser> farms = new HashSet<>();
-
-
     public User() {
     }
 
@@ -189,12 +185,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return enabled == user.enabled && accountNonExpired == user.accountNonExpired && accountNonLocked == user.accountNonLocked && credentialsNonExpired == user.credentialsNonExpired && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(createdAt, user.createdAt) && Objects.equals(authorities, user.authorities) && Objects.equals(farms, user.farms);
+        return enabled == user.enabled && accountNonExpired == user.accountNonExpired && accountNonLocked == user.accountNonLocked && credentialsNonExpired == user.credentialsNonExpired && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(createdAt, user.createdAt) && Objects.equals(authorities, user.authorities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstName, lastName, email, password, enabled, accountNonExpired, accountNonLocked, credentialsNonExpired, createdAt, authorities, farms);
+        return Objects.hash(id, username, firstName, lastName, email, password, enabled, accountNonExpired, accountNonLocked, credentialsNonExpired, createdAt, authorities);
     }
 
     @Override
@@ -212,7 +208,6 @@ public class User implements UserDetails {
                 ", credentialsNonExpired=" + credentialsNonExpired +
                 ", createdAt=" + createdAt +
                 ", authorities=" + authorities +
-                ", farms=" + farms +
                 '}';
     }
 }

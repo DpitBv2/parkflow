@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class  SecurityConfiguration {
 @Bean
 public SecurityFilterChain securityFilterChain(
         HttpSecurity http,
@@ -25,8 +25,6 @@ public SecurityFilterChain securityFilterChain(
                     (requests) -> requests
                             .requestMatchers("/api/v1/user/register", "/api/v1/auth/login").permitAll()
                             .requestMatchers("/api/v1/public/**").permitAll()
-                            .requestMatchers("/api/v1/sensor/data").permitAll()
-                            .requestMatchers("/api/v1/ws/**").permitAll()
                             .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)

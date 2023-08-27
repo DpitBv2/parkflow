@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/parkflow
     username: postgres
-    password: alexmoto
+    password: test12345
   jpa:
     properties:
       hibernate:
@@ -15,8 +15,7 @@ spring:
     hibernate:
       ddl-auto: update
   flyway:
-    baseline-on-migrate: true
     url: jdbc:postgresql://localhost:5432/parkflow
     user: postgres
-    password: alexmoto
-    locations: classpath:src/main/resources/db/migrations
+    password: test12345
+    locations: classpath:src/main/resources/db/migration

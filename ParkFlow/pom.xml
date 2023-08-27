@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.intheloop</groupId>
-    <artifactId>farmcheck</artifactId>
+    <artifactId>parkflow</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>farmcheck</name>
-    <description>Farmcheck backend</description>
+    <name>parkflow</name>
+    <description>Parkflow backend</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -154,7 +154,7 @@
                 <configuration>
                     <url>jdbc:postgresql://localhost:5432/parkflow</url>
                     <user>postgres</user>
-                    <password>alexmoto</password>
+                    <password>test12345</password>
                     <cleanDisabled>false</cleanDisabled>
                 </configuration>
             </plugin>

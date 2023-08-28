@@ -1,18 +1,27 @@
+import * as Location from "expo-location";
+import {
+    createRef,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { theme } from "../util/theme";
-
-import * as Location from "expo-location";
-import { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { IconButton } from "react-native-paper";
 import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
+import { AuthContext } from "../context/authContext";
 import { MapDegreesInitial } from "../util/constants";
+import { theme } from "../util/theme";
 import Loading from "./loading";
 
 const Home = () => {
     const [initialRegion, setInitialRegion] = useState<any>(null);
     const [currentRegion, setCurrentRegion] = useState<any>(null);
     const [showButton, setShowButton] = useState<boolean>(false);
+
+    const { logout }: any = useContext(AuthContext);
 
     const bottomSheetRef = useRef<BottomSheetRefProps>(null);
     const onPress = useCallback(() => {
@@ -98,6 +107,14 @@ const Home = () => {
                 }}
             />
 
+            <IconButton
+                icon="menu"
+                iconColor={theme().colors.primary}
+                size={30}
+                style={styles.logout}
+                onPress={() => logout()}
+            />
+
             <BottomSheet ref={bottomSheetRef}>
                 <View
                     style={{
@@ -126,7 +143,7 @@ const styles = StyleSheet.create({
         right: 10,
         backgroundColor: theme().colors.background,
     },
-    menu: {
+    logout: {
         position: "absolute",
         top: 40,
         left: 10,

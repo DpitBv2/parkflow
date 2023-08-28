@@ -14,11 +14,52 @@ void setup() {
 
     gsm = std::unique_ptr<Hardware::GSM>(new Hardware::GSM());
 
+    delay(2000);
+
     rgb->light(0, 0, 255);
     screen->clear();
-
-    delay(5000);
 }
 
 void loop() {
+    screen->clear();
+
+    screen->moveCursor(0, 5);
+    screen->writeText("ParkFlow - HUB");
+    screen->moveCursor(0, 20);
+    screen->writeText("Connections: 0");
+    screen->moveCursor(0, 35);
+    screen->writeText("Searching for");
+    screen->moveCursor(0, 45);
+    screen->writeText("devices");
+    delay(500);
+
+    screen->moveCursor(0, 5);
+    screen->writeText("ParkFlow - HUB");
+    screen->moveCursor(0, 20);
+    screen->writeText("Connections: 0");
+    screen->moveCursor(0, 35);
+    screen->writeText("Searching for");
+    screen->moveCursor(0, 45);
+    screen->writeText("devices.");
+    delay(500);
+
+    screen->moveCursor(0, 5);
+    screen->writeText("ParkFlow - HUB");
+    screen->moveCursor(0, 20);
+    screen->writeText("Connections: 0");
+    screen->moveCursor(0, 35);
+    screen->writeText("Searching for");
+    screen->moveCursor(0, 45);
+    screen->writeText("devices..");
+    delay(500);
+
+    screen->moveCursor(0, 5);
+    screen->writeText("ParkFlow - HUB");
+    screen->moveCursor(0, 20);
+    screen->writeText("Connections: 0");
+    screen->moveCursor(0, 35);
+    screen->writeText("Searching for");
+    screen->moveCursor(0, 45);
+    screen->writeText("devices...");
+    delay(500);
 }

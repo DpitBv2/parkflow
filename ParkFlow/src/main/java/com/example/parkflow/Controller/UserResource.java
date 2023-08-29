@@ -15,7 +15,6 @@ import java.util.Set;
 @RequestMapping("/api/v1/user")
 public class UserResource {
     private record RegisterBody(
-            String username,
             String firstName,
             String lastName,
             String email,
@@ -81,7 +80,7 @@ public class UserResource {
     ) {
         try {
             var currentUser = authenticationUtils.getAuthentication();
-            currentUser.setUsername(userDTO.getUsername());
+            currentUser.setEmail(userDTO.getEmail());
             currentUser.setFirstName(userDTO.getFirstName());
             currentUser.setLastName(userDTO.getLastName());
             userService.update(currentUser);
@@ -104,7 +103,6 @@ public class UserResource {
     public ResponseEntity<?> register(@RequestBody RegisterBody registerBody) {
         try {
             userService.create(
-                    registerBody.username,
                     registerBody.firstName,
                     registerBody.lastName,
                     registerBody.email,

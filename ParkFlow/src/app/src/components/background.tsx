@@ -6,11 +6,13 @@ const Background = ({
     opacity = 0.2,
     borderRadius = 0,
     padding = 0,
+    flip,
 }: {
     children: any;
     opacity?: number;
     borderRadius?: number;
     padding?: number;
+    flip?: boolean;
 }) => {
     return (
         <View style={{ ...styles.container, borderRadius }}>
@@ -18,7 +20,12 @@ const Background = ({
                 source={require("../../assets/images/background.png")}
                 style={styles.image}
                 resizeMode="cover"
-                imageStyle={{ opacity, padding, borderRadius }}>
+                imageStyle={{
+                    opacity,
+                    padding,
+                    borderRadius,
+                    transform: flip ? [{ rotateX: "180deg" }] : [],
+                }}>
                 {children}
             </ImageBackground>
         </View>

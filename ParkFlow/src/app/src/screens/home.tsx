@@ -11,15 +11,19 @@ import { StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { IconButton } from "react-native-paper";
 import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
+import MenuButton from "../components/menuButton";
+import SearchBar from "../components/searchBar";
 import { AuthContext } from "../context/authContext";
 import { MapDegreesInitial } from "../util/constants";
 import { theme } from "../util/theme";
 import Loading from "./loading";
 
-const Home = () => {
+const Home = ({ navigation }: { navigation: any }) => {
+    // TODO: make initial region change based on user location
     const [initialRegion, setInitialRegion] = useState<any>(null);
     const [currentRegion, setCurrentRegion] = useState<any>(null);
     const [showButton, setShowButton] = useState<boolean>(false);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     const { logout }: any = useContext(AuthContext);
 
@@ -59,6 +63,7 @@ const Home = () => {
 
     const mapRef = createRef<MapView>();
 
+    //TODO: fix loading
     if (!initialRegion) return <Loading />;
 
     const markers = () => {
@@ -97,23 +102,24 @@ const Home = () => {
                 {markers()}
             </MapView>
 
-            <IconButton
-                icon="crosshairs-gps"
-                iconColor={theme().colors.primary}
-                size={30}
-                style={styles.button}
-                onPress={() => {
-                    mapRef.current?.animateToRegion(initialRegion, 1000);
-                }}
-            />
+            <View style={styles.topContainer}>
+                <MenuButton navigation={navigation} />
 
-            <IconButton
-                icon="menu"
-                iconColor={theme().colors.primary}
-                size={30}
-                style={styles.logout}
-                onPress={() => logout()}
-            />
+                <SearchBar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                />
+
+                <IconButton
+                    icon="crosshairs-gps"
+                    iconColor={theme().colors.primary}
+                    size={30}
+                    style={styles.recenter}
+                    onPress={() => {
+                        mapRef.current?.animateToRegion(initialRegion, 1000);
+                    }}
+                />
+            </View>
 
             <BottomSheet ref={bottomSheetRef}>
                 <View
@@ -137,17 +143,17 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
     },
-    button: {
-        position: "absolute",
-        top: 40,
+    recenter: {
         right: 10,
         backgroundColor: theme().colors.background,
     },
-    logout: {
+    topContainer: {
         position: "absolute",
         top: 40,
-        left: 10,
-        backgroundColor: theme().colors.background,
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
     },
 });
 

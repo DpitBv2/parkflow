@@ -10,7 +10,7 @@ import { theme } from "../util/theme";
 import Background from "./background";
 
 export type BottomSheetProps = {
-    children?: any;
+    children: any;
 };
 export type BottomSheetRefProps = {
     scrollTo: (destination: number) => void;
@@ -72,7 +72,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
         return (
             <GestureDetector gesture={gesture}>
                 <Animated.View style={[styles.container, rBottomSheetStyle]}>
-                    <Background borderRadius={25} opacity={0.3} padding={500}>
+                    <Background borderRadius={25} opacity={0.2} flip>
                         <View style={styles.line} />
                         {children}
                     </Background>

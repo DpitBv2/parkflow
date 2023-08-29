@@ -49,7 +49,7 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
     if (isLoading) return <Loading />;
 
     return (
-        <Background opacity={0.65}>
+        <Background opacity={0.5}>
             <KeyboardAvoidingView behavior="height">
                 <View style={styles.background}>
                     <LogoText />

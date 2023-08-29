@@ -1,9 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
-import Home from "../screens/home";
 import Loading from "../screens/loading";
 import AuthStack from "./authStack";
+import DrawerNavigator from "./drawerNavigator";
 
 const AppNavigation = () => {
     const { isLoading, userToken }: any = useContext(AuthContext);
@@ -12,7 +12,7 @@ const AppNavigation = () => {
 
     return (
         <NavigationContainer>
-            {userToken !== null ? <Home /> : <AuthStack />}
+            {userToken !== null ? <DrawerNavigator /> : <AuthStack />}
         </NavigationContainer>
     );
 };

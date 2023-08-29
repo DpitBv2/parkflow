@@ -1,50 +1,19 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StyleSheet, View } from "react-native";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
+import IIcon from "react-native-vector-icons/Ionicons";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import CustomDrawer from "../components/customDrawer";
 import Text from "../components/text";
+import AboutUs from "../screens/aboutUs";
 import Activity from "../screens/activity";
 import Home from "../screens/home";
-import Map from "../screens/map";
-import Profile from "../screens/profile";
 import Shop from "../screens/shop";
 import { theme } from "../util/theme";
 
 const Drawer = createDrawerNavigator();
 
-// const TabBarButton = ({
-//     children,
-//     onPress,
-// }: {
-//     children: any;
-//     onPress: () => void;
-// }) => {
-//     return (
-//         <TouchableOpacity
-//             activeOpacity={ActiveOpacity}
-//             onPress={onPress}
-//             style={{
-//                 ...styles.buttonContainer,
-//                 ...styles.shadow,
-//                 shadowColor: theme().colors.grey,
-//                 shadowOffset: {
-//                     width: 0,
-//                     height: 5,
-//                 },
-//             }}>
-//             <View
-//                 style={{
-//                     ...styles.button,
-//                     backgroundColor: theme().colors.primary,
-//                 }}>
-//                 {children}
-//             </View>
-//         </TouchableOpacity>
-//     );
-// };
-
-const DrawerNavigator = () => {
+const DrawerNavigator = ({ navigation }: { navigation: any }) => {
     return (
         <Drawer.Navigator
             initialRouteName="Home"
@@ -62,7 +31,9 @@ const DrawerNavigator = () => {
                     borderRadius: 10,
                 },
             }}
-            drawerContent={(props) => <CustomDrawer {...props} />}>
+            drawerContent={(props) => (
+                <CustomDrawer props={props} navigation={navigation} />
+            )}>
             <Drawer.Screen
                 name="Home"
                 component={Home}
@@ -76,7 +47,6 @@ const DrawerNavigator = () => {
                                         ? theme().colors.primary
                                         : theme().colors.grey
                                 }
-                                // style={{ marginLeft: 5 }}
                                 size={24}
                             />
                         </View>
@@ -129,38 +99,6 @@ const DrawerNavigator = () => {
                 }}
             />
             <Drawer.Screen
-                name="Map"
-                component={Map}
-                options={{
-                    drawerIcon: ({ focused }) => (
-                        <View style={styles.icon}>
-                            <MCIcon
-                                name="map"
-                                color={
-                                    focused
-                                        ? theme().colors.primary
-                                        : theme().colors.grey
-                                }
-                                size={27}
-                            />
-                        </View>
-                    ),
-                    drawerLabel: ({ focused }) => (
-                        <View style={styles.text}>
-                            <Text
-                                bold={focused}
-                                color={
-                                    focused
-                                        ? theme().colors.primary
-                                        : theme().colors.dark
-                                }>
-                                Map
-                            </Text>
-                        </View>
-                    ),
-                }}
-            />
-            <Drawer.Screen
                 name="Shop"
                 component={Shop}
                 options={{
@@ -193,13 +131,13 @@ const DrawerNavigator = () => {
                 }}
             />
             <Drawer.Screen
-                name="Profile"
-                component={Profile}
+                name="About Us"
+                component={AboutUs}
                 options={{
                     drawerIcon: ({ focused }) => (
                         <View style={styles.icon}>
                             <MCIcon
-                                name="account"
+                                name="account-multiple"
                                 color={
                                     focused
                                         ? theme().colors.primary
@@ -218,7 +156,39 @@ const DrawerNavigator = () => {
                                         ? theme().colors.primary
                                         : theme().colors.dark
                                 }>
-                                Profile
+                                About Us
+                            </Text>
+                        </View>
+                    ),
+                }}
+            />
+            <Drawer.Screen
+                name="Settings"
+                component={AboutUs}
+                options={{
+                    drawerIcon: ({ focused }) => (
+                        <View style={styles.icon}>
+                            <IIcon
+                                name="settings-sharp"
+                                color={
+                                    focused
+                                        ? theme().colors.primary
+                                        : theme().colors.grey
+                                }
+                                size={27}
+                            />
+                        </View>
+                    ),
+                    drawerLabel: ({ focused }) => (
+                        <View style={styles.text}>
+                            <Text
+                                bold={focused}
+                                color={
+                                    focused
+                                        ? theme().colors.primary
+                                        : theme().colors.dark
+                                }>
+                                Settings
                             </Text>
                         </View>
                     ),

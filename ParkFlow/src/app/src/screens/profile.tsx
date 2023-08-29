@@ -5,7 +5,7 @@ import Text from "../components/text";
 import { AuthContext } from "../context/authContext";
 import { theme } from "../util/theme";
 
-const Profile = () => {
+const Profile = ({ navigation }: { navigation: any }) => {
     const { logout }: any = useContext(AuthContext);
 
     return (

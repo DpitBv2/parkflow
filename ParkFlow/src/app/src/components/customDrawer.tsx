@@ -3,7 +3,13 @@ import {
     DrawerItemList,
 } from "@react-navigation/drawer";
 import { useContext } from "react";
-import { Image, StyleSheet, TouchableHighlight, View } from "react-native";
+import {
+    Image,
+    Share,
+    StyleSheet,
+    TouchableHighlight,
+    View,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
 import { AuthContext } from "../context/authContext";
@@ -12,8 +18,36 @@ import { theme } from "../util/theme";
 import { LogoText } from "./logo";
 import Text from "./text";
 
-const CustomDrawer = (props: any) => {
+const CustomDrawer = ({
+    props,
+    navigation,
+}: {
+    props: any;
+    navigation: any;
+}) => {
     const { userInfo } = useContext(AuthContext);
+
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                title: "ParkFlow",
+                message:
+                    "ParkFlow este o aplicație inovatoare dedicată reducerii traficului în orașe. Descoperă echipa noastră pe https://www.facebook.com/parkflowbv",
+            });
+
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    };
 
     return (
         <View style={{ flex: 1 }}>
@@ -35,7 +69,9 @@ const CustomDrawer = (props: any) => {
                             <Text bold fontSize={20}>
                                 {userInfo.firstName} {userInfo.lastName}
                             </Text>
-                            <TouchableOpacity activeOpacity={ActiveOpacity}>
+                            <TouchableOpacity
+                                activeOpacity={ActiveOpacity}
+                                onPress={() => navigation.navigate("Profile")}>
                                 <Text color={theme().colors.primary}>
                                     Edit profile
                                 </Text>
@@ -49,7 +85,7 @@ const CustomDrawer = (props: any) => {
             </DrawerContentScrollView>
             <View style={styles.bottom}>
                 <TouchableHighlight
-                    onPress={() => {}}
+                    onPress={onShare}
                     style={styles.button}
                     activeOpacity={ActiveOpacity}
                     underlayColor={theme().colors.lightGrey}>
@@ -65,7 +101,7 @@ const CustomDrawer = (props: any) => {
                     </View>
                 </TouchableHighlight>
 
-                <TouchableHighlight
+                {/* <TouchableHighlight
                     onPress={() => {}}
                     style={styles.button}
                     activeOpacity={ActiveOpacity}
@@ -80,7 +116,7 @@ const CustomDrawer = (props: any) => {
                         </View>
                         <Text style={{ marginLeft: 10 }}>Log out</Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableHighlight> */}
             </View>
         </View>
     );
@@ -105,18 +141,19 @@ const styles = StyleSheet.create({
     },
     profile: {
         paddingBottom: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         marginTop: -5,
+        marginLeft: -15,
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
     },
     image: {
-        borderColor: theme().colors.primary,
-        borderWidth: 2,
         borderRadius: 50,
         width: 45,
         aspectRatio: 1,
         marginRight: 10,
+        marginTop: 8,
     },
 });
 

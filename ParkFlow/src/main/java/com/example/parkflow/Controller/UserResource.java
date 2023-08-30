@@ -15,11 +15,11 @@ import java.util.Set;
 @RequestMapping("/api/v1/user")
 public class UserResource {
     private record RegisterBody(
-            String username,
             String firstName,
             String lastName,
             String email,
-            String password
+            String password,
+            String phoneNumber
     ) {}
     private final UserService userService;
     private final AuthenticationUtils authenticationUtils;
@@ -51,17 +51,17 @@ public class UserResource {
     }
 
     /**
-     * {@code GET /api/v1/user/{id}} : Gets the user details of the user with the given username
-     * @param username : user's username
+     * {@code GET /api/v1/user/{email}} : Gets the user details of the user with the given email
+     * @param email : user's email
      * @return user's details with status {@code 200 (OK)}
      */
     @GetMapping(
-            path = "/{username}",
+            path = "/{email}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> getUserDetails(@PathVariable String username) {
+    public ResponseEntity<?> getUserDetails(@PathVariable String email) {
         try {
-            return ResponseEntity.ok(new UserDTO(userService.get(username)));
+            return ResponseEntity.ok(new UserDTO(userService.get(email)));
         } catch (ResponseException e) {
             return e.toResponseEntity();
         }
@@ -81,9 +81,10 @@ public class UserResource {
     ) {
         try {
             var currentUser = authenticationUtils.getAuthentication();
-            currentUser.setUsername(userDTO.getUsername());
+            currentUser.setEmail(userDTO.getEmail());
             currentUser.setFirstName(userDTO.getFirstName());
             currentUser.setLastName(userDTO.getLastName());
+            currentUser.setPhoneNumber(userDTO.getPhoneNumber());
             userService.update(currentUser);
             return ResponseEntity.ok().build();
         } catch (ResponseException e) {
@@ -104,11 +105,11 @@ public class UserResource {
     public ResponseEntity<?> register(@RequestBody RegisterBody registerBody) {
         try {
             userService.create(
-                    registerBody.username,
                     registerBody.firstName,
                     registerBody.lastName,
                     registerBody.email,
                     registerBody.password,
+                    registerBody.phoneNumber,
                     Set.of(userService.getUserAuthority())
             );
         } catch (ResponseException e) {

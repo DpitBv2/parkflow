@@ -19,7 +19,16 @@ import { theme } from "../util/theme";
 import { validateEmail } from "../util/validate";
 import Loading from "./loading";
 
-const Login = ({ navigation }: { navigation: any }) => {
+const Login = ({ navigation, route }: { navigation: any; route: any }) => {
+    const [registered, setRegistered] = useState<boolean>(false);
+
+    if (registered == false) {
+        try {
+            const { registered: register } = route.params;
+            setRegistered(true);
+        } catch {}
+    }
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -40,7 +49,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (isLoading) return <Loading />;
 
     return (
-        <Background opacity={0.65}>
+        <Background opacity={0.5}>
             <KeyboardAvoidingView behavior="height">
                 <View style={styles.background}>
                     <LogoText />
@@ -49,6 +58,12 @@ const Login = ({ navigation }: { navigation: any }) => {
                         style={{
                             width: 240,
                         }}>
+                        {registered && (
+                            <ErrorText
+                                succesful
+                                text="Registered successfully!"
+                            />
+                        )}
                         {showError && error && <ErrorText text={error} />}
                         {showError && error && (
                             <View style={{ marginBottom: 5 }} />
@@ -78,7 +93,6 @@ const Login = ({ navigation }: { navigation: any }) => {
                         style={styles.textContainer}>
                         <Text
                             style={{
-                                color: theme().colors.dark,
                                 marginVertical: 2,
                             }}>
                             Don't remember your password?
@@ -89,7 +103,7 @@ const Login = ({ navigation }: { navigation: any }) => {
                         bgcolor={theme().colors.primary}
                         color={theme().colors.light}
                         text="Log in"
-                        onClick={() => {
+                        onPress={() => {
                             if (!email || !password) setShowError(true);
                             else {
                                 setIsLoading(true);

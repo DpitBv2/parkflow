@@ -1,17 +1,25 @@
+import * as Location from "expo-location";
+import { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { theme } from "../util/theme";
-
-import * as Location from "expo-location";
-import { createRef, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
+import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
+import MenuButton from "../components/menuButton";
+import SearchBar from "../components/searchBar";
 import { MapDegreesInitial } from "../util/constants";
+import { theme } from "../util/theme";
 import Loading from "./loading";
 
-const Home = () => {
+const Home = ({ navigation }: { navigation: any }) => {
+    // TODO: make initial region change based on user location
     const [initialRegion, setInitialRegion] = useState<any>(null);
     const [currentRegion, setCurrentRegion] = useState<any>(null);
-    const [showButton, setShowButton] = useState<boolean>(false);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const bottomSheetRef = useRef<BottomSheetRefProps>(null);
+    const onPress = useCallback(() => {
+        bottomSheetRef.current?.scrollTo(-200);
+    }, []);
 
     useEffect(() => {
         (async () => {
@@ -36,18 +44,9 @@ const Home = () => {
         })();
     }, []);
 
-    // TODO: fix hiding button after recentering
-    useEffect(() => {
-        if (currentRegion !== initialRegion) setShowButton(true);
-        else setShowButton(false);
-
-        console.log(currentRegion);
-        console.log(initialRegion);
-        console.log(" ");
-    }, [currentRegion]);
-
     const mapRef = createRef<MapView>();
 
+    //TODO: fix loading
     if (!initialRegion) return <Loading />;
 
     const markers = () => {
@@ -58,12 +57,14 @@ const Home = () => {
                         latitude: 45.643762029499506,
                         longitude: 25.630817357450724,
                     }}
+                    onPress={onPress}
                 />
                 <Marker
                     coordinate={{
                         latitude: 45.65385581575959,
                         longitude: 25.625012386590242,
                     }}
+                    onPress={onPress}
                 />
             </>
         );
@@ -78,21 +79,47 @@ const Home = () => {
                 followsUserLocation={true}
                 showsMyLocationButton={false}
                 initialRegion={initialRegion}
+                rotateEnabled={false}
                 onRegionChange={setCurrentRegion}
                 mapType="standard">
                 {markers()}
             </MapView>
-            {showButton && (
+
+            <View style={styles.topContainer}>
+                <MenuButton
+                    navigation={navigation}
+                    style={{
+                        marginHorizontal: 5,
+                        marginVertical: 8,
+                    }}
+                />
+
+                <SearchBar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    style={{ marginHorizontal: 5, flex: 1 }}
+                />
+
                 <IconButton
                     icon="crosshairs-gps"
                     iconColor={theme().colors.primary}
                     size={30}
-                    style={styles.button}
+                    style={{
+                        backgroundColor: theme().colors.background,
+                    }}
                     onPress={() => {
                         mapRef.current?.animateToRegion(initialRegion, 1000);
                     }}
                 />
-            )}
+            </View>
+
+            <BottomSheet ref={bottomSheetRef}>
+                <View
+                    style={{
+                        flex: 1,
+                        width: "100%",
+                    }}></View>
+            </BottomSheet>
         </View>
     );
 };
@@ -108,11 +135,13 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
     },
-    button: {
+    topContainer: {
         position: "absolute",
         top: 40,
-        right: 10,
-        backgroundColor: theme().colors.background,
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "center",
+        paddingHorizontal: 10,
     },
 });
 

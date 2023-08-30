@@ -15,6 +15,8 @@ interface IconInputProps {
     validate?: (value: string) => boolean;
     onValidateChange?: (value: boolean) => void;
     errorEmpty?: boolean;
+    editable?: boolean;
+    color?: string;
 }
 
 const IconInput = ({
@@ -28,6 +30,8 @@ const IconInput = ({
     validate,
     onValidateChange,
     errorEmpty = false,
+    editable = true,
+    color = theme().colors.dark,
 }: IconInputProps) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isHidden, setIsHidden] = useState(hidden);
@@ -60,7 +64,7 @@ const IconInput = ({
                 style={[
                     styles.input,
                     hidden && styles.password,
-                    { letterSpacing: letterSpacing },
+                    { letterSpacing, color },
                     value.length > 20 && { fontSize: 14 },
                     value.length > 25 && { fontSize: 13 },
                 ]}
@@ -78,6 +82,7 @@ const IconInput = ({
                     setIsFocused(false);
                 }}
                 selectionColor={theme().colors.grey}
+                editable={editable}
             />
             {hidden && (
                 <View style={styles.iconContainer}>

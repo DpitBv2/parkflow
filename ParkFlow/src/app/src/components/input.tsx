@@ -10,6 +10,8 @@ interface InputProps {
     style?: any;
     hidden?: boolean;
     errorEmpty?: boolean;
+    color?: string;
+    editable?: boolean;
 }
 
 const Input = ({
@@ -19,6 +21,8 @@ const Input = ({
     style,
     hidden,
     errorEmpty = false,
+    color = theme().colors.dark,
+    editable = true,
 }: InputProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
@@ -39,7 +43,7 @@ const Input = ({
                 },
             ]}>
             <TextInput
-                style={styles.input}
+                style={{ ...styles.input, color }}
                 secureTextEntry={hidden}
                 onChangeText={onChange}
                 value={value}
@@ -50,6 +54,7 @@ const Input = ({
                 }}
                 onBlur={() => setIsFocused(false)}
                 selectionColor={theme().colors.grey}
+                editable={editable}
             />
         </View>
     );

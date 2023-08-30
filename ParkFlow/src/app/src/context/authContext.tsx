@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
 import api from "../util/api";
-import { LoginURL } from "../util/links";
+import { LoginURL, UserURL } from "../util/links";
 
 export const AuthContext = createContext<any>(null);
 
@@ -11,51 +11,37 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [userInfo, setUserInfo] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const login = ({
-        email,
-        password,
-    }: {
-        email: string;
-        password: string;
-    }) => {
+    const login = (email: string, password: string) => {
         return new Promise((resolve, reject) => {
-            // api.post(LoginURL, {
-            //     email: email,
-            //     password: password,
-            // })
-            //     .then((response) => {
-            //         console.log(response.data);
-            //         setUserInfo(response.data);
-            //         setUserToken(response.data.token);
-            //         AsyncStorage.setItem("userToken", response.data.token);
-            //         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-            //         resolve(response.data);
-            //     })
-            //     .catch((error) => {
-            //         setError(error);
-            //         reject(error);
-            //     });
-
-            setUserToken("dawdawdaw");
-            setUserInfo("{}");
-            AsyncStorage.setItem("userToken", "dawdawdaw");
-            AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+            api.post(LoginURL, {
+                username: email,
+                password: password,
+            })
+                .then((response) => {
+                    getUserInfo(response.data)
+                        .then(() => {
+                            setUserToken(response.data);
+                            AsyncStorage.setItem("userToken", response.data);
+                            resolve(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            reject(error);
+                        });
+                })
+                .catch((error) => {
+                    reject(error);
+                });
         });
     };
 
-    const register = ({
-        firstName,
-        lastName,
-        email,
-        password,
-        phone,
-    }: {
-        firstName: string;
-        lastName: string;
-        email: string;
-        password: string;
-        phone: string;
-    }) => {
+    const register = (
+        firstName: string,
+        lastName: string,
+        email: string,
+        password: string,
+        phone: string
+    ) => {
         return new Promise((resolve, reject) => {
             api.post(LoginURL, {
                 firstName: firstName,
@@ -65,16 +51,64 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 phone: phone,
             })
                 .then((response) => {
-                    console.log(response.data);
-                    setUserInfo(response.data);
-                    setUserToken(response.data.token);
-                    AsyncStorage.setItem("userToken", response.data.token);
-                    AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
                     resolve(response.data);
                 })
                 .catch((error) => {
-                    console.error("Error sending data:", error);
-                    setError(error);
+                    console.log(error);
+                    console.log(error.response.data.message);
+                    reject(error);
+                });
+        });
+    };
+
+    const getUserInfo = (token: string) => {
+        return new Promise((resolve, reject) => {
+            api.get(UserURL, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => {
+                    setUserInfo(response.data);
+                    AsyncStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(response.data)
+                    );
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    };
+
+    const update = (
+        token: string,
+        username: string,
+        firstName: string,
+        lastName: string,
+        email: string
+    ) => {
+        return new Promise((resolve, reject) => {
+            api.put(
+                UserURL,
+                {
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+                .then((response) => {
+                    setUserInfo(response.data);
+                    resolve(response.data);
+                })
+                .catch((error) => {
                     reject(error);
                 });
         });
@@ -110,7 +144,15 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     return (
         <AuthContext.Provider
-            value={{ login, logout, register, isLoading, userToken, userInfo }}>
+            value={{
+                login,
+                logout,
+                register,
+                update,
+                isLoading,
+                userToken,
+                userInfo,
+            }}>
             {children}
         </AuthContext.Provider>
     );

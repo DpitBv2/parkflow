@@ -15,6 +15,7 @@ const defaultTheme = {
         darkGrey: "#2d2d2d",
         danger: "#e83635",
         tomato: "#f5593d",
+        succes: "#00b16a",
     },
 };
 

@@ -10,7 +10,7 @@ interface ButtonProps {
     bgcolor?: string;
     color?: string;
     style?: object;
-    onClick?: () => void;
+    onPress?: () => void;
 }
 
 const Button = ({
@@ -20,7 +20,7 @@ const Button = ({
     color,
     style,
     text,
-    onClick,
+    onPress,
 }: ButtonProps) => {
     return (
         <TouchableOpacity
@@ -37,7 +37,7 @@ const Button = ({
                             : bgcolor,
                 },
             ]}
-            onPress={onClick}>
+            onPress={onPress}>
             <Text
                 inverted={true}
                 style={[

@@ -10,10 +10,12 @@ public interface UserService {
             String firstName,
             String lastName,
             String email,
-            String password, Set<Authority> authorities
+            String password,
+            String phoneNumber,
+            Set<Authority> authorities
     );
 
-    boolean exists(String username);
+    boolean exists(String email);
 
     User get(Long id);
     User get(String email);

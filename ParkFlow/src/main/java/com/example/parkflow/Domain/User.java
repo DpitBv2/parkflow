@@ -18,9 +18,6 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-
     @Column(nullable = false)
     private String firstName;
 
@@ -32,6 +29,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String phoneNumber;
 
     @Column(nullable = false)
     private boolean enabled = true;
@@ -54,31 +54,34 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<ParkFlowUser> farms = new HashSet<>();
 
-
     public User() {
     }
 
-    public User(Long id, String username, String firstName, String lastName, String email, String password) {
+    public User(Long id, String firstName, String lastName, String email, String password, String phoneNumber) {
         this.id = id;
-        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
-    public User(Long id, String username, String firstName, String lastName, String email, String password, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, Set<Authority> authorities) {
+    public User(Long id, String firstName, String lastName, String email, String password, String phoneNumber, boolean enabled, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, Set<Authority> authorities) {
         this.id = id;
-        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.phoneNumber = phoneNumber;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
         this.authorities = authorities;
+    }
+
+    public String getUsername() {
+        return email;
     }
 
     public Long getId() {
@@ -87,15 +90,6 @@ public class User implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {
@@ -129,6 +123,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -189,23 +191,23 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return enabled == user.enabled && accountNonExpired == user.accountNonExpired && accountNonLocked == user.accountNonLocked && credentialsNonExpired == user.credentialsNonExpired && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(createdAt, user.createdAt) && Objects.equals(authorities, user.authorities) && Objects.equals(farms, user.farms);
+        return enabled == user.enabled && accountNonExpired == user.accountNonExpired && accountNonLocked == user.accountNonLocked && credentialsNonExpired == user.credentialsNonExpired && Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(createdAt, user.createdAt) && Objects.equals(authorities, user.authorities) && Objects.equals(farms, user.farms);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstName, lastName, email, password, enabled, accountNonExpired, accountNonLocked, credentialsNonExpired, createdAt, authorities, farms);
+        return Objects.hash(id, firstName, lastName, email, password, phoneNumber, enabled, accountNonExpired, accountNonLocked, credentialsNonExpired, createdAt, authorities, farms);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", phoneNumber=" + phoneNumber + '\'' +
                 ", enabled=" + enabled +
                 ", accountNonExpired=" + accountNonExpired +
                 ", accountNonLocked=" + accountNonLocked +

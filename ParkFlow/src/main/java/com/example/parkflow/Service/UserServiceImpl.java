@@ -37,7 +37,9 @@ public class UserServiceImpl implements UserService {
             String firstName,
             String lastName,
             String email,
-            String password, Set<Authority> authorities
+            String password,
+            String phoneNumber,
+            Set<Authority> authorities
     ) {
         if (
                 email.isEmpty() ||
@@ -54,6 +56,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(encodedPassword);
+        user.setPhoneNumber(phoneNumber);
         user.getAuthorities().addAll(authorities);
         userRepository.save(user);
     }
@@ -91,7 +94,7 @@ public class UserServiceImpl implements UserService {
                         user.getFirstName().isEmpty() ||
                         user.getLastName().isEmpty())
             throw new ResponseException("Invalid data");
-        if (userRepository.existsByEmail(user.getEmail()))
+        if (userRepository.existsByEmail(user.getEmail()) && !userRepository.findByEmail(user.getEmail()).get().getId().equals(user.getId()))
             throw new ResponseException("Email is already used.");
         userRepository.save(user);
     }

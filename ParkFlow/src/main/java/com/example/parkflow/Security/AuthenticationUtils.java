@@ -20,12 +20,12 @@ public class AuthenticationUtils {
     }
 
     public User getAuthentication() {
-        final var username = (String) SecurityContextHolder
+        final var email = (String) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
         try {
-            return userService.get(username);
+            return userService.get(email);
         } catch (Exception ignored) {
             throw new ResponseException("Unauthenticated", HttpStatus.UNAUTHORIZED);
         }

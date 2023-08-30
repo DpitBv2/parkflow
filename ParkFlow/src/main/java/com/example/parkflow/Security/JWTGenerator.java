@@ -26,21 +26,21 @@ public class JWTGenerator {
                 .filter(authority -> authority.length() > 0)
                 .collect(Collectors.joining(";"));
         return JWT.create()
-                .withClaim("username", username)
+                .withClaim("email", username)
                 .withClaim("authorities", authorities)
                 .sign(algorithm);
     }
 
     public static UserDetails decodeToken(String token) throws JWTVerificationException {
         final var jwt = JWT.decode(token);
-        var username = jwt.getClaim("username").toString();
-        username = username.substring(1, username.length() - 1);
+        var email = jwt.getClaim("email").toString();
+        email = email.substring(1, email.length() - 1);
         var authorities = Arrays.stream(
                         jwt.getClaim("authorities").toString().split(";")
                 )
                 .filter(authority -> authority.length() > 0)
                 .map(authority -> new Authority(authority.substring(1, authority.length() - 1)))
                 .toList();
-        return new User(username, "", authorities);
+        return new User(email, "", authorities);
     }
 }

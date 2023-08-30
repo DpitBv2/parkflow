@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
-    private record LoginBody(String username, String password) {}
+    private record LoginBody(String email, String password) {}
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -40,7 +40,7 @@ public class AuthenticationController {
     )
     public ResponseEntity<?> login(@RequestBody LoginBody credentials) {
         try {
-            var user = userService.get(credentials.username);
+            var user = userService.get(credentials.email);
             if (!passwordEncoder.matches(credentials.password, user.getPassword()))
                 return ResponseEntity.badRequest().build();
             return ResponseEntity.ok(JWTGenerator.encodeToken(user));

@@ -7,18 +7,18 @@ import java.util.Set;
 
 public interface UserService {
     void create(
-            String username,
             String firstName,
             String lastName,
             String email,
             String password,
+            String phoneNumber,
             Set<Authority> authorities
     );
 
-    boolean exists(String username);
+    boolean exists(String email);
 
     User get(Long id);
-    User get(String username);
+    User get(String email);
 
     Authority getUserAuthority();
 

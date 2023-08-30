@@ -93,7 +93,6 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
                         style={styles.textContainer}>
                         <Text
                             style={{
-                                color: theme().colors.dark,
                                 marginVertical: 2,
                             }}>
                             Don't remember your password?
@@ -104,7 +103,7 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
                         bgcolor={theme().colors.primary}
                         color={theme().colors.light}
                         text="Log in"
-                        onClick={() => {
+                        onPress={() => {
                             if (!email || !password) setShowError(true);
                             else {
                                 setIsLoading(true);

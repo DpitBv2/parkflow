@@ -125,28 +125,16 @@ const Register = ({ navigation }: { navigation: any }) => {
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChange={setConfirmPassword}
-                        style={{ marginTop: 10 }}
+                        style={{ marginVertical: 10 }}
                         hidden={true}
                         errorEmpty={showError && !confirmPassword}
                     />
-
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        style={styles.textContainer}>
-                        <Text
-                            style={{
-                                color: theme().colors.dark,
-                                marginVertical: 2,
-                            }}>
-                            Don't remember your password?
-                        </Text>
-                    </TouchableOpacity>
 
                     <Button
                         bgcolor={theme().colors.primary}
                         color={theme().colors.light}
                         text="Register"
-                        onClick={() => {
+                        onPress={() => {
                             if (
                                 firstName &&
                                 lastName &&

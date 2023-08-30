@@ -6,19 +6,21 @@ interface SearchBarProps {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     placeholder?: string;
+    style?: any;
 }
 
 const SearchBar = ({
     searchQuery,
     setSearchQuery,
     placeholder = "Search",
+    style,
 }: SearchBarProps) => {
     return (
         <Searchbar
             placeholder={placeholder}
             value={searchQuery}
             onChangeText={(query) => setSearchQuery(query)}
-            style={styles.search}
+            style={[styles.search, style]}
             inputStyle={styles.input}
         />
     );
@@ -26,11 +28,9 @@ const SearchBar = ({
 
 const styles = StyleSheet.create({
     search: {
-        width: "60%",
         alignSelf: "center",
         height: 45,
         backgroundColor: theme().colors.background,
-        marginHorizontal: "4%",
     },
     input: {
         top: -6,

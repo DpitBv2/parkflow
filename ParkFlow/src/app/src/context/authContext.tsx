@@ -82,6 +82,38 @@ export const AuthProvider = ({ children }: { children: any }) => {
         });
     };
 
+    const update = (
+        token: string,
+        username: string,
+        firstName: string,
+        lastName: string,
+        email: string
+    ) => {
+        return new Promise((resolve, reject) => {
+            api.put(
+                UserURL,
+                {
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+                .then((response) => {
+                    setUserInfo(response.data);
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    };
+
     const logout = () => {
         setIsLoading(true);
         setUserToken(null);
@@ -116,6 +148,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 login,
                 logout,
                 register,
+                update,
                 isLoading,
                 userToken,
                 userInfo,

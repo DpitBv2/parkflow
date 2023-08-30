@@ -15,6 +15,8 @@ interface PhoneInputProps {
     valid: boolean;
     setValid: (value: boolean) => void;
     errorEmpty?: boolean;
+    editable?: boolean;
+    color?: string;
 }
 
 const PhoneInput = ({
@@ -26,6 +28,8 @@ const PhoneInput = ({
     valid,
     setValid,
     errorEmpty = false,
+    editable = true,
+    color = theme().colors.dark,
 }: any) => {
     const phoneInput = useRef<PInput>(null);
     const [isFocused, setIsFocused] = useState(false);
@@ -50,6 +54,7 @@ const PhoneInput = ({
                 },
             ]}>
             <PInput
+                disabled={!editable}
                 ref={phoneInput}
                 defaultValue={value}
                 defaultCode="RO"
@@ -71,16 +76,12 @@ const PhoneInput = ({
                     },
                     isFocused && styles.focusedTextInput,
                 ]}
-                textContainerStyle={{
-                    ...styles.text,
-                }}
+                textContainerStyle={styles.text}
                 textInputStyle={{
                     ...styles.input,
-                    color: theme().colors.darkGrey,
+                    color,
                 }}
-                codeTextStyle={{
-                    ...styles.code,
-                }}
+                codeTextStyle={styles.code}
                 renderDropdownImage={EmptyElement}
                 countryPickerButtonStyle={{ ...styles.button }}
                 {...(themeType() === "dark" && {

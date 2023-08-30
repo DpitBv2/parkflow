@@ -2,14 +2,20 @@ import { Keyboard, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
 
-const MenuButton = ({ navigation }: { navigation: any }) => {
+const MenuButton = ({
+    navigation,
+    style,
+}: {
+    navigation: any;
+    style?: any;
+}) => {
     return (
         <TouchableOpacity
             activeOpacity={ActiveOpacity}
             onPress={() => {
                 navigation.openDrawer(), Keyboard.dismiss();
             }}
-            style={styles.menu}>
+            style={[styles.menu, style]}>
             <View>
                 <View style={{ width: 25, ...styles.line }} />
                 <View style={{ width: 20, ...styles.line }} />
@@ -24,11 +30,7 @@ const styles = StyleSheet.create({
         height: 42,
         width: 42,
         borderRadius: 50,
-        left: 10,
-        top: 0,
         backgroundColor: theme().colors.background,
-        marginHorizontal: 5,
-        marginVertical: 8,
         justifyContent: "center",
         alignItems: "center",
     },

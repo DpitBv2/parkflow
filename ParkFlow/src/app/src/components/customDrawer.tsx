@@ -2,7 +2,7 @@ import {
     DrawerContentScrollView,
     DrawerItemList,
 } from "@react-navigation/drawer";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
     Image,
     Share,
@@ -15,7 +15,9 @@ import FAIcon from "react-native-vector-icons/FontAwesome5";
 import { AuthContext } from "../context/authContext";
 import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
+import Button from "./button";
 import { LogoText } from "./logo";
+import Modal from "./modal";
 import Text from "./text";
 
 const CustomDrawer = ({
@@ -25,7 +27,9 @@ const CustomDrawer = ({
     props: any;
     navigation: any;
 }) => {
-    const { userInfo } = useContext(AuthContext);
+    const { userInfo, logout } = useContext(AuthContext);
+
+    const [visible, setVisible] = useState<boolean>(false);
 
     const onShare = async () => {
         try {
@@ -34,16 +38,6 @@ const CustomDrawer = ({
                 message:
                     "ParkFlow este o aplicație inovatoare dedicată reducerii traficului în orașe. Descoperă echipa noastră pe https://www.facebook.com/parkflowbv",
             });
-
-            if (result.action === Share.sharedAction) {
-                if (result.activityType) {
-                    // shared with activity type of result.activityType
-                } else {
-                    // shared
-                }
-            } else if (result.action === Share.dismissedAction) {
-                // dismissed
-            }
         } catch (error: any) {
             console.log(error.message);
         }
@@ -51,13 +45,7 @@ const CustomDrawer = ({
 
     return (
         <View style={{ flex: 1 }}>
-            <DrawerContentScrollView
-                {...props}
-                contentContainerStyle={
-                    {
-                        // backgroundColor: theme().colors.primary,
-                    }
-                }>
+            <DrawerContentScrollView {...props}>
                 <View style={styles.top}>
                     <LogoText />
                     <View style={styles.profile}>
@@ -101,8 +89,10 @@ const CustomDrawer = ({
                     </View>
                 </TouchableHighlight>
 
-                {/* <TouchableHighlight
-                    onPress={() => {}}
+                <TouchableHighlight
+                    onPress={() => {
+                        setVisible(true);
+                    }}
                     style={styles.button}
                     activeOpacity={ActiveOpacity}
                     underlayColor={theme().colors.lightGrey}>
@@ -116,7 +106,26 @@ const CustomDrawer = ({
                         </View>
                         <Text style={{ marginLeft: 10 }}>Log out</Text>
                     </View>
-                </TouchableHighlight> */}
+                </TouchableHighlight>
+
+                <Modal
+                    visible={visible}
+                    setVisible={setVisible}
+                    onClose={() => setVisible(false)}>
+                    <Text bold fontSize={18} style={{ paddingTop: 10 }}>
+                        Log out?
+                    </Text>
+                    <Button
+                        text="Log out"
+                        onPress={() => {
+                            setVisible(false);
+                            logout();
+                        }}
+                        style={{ marginTop: 30 }}
+                        width={200}
+                        bgcolor={theme().colors.danger}
+                    />
+                </Modal>
             </View>
         </View>
     );

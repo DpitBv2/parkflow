@@ -2,39 +2,37 @@ package com.example.parkflow.Domain;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.UUID;
 
-@Entity
 public class Sensor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private Long hubId;
-    private Boolean state;
-    private Boolean currentState;
+    private State state;
+    private State currentState;
     private double latitude;
     private double longitude;
-    private LocalDate createdAtTimestamp = LocalDate.now();
-    public Sensor() {
+    private LocalDateTime createdAtTimestamp;
 
+    public enum State {
+        ACTIVE, INACTIVE, RESERVED
     }
-    public Sensor(Long id, Long hubId, Boolean state, Boolean currentState,
+    public Sensor(Long hubId, State state, State currentState,
                   double latitude, double longitude) {
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
         this.hubId = hubId;
         this.state = state;
         this.currentState = currentState;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.createdAtTimestamp = LocalDateTime.now(ZoneId.systemDefault());
     }
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,19 +44,19 @@ public class Sensor {
         this.hubId = hubId;
     }
 
-    public Boolean getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(Boolean state) {
+    public void setState(State state) {
         this.state = state;
     }
 
-    public Boolean getCurrentState() {
+    public State getCurrentState() {
         return currentState;
     }
 
-    public void setCurrentState(Boolean currentState) {
+    public void setCurrentState(State currentState) {
         this.currentState = currentState;
     }
 
@@ -78,11 +76,11 @@ public class Sensor {
         this.longitude = longitude;
     }
 
-    public LocalDate getCreatedAtTimestamp() {
+    public LocalDateTime getCreatedAtTimestamp() {
         return createdAtTimestamp;
     }
 
-    public void setCreatedAtTimestamp(LocalDate createdAtTimestamp) {
+    public void setCreatedAtTimestamp(LocalDateTime createdAtTimestamp) {
         this.createdAtTimestamp = createdAtTimestamp;
     }
 

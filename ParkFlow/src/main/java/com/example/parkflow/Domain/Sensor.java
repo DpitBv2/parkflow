@@ -1,9 +1,15 @@
 package com.example.parkflow.Domain;
 
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
+@Entity
 public class Sensor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long hubId;
     private Boolean state;
@@ -11,7 +17,9 @@ public class Sensor {
     private double latitude;
     private double longitude;
     private Timestamp createdAt;
+    public Sensor() {
 
+    }
     public Sensor(Long id, Long hubId, Boolean state, Boolean currentState,
                   double latitude, double longitude, Timestamp createdAt) {
         this.id = id;

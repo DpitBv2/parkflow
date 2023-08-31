@@ -14,6 +14,7 @@ import java.util.List;
 public class SensorController {
     private List<Sensor> sensorList = new ArrayList<>();
 
+    @PostMapping("/add-sensor")
     public ResponseEntity<String> addSensor(@RequestBody Sensor newSensor) {
         if (newSensor.getId() == null || newSensor.getHubId() == null ||
                 newSensor.getLatitude() == 0.0 || newSensor.getLongitude() == 0.0) {

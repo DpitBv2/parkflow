@@ -7,14 +7,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 public class SensorController {
     private List<Sensor> sensorList = new ArrayList<>();
 
-    @PostMapping("/add-sensor")
     public ResponseEntity<String> addSensor(@RequestBody Sensor newSensor) {
+        if (newSensor.getId() == null || newSensor.getHubId() == null ||
+                newSensor.getLatitude() == 0.0 || newSensor.getLongitude() == 0.0) {
+            return ResponseEntity.badRequest().body("Required fields are missing");
+        }
+        for (Sensor existingSensor : sensorList) {
+            if (existingSensor.getId().equals(newSensor.getId())) {
+                return ResponseEntity.badRequest().body("Sensor ID must be unique");
+            }
+        }
+        if (newSensor.getLatitude() < -90 || newSensor.getLatitude() > 90 ||
+                newSensor.getLongitude() < -180 || newSensor.getLongitude() > 180) {
+            return ResponseEntity.badRequest().body("Invalid latitude or longitude");
+        }
         sensorList.add(newSensor);
         return ResponseEntity.status(HttpStatus.CREATED).body("Sensor added successfully");
     }

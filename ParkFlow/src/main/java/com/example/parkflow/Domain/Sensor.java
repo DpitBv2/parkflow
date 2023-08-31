@@ -2,9 +2,10 @@ package com.example.parkflow.Domain;
 
 import jakarta.persistence.*;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 public class Sensor {
@@ -16,19 +17,18 @@ public class Sensor {
     private Boolean currentState;
     private double latitude;
     private double longitude;
-    private Timestamp createdAt;
+    private LocalDate createdAtTimestamp = LocalDate.now();
     public Sensor() {
 
     }
     public Sensor(Long id, Long hubId, Boolean state, Boolean currentState,
-                  double latitude, double longitude, Timestamp createdAt) {
+                  double latitude, double longitude) {
         this.id = id;
         this.hubId = hubId;
         this.state = state;
         this.currentState = currentState;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.createdAt = createdAt;
     }
     public Long getId() {
         return id;
@@ -78,12 +78,12 @@ public class Sensor {
         this.longitude = longitude;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public LocalDate getCreatedAtTimestamp() {
+        return createdAtTimestamp;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAtTimestamp(LocalDate createdAtTimestamp) {
+        this.createdAtTimestamp = createdAtTimestamp;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Sensor {
                 ", currentState='" + currentState + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + createdAtTimestamp +
                 '}';
     }
 }

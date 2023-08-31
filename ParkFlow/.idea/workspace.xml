@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee1e1194-c889-4e19-9df6-6c5d5aaeaf74" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Repository/SensorRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" afterDir="false" />
@@ -17,6 +19,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -49,7 +52,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1693510625240</updated>
-      <workItem from="1693510626437" duration="1330000" />
+      <workItem from="1693510626437" duration="2851000" />
     </task>
     <servers />
   </component>

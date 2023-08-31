@@ -6,41 +6,51 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 
+@Entity
+@Table(name = "sensors")
 public class Sensor {
-    private String id;
-    private Long hubId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String hubId;
+
+    @Enumerated(EnumType.STRING)
     private State state;
+    @Enumerated(EnumType.STRING)
     private State currentState;
     private double latitude;
     private double longitude;
     private LocalDateTime createdAtTimestamp;
 
+    public Sensor() {
+
+    }
+
     public enum State {
         ACTIVE, INACTIVE, RESERVED
     }
-    public Sensor(Long hubId, State state, State currentState,
+    public Sensor(String hubId, State state, State currentState,
                   double latitude, double longitude) {
-        this.id = UUID.randomUUID().toString();
         this.hubId = hubId;
         this.state = state;
         this.currentState = currentState;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.createdAtTimestamp = LocalDateTime.now(ZoneId.systemDefault());
+        this.createdAtTimestamp = LocalDateTime.now();
     }
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getHubId() {
+    public String getHubId() {
         return hubId;
     }
 
-    public void setHubId(Long hubId) {
+    public void setHubId(String hubId) {
         this.hubId = hubId;
     }
 

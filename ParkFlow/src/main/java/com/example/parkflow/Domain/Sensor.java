@@ -12,15 +12,17 @@ public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String hubId;
-
+    private Long hubId;
     @Enumerated(EnumType.STRING)
     private State state;
     @Enumerated(EnumType.STRING)
     private State currentState;
     private double latitude;
     private double longitude;
+    @OneToOne
+    private Address address;
     private LocalDateTime createdAtTimestamp;
+    private LocalDateTime updatedAtTimestamp;
 
     public Sensor() {
 
@@ -29,14 +31,15 @@ public class Sensor {
     public enum State {
         ACTIVE, INACTIVE, RESERVED
     }
-    public Sensor(String hubId, State state, State currentState,
-                  double latitude, double longitude) {
-        this.hubId = hubId;
-        this.state = state;
-        this.currentState = currentState;
+    public Sensor(double latitude, double longitude, Address address) {
+        this.hubId = null;
+        this.state = State.ACTIVE;
+        this.currentState = State.ACTIVE;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.address = address;
         this.createdAtTimestamp = LocalDateTime.now();
+        this.updatedAtTimestamp = LocalDateTime.now();
     }
     public Long getId() {
         return id;
@@ -46,11 +49,11 @@ public class Sensor {
         this.id = id;
     }
 
-    public String getHubId() {
+    public Long getHubId() {
         return hubId;
     }
 
-    public void setHubId(String hubId) {
+    public void setHubId(Long hubId) {
         this.hubId = hubId;
     }
 
@@ -86,12 +89,28 @@ public class Sensor {
         this.longitude = longitude;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public LocalDateTime getCreatedAtTimestamp() {
         return createdAtTimestamp;
     }
 
     public void setCreatedAtTimestamp(LocalDateTime createdAtTimestamp) {
         this.createdAtTimestamp = createdAtTimestamp;
+    }
+
+    public LocalDateTime getUpdatedAtTimestamp() {
+        return updatedAtTimestamp;
+    }
+
+    public void setUpdatedAtTimestamp(LocalDateTime updatedAtTimestamp) {
+        this.updatedAtTimestamp = updatedAtTimestamp;
     }
 
     @Override

@@ -1,10 +1,14 @@
 package com.example.parkflow.Controller;
 
+import com.example.parkflow.Controller.DTO.SensorDTO;
+import com.example.parkflow.Domain.Address;
 import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Service.SensorService;
+import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,27 +27,23 @@ public class SensorController {
     public SensorController(SensorService sensorService) {
         this.sensorService = sensorService;
     }
-//    @PostMapping("/add-sensor")
-//    public ResponseEntity<String> addSensor(@RequestBody Sensor newSensor) {
-//        if (newSensor.getHubId() == null ||
-//                newSensor.getLatitude() == 0.0 || newSensor.getLongitude() == 0.0) {
-//            return ResponseEntity.badRequest().body("Required fields are missing");
-//        }
-//        if (newSensor.getLatitude() < -90 || newSensor.getLatitude() > 90 ||
-//                newSensor.getLongitude() < -180 || newSensor.getLongitude() > 180) {
-//            return ResponseEntity.badRequest().body("Invalid latitude or longitude");
-//        }
-//        LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.systemDefault());
-//        newSensor.setCreatedAtTimestamp(currentDateTime);
-//        sensorList.add(newSensor);
-//        return ResponseEntity.status(HttpStatus.CREATED).body("Sensor added successfully");
-//    }
+
+    /**
+     * {@code POST /api/v1/sensors} : Create a new sensor
+     * @param sensorDTO : the dto containing sensor information
+     * @return status {@code 201 (CREATED)} and body {@link Sensor}
+     */
     @PostMapping
-    public ResponseEntity<Sensor> createSensor(@RequestBody Sensor sensor) {
-        Sensor createdSensor = sensorService.createSensor(sensor);
+    public ResponseEntity<Sensor> createSensor(@RequestBody SensorDTO sensorDTO) {
+        Sensor createdSensor = sensorService.createSensor(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
     }
 
+    /**
+     * {@code GET /api/v1/sensors/{id}} : Get sensor by id
+     * @param id : sensor id
+     * @return status {@code 200 (OK)} and body {@link Sensor}
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Sensor> getSensorById(@PathVariable Long id) {
         Sensor sensor = sensorService.getSensorById(id);
@@ -54,15 +54,35 @@ public class SensorController {
         }
     }
 
+    /**
+     * {@code GET /api/v1/sensors} : Get all sensors
+     * @param page : page number
+     * @return status {@code 200 (OK)} and body {@link List<Sensor>}
+     */
     @GetMapping
-    public ResponseEntity<List<Sensor>> getAllSensors() {
-        List<Sensor> sensors = sensorService.getAllSensors();
+    public ResponseEntity<List<Sensor>> getAllSensors(@RequestParam(value = "page", defaultValue = "0") int page) {
+        List<Sensor> sensors = sensorService.getAllSensors(page);
         return ResponseEntity.ok(sensors);
     }
 
+    /**
+     * {@code GET /api/v1/sensors/count} : Get sensor count
+     * @return status {@code 200 (OK)} and body {@link Long}
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> getSensorCount() {
+        return ResponseEntity.ok(sensorService.getSensorCount());
+    }
+
+    /**
+     * {@code PUT /api/v1/sensors/{id}} : Update sensor
+     * @param id : sensor id
+     * @param sensorDTO : sensor data
+     * @return status {@code 200 (OK)} and body {@link Sensor}
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody Sensor sensor) {
-        Sensor updatedSensor = sensorService.updateSensor(sensor);
+    public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO) {
+        Sensor updatedSensor = sensorService.updateSensor(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id);
         if (updatedSensor != null) {
             return ResponseEntity.ok(updatedSensor);
         } else {
@@ -70,15 +90,27 @@ public class SensorController {
         }
     }
 
+    /**
+     * {@code DELETE /api/v1/sensors/{id}} : Delete sensor
+     * @param id : sensor id
+     * @return status {@code 204 (NO_CONTENT)}
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSensor(@PathVariable Long id) {
         sensorService.deleteSensor(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * {@code GET /api/v1/sensors/closest} : Get closest sensors
+     * @param number : number of sensors to return
+     * @param latitude : latitude
+     * @param longitude : longitude
+     * @return status {@code 200 (OK)} and body {@link List<Sensor>}
+     */
     @GetMapping("/closest")
-    public ResponseEntity<List<Sensor>> getClosestSensors(@RequestParam double latitude, @RequestParam double longitude) {
-        List<Sensor> closestSensors = sensorService.getClosestSensors(latitude, longitude);
+    public ResponseEntity<List<Sensor>> getClosestSensors(@RequestParam(value = "number", defaultValue = "10") int number, @RequestParam double latitude, @RequestParam double longitude) {
+        List<Sensor> closestSensors = sensorService.getClosestSensors(latitude, longitude, number);
         return ResponseEntity.ok(closestSensors);
     }
 }

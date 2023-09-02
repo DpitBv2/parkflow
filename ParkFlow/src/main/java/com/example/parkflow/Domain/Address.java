@@ -5,11 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "address")
 public class Address {
-    @Id
-    private Long id;
     private String street;
     private String city;
     private String country;
@@ -20,16 +16,12 @@ public class Address {
 
     }
 
-    public Address(String street, String city, String country, String region, String postalCode, Sensor sensor) {
+    public Address(String street, String city, String country, String region, String postalCode) {
         this.street = street;
         this.city = city;
         this.country = country;
         this.region = region;
         this.postalCode = postalCode;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getStreet() {
@@ -75,7 +67,6 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "id=" + id +
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +

@@ -19,7 +19,7 @@ public class Sensor {
     private State currentState;
     private double latitude;
     private double longitude;
-    @OneToOne
+    @Embedded
     private Address address;
     private LocalDateTime createdAtTimestamp;
     private LocalDateTime updatedAtTimestamp;

@@ -1,30 +1,24 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.SensorDTO;
-import com.example.parkflow.Domain.Address;
 import com.example.parkflow.Domain.Sensor;
-import com.example.parkflow.Service.SensorService;
-import com.example.parkflow.Utils.ResponseException;
+import com.example.parkflow.Service.Impl.SensorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/sensors")
 public class SensorController {
-    private final SensorService sensorService;
+    private final SensorServiceImpl sensorService;
     private List<Sensor> sensorList = new ArrayList<>();
 
     @Autowired
-    public SensorController(SensorService sensorService) {
+    public SensorController(SensorServiceImpl sensorService) {
         this.sensorService = sensorService;
     }
 
@@ -35,7 +29,7 @@ public class SensorController {
      */
     @PostMapping
     public ResponseEntity<Sensor> createSensor(@RequestBody SensorDTO sensorDTO) {
-        Sensor createdSensor = sensorService.createSensor(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
+        Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
     }
 
@@ -46,7 +40,7 @@ public class SensorController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Sensor> getSensorById(@PathVariable Long id) {
-        Sensor sensor = sensorService.getSensorById(id);
+        Sensor sensor = sensorService.getById(id);
         if (sensor != null) {
             return ResponseEntity.ok(sensor);
         } else {
@@ -61,7 +55,7 @@ public class SensorController {
      */
     @GetMapping
     public ResponseEntity<List<Sensor>> getAllSensors(@RequestParam(value = "page", defaultValue = "0") int page) {
-        List<Sensor> sensors = sensorService.getAllSensors(page);
+        List<Sensor> sensors = sensorService.getAll(page);
         return ResponseEntity.ok(sensors);
     }
 
@@ -71,7 +65,7 @@ public class SensorController {
      */
     @GetMapping("/count")
     public ResponseEntity<Long> getSensorCount() {
-        return ResponseEntity.ok(sensorService.getSensorCount());
+        return ResponseEntity.ok(sensorService.getCount());
     }
 
     /**
@@ -82,7 +76,7 @@ public class SensorController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO) {
-        Sensor updatedSensor = sensorService.updateSensor(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id);
+        Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id);
         if (updatedSensor != null) {
             return ResponseEntity.ok(updatedSensor);
         } else {
@@ -97,7 +91,7 @@ public class SensorController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSensor(@PathVariable Long id) {
-        sensorService.deleteSensor(id);
+        sensorService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -110,7 +104,7 @@ public class SensorController {
      */
     @GetMapping("/closest")
     public ResponseEntity<List<Sensor>> getClosestSensors(@RequestParam(value = "number", defaultValue = "10") int number, @RequestParam double latitude, @RequestParam double longitude) {
-        List<Sensor> closestSensors = sensorService.getClosestSensors(latitude, longitude, number);
+        List<Sensor> closestSensors = sensorService.getClosest(latitude, longitude, number);
         return ResponseEntity.ok(closestSensors);
     }
 }

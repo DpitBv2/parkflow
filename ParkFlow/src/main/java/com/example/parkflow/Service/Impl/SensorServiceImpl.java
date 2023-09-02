@@ -69,6 +69,16 @@ public class SensorServiceImpl implements SensorService {
         return sensorList.subList(0, Math.min(number, sensorList.size()));
     }
 
+    @Override
+    public Sensor setHubId(Long hubId, Long sensorId) {
+        return sensorRepository.findById(sensorId)
+                .map(sensor -> {
+                    sensor.setHubId(hubId);
+                    return sensorRepository.save(sensor);
+                })
+                .orElseGet(null);
+    }
+
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);

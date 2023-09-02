@@ -77,11 +77,8 @@ public class SensorController {
     @PutMapping("/{id}")
     public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO) {
         Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id);
-        if (updatedSensor != null) {
-            return ResponseEntity.ok(updatedSensor);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        if (updatedSensor != null) return ResponseEntity.ok(updatedSensor);
+        else return ResponseEntity.notFound().build();
     }
 
     /**
@@ -106,5 +103,12 @@ public class SensorController {
     public ResponseEntity<List<Sensor>> getClosestSensors(@RequestParam(value = "number", defaultValue = "10") int number, @RequestParam double latitude, @RequestParam double longitude) {
         List<Sensor> closestSensors = sensorService.getClosest(latitude, longitude, number);
         return ResponseEntity.ok(closestSensors);
+    }
+
+    @PutMapping("/hub")
+    public ResponseEntity<Sensor> setHubId(@RequestParam Long hubId, @RequestParam Long sensorId) {
+        Sensor updatedSensor = sensorService.setHubId(hubId, sensorId);
+        if (updatedSensor != null) return ResponseEntity.ok(updatedSensor);
+        else return ResponseEntity.notFound().build();
     }
 }

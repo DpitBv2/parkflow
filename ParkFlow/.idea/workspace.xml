@@ -4,9 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0cc51aa9-4045-4eb2-a0fc-9c80af134287" name="Changes" comment="">
+    <list default="true" id="bf2dc36a-d14c-434f-945d-8073567c4105" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/bottomSheet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/bottomSheet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/customDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/customDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/iconButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/iconButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/iconInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/iconInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/menuButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/menuButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/phoneInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/phoneInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/searchBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/searchBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/context/authContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/context/authContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/activity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/activity.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/profile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/links.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/validate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1__user_and_authorities.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__user_and_authorities.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,69 +38,60 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/6.1.1/spring-security-core-6.1.1-sources.jar!/org/springframework/security/core/userdetails/User.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/6.1.1/spring-security-core-6.1.1-sources.jar!/org/springframework/security/core/userdetails/UserDetails.java" root0="FORCE_HIGHLIGHTING" />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="Use Maven wrapper" />
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="2UZRSvL3OKV30mr57nHdSs4SWJs" />
+  <component name="ProjectId" id="2UiZUBW6fIPoZ9SVsDtnlwjhUTy" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/AlexDavid/OneDrive/Documents/GitHub/parkflow/ParkFlow",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "spring.configuration.checksum": "8a3617ebdcbe3ec0193c580c11ed3184",
-    "vue.rearranger.settings.migration": "true"
-  },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
-    ]
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;8a3617ebdcbe3ec0193c580c11ed3184&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RunManager">
-    <configuration name="ParkFlowApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="ParkFlowApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="parkflow" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.parkflow.ParkFlowApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.parkflow.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ParkFlowApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0cc51aa9-4045-4eb2-a0fc-9c80af134287" name="Changes" comment="" />
-      <created>1693145121035</created>
+      <changelist id="bf2dc36a-d14c-434f-945d-8073567c4105" name="Changes" comment="" />
+      <created>1693424378986</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1693145121035</updated>
-      <workItem from="1693145122064" duration="1174000" />
-      <workItem from="1693417060158" duration="1906000" />
+      <updated>1693424378986</updated>
+      <workItem from="1693424382459" duration="661000" />
+      <workItem from="1693468298870" duration="3856000" />
+      <workItem from="1693597812534" duration="597000" />
     </task>
     <servers />
   </component>

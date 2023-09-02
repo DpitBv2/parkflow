@@ -12,6 +12,8 @@ interface InputProps {
     errorEmpty?: boolean;
     color?: string;
     editable?: boolean;
+    autoCapitalize?: boolean;
+    maxLength?: number;
 }
 
 const Input = ({
@@ -23,6 +25,8 @@ const Input = ({
     errorEmpty = false,
     color = theme().colors.dark,
     editable = true,
+    autoCapitalize = false,
+    maxLength,
 }: InputProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
@@ -55,6 +59,8 @@ const Input = ({
                 onBlur={() => setIsFocused(false)}
                 selectionColor={theme().colors.grey}
                 editable={editable}
+                autoCapitalize={autoCapitalize ? "words" : "none"}
+                maxLength={maxLength}
             />
         </View>
     );

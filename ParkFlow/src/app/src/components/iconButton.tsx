@@ -1,5 +1,6 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import Text from "../components/text";
+import { theme } from "../util/theme";
 
 interface IconButtonProps {
     src: any;
@@ -29,7 +30,7 @@ const IconButton = ({
                     <Image style={styles.image} source={src} />
                 </View>
                 <View style={styles.textContainer}>
-                    <Text inverted={true} style={styles.text}>
+                    <Text color={theme().colors.white} style={styles.text}>
                         {text}
                     </Text>
                 </View>

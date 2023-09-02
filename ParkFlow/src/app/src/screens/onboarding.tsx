@@ -35,7 +35,7 @@ const Onboarding = ({ navigation }: { navigation: any }) => {
     };
 
     return (
-        <Background>
+        <Background opacity={0.2}>
             <View style={{ flex: 0.5 }}></View>
             <View style={{ flex: 4 }}>
                 <FlatList

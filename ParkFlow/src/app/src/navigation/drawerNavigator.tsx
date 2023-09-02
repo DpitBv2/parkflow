@@ -1,7 +1,6 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StyleSheet, View } from "react-native";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
-import IIcon from "react-native-vector-icons/Ionicons";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import CustomDrawer from "../components/customDrawer";
 import Text from "../components/text";
@@ -162,7 +161,7 @@ const DrawerNavigator = ({ navigation }: { navigation: any }) => {
                     ),
                 }}
             />
-            <Drawer.Screen
+            {/* <Drawer.Screen
                 name="Settings"
                 component={AboutUs}
                 options={{
@@ -193,7 +192,7 @@ const DrawerNavigator = ({ navigation }: { navigation: any }) => {
                         </View>
                     ),
                 }}
-            />
+            /> */}
         </Drawer.Navigator>
     );
 };

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     search: {
         alignSelf: "center",
         height: 45,
-        backgroundColor: theme().colors.background,
+        backgroundColor: theme().colors.white,
     },
     input: {
         top: -6,

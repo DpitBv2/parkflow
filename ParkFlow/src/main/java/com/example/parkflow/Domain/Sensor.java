@@ -12,7 +12,6 @@ public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long hubId;
     @Enumerated(EnumType.STRING)
     private State state;
     @Enumerated(EnumType.STRING)
@@ -35,7 +34,6 @@ public class Sensor {
         ACTIVE, INACTIVE, RESERVED
     }
     public Sensor(double latitude, double longitude, Address address) {
-        this.hubId = null;
         this.state = State.ACTIVE;
         this.currentState = State.ACTIVE;
         this.latitude = latitude;
@@ -50,14 +48,6 @@ public class Sensor {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getHubId() {
-        return hubId;
-    }
-
-    public void setHubId(Long hubId) {
-        this.hubId = hubId;
     }
 
     public State getState() {
@@ -127,12 +117,13 @@ public class Sensor {
     public String toString() {
         return "Sensor{" +
                 "id='" + id + '\'' +
-                ", hubId='" + hubId + '\'' +
                 ", state='" + state + '\'' +
                 ", currentState='" + currentState + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", createdAt=" + createdAtTimestamp +
+                ", updatedAt=" + updatedAtTimestamp +
+                ", address=" + address +
                 '}';
     }
 }

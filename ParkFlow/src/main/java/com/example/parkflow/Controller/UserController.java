@@ -13,7 +13,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserResource {
+public class UserController {
     private record RegisterBody(
             String firstName,
             String lastName,
@@ -25,7 +25,7 @@ public class UserResource {
     private final AuthenticationUtils authenticationUtils;
 
     @Autowired
-    public UserResource(
+    public UserController(
             UserService userService,
             AuthenticationUtils authenticationUtils
     ) {

@@ -3,19 +3,21 @@ package com.example.parkflow.Domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "hubs")
 public class Hub {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hubId;
+    private Long id;
     private double latitude;
     private double longitude;
 
-    @OneToMany(mappedBy = "hub")
-    private List<Sensor> sensors = new ArrayList<>();
+    @OneToMany(mappedBy = "hub", cascade = CascadeType.ALL)
+    private Set<Sensor> sensors = new HashSet<>();
 
     public Hub() {
     }
@@ -23,12 +25,12 @@ public class Hub {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    public Long getHubId() {
-        return hubId;
+    public Long getId() {
+        return id;
     }
 
-    public void setHubId(Long hubId) {
-        this.hubId = hubId;
+    public void setId(Long hubId) {
+        this.id = hubId;
     }
 
     public double getLatitude() {
@@ -47,11 +49,11 @@ public class Hub {
         this.longitude = longitude;
     }
 
-    public List<Sensor> getSensors() {
+    public Set<Sensor> getSensors() {
         return sensors;
     }
 
-    public void setSensors(List<Sensor> sensors) {
+    public void setSensors(Set<Sensor> sensors) {
         this.sensors = sensors;
     }
 
@@ -67,7 +69,7 @@ public class Hub {
     @Override
     public String toString() {
         return "Hub{" +
-                "hubId='" + hubId + '\'' +
+                "hubId='" + id + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';

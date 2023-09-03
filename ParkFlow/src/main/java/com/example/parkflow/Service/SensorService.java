@@ -19,6 +19,4 @@ public interface SensorService {
     void delete(Long id);
 
     List<Sensor> getClosest(double myLatitude, double myLongitude, int number);
-
-    Sensor setHubId(Long hubId, Long sensorId);
 }

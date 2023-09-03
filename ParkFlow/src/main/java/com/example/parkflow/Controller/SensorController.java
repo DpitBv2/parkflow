@@ -105,14 +105,4 @@ public class SensorController {
         List<Sensor> closestSensors = sensorService.getClosest(latitude, longitude, number);
         return ResponseEntity.ok(closestSensors);
     }
-
-    @PutMapping("/hub")
-    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId) {
-        Hub updatedHub = sensorService.addSensorToHub(hubId, sensorId);
-        if (updatedHub != null) {
-            return ResponseEntity.ok(updatedHub);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

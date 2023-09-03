@@ -5,11 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f14482fd-1972-41a5-b7d8-5abdb7fb52a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/HubServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/HubDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/HubDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/HubController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/HubController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserResource.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Hub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Hub.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/HubService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/HubService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +27,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -42,6 +50,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -50,6 +62,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -77,6 +90,7 @@
       <updated>1693687073164</updated>
       <workItem from="1693687075648" duration="311000" />
       <workItem from="1693736337021" duration="4353000" />
+      <workItem from="1693773388662" duration="1104000" />
     </task>
     <servers />
   </component>

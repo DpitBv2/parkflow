@@ -24,9 +24,6 @@ public class SensorServiceImpl implements SensorService {
         this.sensorRepository = sensorRepository;
     }
 
-    @Autowired
-    private HubRepository hubRepository;
-
     @Override
     public Sensor create(double latitude, double longitude, Address address) {
         var sensor = new Sensor(latitude, longitude, address);
@@ -76,16 +73,6 @@ public class SensorServiceImpl implements SensorService {
         return sensorList.subList(0, Math.min(number, sensorList.size()));
     }
 
-    @Override
-    public Sensor setHubId(Long hubId, Long sensorId) {
-        return sensorRepository.findById(sensorId)
-                .map(sensor -> {
-                    sensor.setHubId(hubId);
-                    return sensorRepository.save(sensor);
-                })
-                .orElseGet(null);
-    }
-
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -95,22 +82,5 @@ public class SensorServiceImpl implements SensorService {
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
-    }
-
-    public Hub addSensorToHub(Long hubId, Long sensorId) {
-        Optional<Hub> hubOptional = hubRepository.findById(hubId);
-        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
-
-        if (hubOptional.isPresent() && sensorOptional.isPresent()) {
-            Hub hub = hubOptional.get();
-            Sensor sensor = sensorOptional.get();
-            sensor.setHubId(hub.getHubId());
-            hub.addSensor(sensor);
-            sensorRepository.save(sensor);
-            hubRepository.save(hub);
-            return hub;
-        } else {
-            return null; // Hub or Sensor not found
-        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.SensorDTO;
+import com.example.parkflow.Domain.Hub;
 import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Service.Impl.SensorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,9 +107,12 @@ public class SensorController {
     }
 
     @PutMapping("/hub")
-    public ResponseEntity<Sensor> setHubId(@RequestParam Long hubId, @RequestParam Long sensorId) {
-        Sensor updatedSensor = sensorService.setHubId(hubId, sensorId);
-        if (updatedSensor != null) return ResponseEntity.ok(updatedSensor);
-        else return ResponseEntity.notFound().build();
+    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId) {
+        Hub updatedHub = sensorService.addSensorToHub(hubId, sensorId);
+        if (updatedHub != null) {
+            return ResponseEntity.ok(updatedHub);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

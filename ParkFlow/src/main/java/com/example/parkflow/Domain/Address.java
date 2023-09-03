@@ -1,11 +1,14 @@
 package com.example.parkflow.Domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "addresses")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String street;
     private String city;
     private String country;
@@ -13,9 +16,7 @@ public class Address {
     private String postalCode;
 
     public Address() {
-
     }
-
     public Address(String street, String city, String country, String region, String postalCode) {
         this.street = street;
         this.city = city;
@@ -23,7 +24,6 @@ public class Address {
         this.region = region;
         this.postalCode = postalCode;
     }
-
     public String getStreet() {
         return street;
     }

@@ -1,7 +1,9 @@
 package com.example.parkflow.Service.Impl;
 
 import com.example.parkflow.Domain.Address;
+import com.example.parkflow.Domain.Hub;
 import com.example.parkflow.Domain.Sensor;
+import com.example.parkflow.Repository.HubRepository;
 import com.example.parkflow.Repository.SensorRepository;
 import com.example.parkflow.Service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +11,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.parkflow.Utils.Constants.PAGE_SIZE;
 
 @Service
 public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
+
     @Autowired
     public SensorServiceImpl(SensorRepository sensorRepository) {
         this.sensorRepository = sensorRepository;
     }
+
+    @Autowired
+    private HubRepository hubRepository;
 
     @Override
     public Sensor create(double latitude, double longitude, Address address) {
@@ -88,5 +95,22 @@ public class SensorServiceImpl implements SensorService {
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
+    }
+
+    public Hub addSensorToHub(Long hubId, Long sensorId) {
+        Optional<Hub> hubOptional = hubRepository.findById(hubId);
+        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+
+        if (hubOptional.isPresent() && sensorOptional.isPresent()) {
+            Hub hub = hubOptional.get();
+            Sensor sensor = sensorOptional.get();
+            sensor.setHubId(hub.getHubId());
+            hub.addSensor(sensor);
+            sensorRepository.save(sensor);
+            hubRepository.save(hub);
+            return hub;
+        } else {
+            return null; // Hub or Sensor not found
+        }
     }
 }

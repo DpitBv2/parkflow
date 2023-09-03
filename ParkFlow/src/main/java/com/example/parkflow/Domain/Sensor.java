@@ -24,6 +24,9 @@ public class Sensor {
     private LocalDateTime createdAtTimestamp;
     private LocalDateTime updatedAtTimestamp;
 
+    @ManyToOne
+    private Hub hub;
+
     public Sensor() {
 
     }
@@ -111,6 +114,13 @@ public class Sensor {
 
     public void setUpdatedAtTimestamp(LocalDateTime updatedAtTimestamp) {
         this.updatedAtTimestamp = updatedAtTimestamp;
+    }
+    public Hub getHub() {
+        return hub;
+    }
+
+    public void setHub(Hub hub) {
+        this.hub = hub;
     }
 
     @Override

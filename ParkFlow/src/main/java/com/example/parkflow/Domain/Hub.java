@@ -1,5 +1,6 @@
 package com.example.parkflow.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public class Hub {
     private double longitude;
 
     @OneToMany(mappedBy = "hub", cascade = CascadeType.ALL)
-    private Set<Sensor> sensors = new HashSet<>();
+    @JsonManagedReference
+    private List<Sensor> sensors = new ArrayList<>();
 
     public Hub() {
     }
@@ -49,11 +51,11 @@ public class Hub {
         this.longitude = longitude;
     }
 
-    public Set<Sensor> getSensors() {
+    public List<Sensor> getSensors() {
         return sensors;
     }
 
-    public void setSensors(Set<Sensor> sensors) {
+    public void setSensors(List<Sensor> sensors) {
         this.sensors = sensors;
     }
 
@@ -64,14 +66,5 @@ public class Hub {
     public void removeSensor(Sensor sensor) {
         sensors.remove(sensor);
         sensor.setHub(null);
-    }
-
-    @Override
-    public String toString() {
-        return "Hub{" +
-                "hubId='" + id + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
     }
 }

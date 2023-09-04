@@ -1,5 +1,6 @@
 package com.example.parkflow.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class Sensor {
     private LocalDateTime updatedAtTimestamp;
 
     @ManyToOne
+    @JsonBackReference
     private Hub hub;
 
     public Sensor() {
@@ -111,19 +113,5 @@ public class Sensor {
 
     public void setHub(Hub hub) {
         this.hub = hub;
-    }
-
-    @Override
-    public String toString() {
-        return "Sensor{" +
-                "id='" + id + '\'' +
-                ", state='" + state + '\'' +
-                ", currentState='" + currentState + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", createdAt=" + createdAtTimestamp +
-                ", updatedAt=" + updatedAtTimestamp +
-                ", address=" + address +
-                '}';
     }
 }

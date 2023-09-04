@@ -8,6 +8,7 @@ import MenuButton from "../components/menuButton";
 import SearchBar from "../components/searchBar";
 import { MapDeltaInitial } from "../util/constants";
 import { theme } from "../util/theme";
+import Loading from "./loading";
 
 const Home = ({ navigation }: { navigation: any }) => {
     const [initialRegion, setInitialRegion] = useState<any>(null);
@@ -48,7 +49,7 @@ const Home = ({ navigation }: { navigation: any }) => {
     const mapRef = createRef<MapView>();
 
     //TODO: fix loading
-    // if (!initialRegion) return <Loading />;
+    if (!initialRegion) return <Loading />;
 
     const markers = () => {
         return (

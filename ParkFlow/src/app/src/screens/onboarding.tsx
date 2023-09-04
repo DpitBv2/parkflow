@@ -66,7 +66,7 @@ const Onboarding = ({ navigation }: { navigation: any }) => {
             <NextButton
                 scrollTo={scrollTo}
                 percentage={(currentIndex + 1) * (100 / slides.length)}
-                style={{ marginBottom: 20 }}
+                style={{ marginBottom: 40 }}
             />
         </Background>
     );

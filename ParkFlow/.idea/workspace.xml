@@ -6,29 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bf2dc36a-d14c-434f-945d-8073567c4105" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/bottomSheet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/bottomSheet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/customDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/customDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/iconButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/iconButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/iconInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/iconInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/menuButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/menuButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/phoneInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/phoneInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/searchBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/searchBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/context/authContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/context/authContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/activity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/activity.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/profile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/links.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/validate.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1__user_and_authorities.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__user_and_authorities.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/api.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -43,10 +43,10 @@ const ActivityItem = ({
         );
 
         return {
-            opacity: withTiming(visible ? 1 : 0, { duration: 100 }),
+            opacity: withTiming(visible ? 1 : 0, { duration: 150 }),
             transform: [
                 {
-                    scale: withTiming(visible ? 1 : 0.6, { duration: 100 }),
+                    scale: withTiming(visible ? 1 : 0.6, { duration: 150 }),
                 },
             ],
         };

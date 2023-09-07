@@ -51,6 +51,14 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
     public User() {
     }
 
@@ -76,7 +84,12 @@ public class User implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
         this.authorities = authorities;
     }
-
+    public Set<Role> getRoles() {
+        return roles;
+    }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
     public String getUsername() {
         return email;
     }

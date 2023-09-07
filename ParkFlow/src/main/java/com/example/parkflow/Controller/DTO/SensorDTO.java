@@ -15,11 +15,13 @@ public class SensorDTO {
     private Double latitude;
     private Double longitude;
     private Address address;
+    private Boolean available;
 
     public SensorDTO(Sensor sensor) {
         this.id = sensor.getId();
         this.latitude = sensor.getLatitude();
         this.longitude = sensor.getLongitude();
         this.address = sensor.getAddress();
+        this.available = sensor.isAvailable();
     }
 }

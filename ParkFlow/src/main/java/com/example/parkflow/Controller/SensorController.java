@@ -2,13 +2,16 @@ package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.SensorDTO;
 import com.example.parkflow.Domain.Hub;
+import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Service.Impl.SensorServiceImpl;
+import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,5 +107,44 @@ public class SensorController {
     public ResponseEntity<List<Sensor>> getClosestSensors(@RequestParam(value = "number", defaultValue = "10") int number, @RequestParam double latitude, @RequestParam double longitude) {
         List<Sensor> closestSensors = sensorService.getClosest(latitude, longitude, number);
         return ResponseEntity.ok(closestSensors);
+    }
+    @PostMapping("/reserve")
+    public ResponseEntity<?> reserveSensor(
+            @RequestParam Long sensorId,
+            @RequestParam Long userId,
+            @RequestParam int reservationDurationInHours
+    ) {
+        try {
+            Reservation reservation = sensorService.reserveSensor(sensorId, userId, reservationDurationInHours);
+            if (reservation != null) {
+                return ResponseEntity.ok(reservation);
+            } else {
+                return ResponseEntity.badRequest().body("Failed to reserve the sensor.");
+            }
+        } catch (ResponseException e) {
+            return e.toResponseEntity();
+        }
+    }
+
+    @PutMapping("/{sensorId}/price")
+    public ResponseEntity<?> setPricePerHour(@PathVariable Long sensorId, @RequestParam BigDecimal pricePerHour) {
+        try {
+            sensorService.updatePricePerHour(sensorId, pricePerHour);
+            return ResponseEntity.ok().build();
+        } catch (ResponseException e) {
+            return e.toResponseEntity();
+        }
+    }
+    @PutMapping("/{id}/availability")
+    public ResponseEntity<Void> updateSensorAvailability(
+            @PathVariable Long id,
+            @RequestParam Boolean available
+    ) {
+        boolean updated = sensorService.updateSensorAvailability(id, available);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

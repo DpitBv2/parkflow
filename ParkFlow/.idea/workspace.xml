@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f14482fd-1972-41a5-b7d8-5abdb7fb52a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Reservation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/RoleType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Repository/ReservationRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Hub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Hub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/SensorDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/SensorDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +25,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -61,6 +70,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.parkflow.Domain" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="ParkFlowApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="parkflow" />
@@ -82,6 +96,7 @@
       <workItem from="1693736337021" duration="4353000" />
       <workItem from="1693773388662" duration="1104000" />
       <workItem from="1693861278679" duration="481000" />
+      <workItem from="1694070585319" duration="10625000" />
     </task>
     <servers />
   </component>

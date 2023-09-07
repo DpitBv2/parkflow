@@ -9,6 +9,7 @@ import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -31,6 +32,7 @@ public class SensorController {
      * @param sensorDTO : the dto containing sensor information
      * @return status {@code 201 (CREATED)} and body {@link Sensor}
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
     @PostMapping
     public ResponseEntity<Sensor> createSensor(@RequestBody SensorDTO sensorDTO) {
         Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
@@ -78,6 +80,7 @@ public class SensorController {
      * @param sensorDTO : sensor data
      * @return status {@code 200 (OK)} and body {@link Sensor}
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO) {
         Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id);
@@ -90,6 +93,7 @@ public class SensorController {
      * @param id : sensor id
      * @return status {@code 204 (NO_CONTENT)}
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSensor(@PathVariable Long id) {
         sensorService.delete(id);
@@ -125,7 +129,7 @@ public class SensorController {
             return e.toResponseEntity();
         }
     }
-
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
     @PutMapping("/{sensorId}/price")
     public ResponseEntity<?> setPricePerHour(@PathVariable Long sensorId, @RequestParam BigDecimal pricePerHour) {
         try {
@@ -135,6 +139,7 @@ public class SensorController {
             return e.toResponseEntity();
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/availability")
     public ResponseEntity<Void> updateSensorAvailability(
             @PathVariable Long id,

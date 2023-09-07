@@ -12,23 +12,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class  SecurityConfiguration {
-@Bean
-public SecurityFilterChain securityFilterChain(
-        HttpSecurity http,
-        AuthenticationFilter authenticationFilter
-) throws Exception {
-    http
-            .cors(Customizer.withDefaults())
-            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests(
-                    (requests) -> requests
-                            .requestMatchers("/api/v1/user/register", "/api/v1/auth/login").permitAll()
-                            .requestMatchers("/api/v1/public/**").permitAll()
-                            .anyRequest().authenticated()
-            )
-            .csrf(AbstractHttpConfigurer::disable)
-            .httpBasic(AbstractHttpConfigurer::disable);
-    return http.build();
-}
+public class SecurityConfiguration {
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            AuthenticationFilter authenticationFilter
+    ) throws Exception {
+        http
+                .cors(Customizer.withDefaults())
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(
+                        (requests) -> requests
+                                .requestMatchers("/api/v1/user/register", "/api/v1/auth/login").permitAll()
+                                .requestMatchers("/api/v1/public/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
 }

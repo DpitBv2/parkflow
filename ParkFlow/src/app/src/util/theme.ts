@@ -1,4 +1,3 @@
-import { useColorScheme } from "react-native";
 import { MD3LightTheme } from "react-native-paper";
 
 const defaultTheme = {
@@ -6,7 +5,7 @@ const defaultTheme = {
     colors: {
         ...MD3LightTheme.colors,
 
-        white: "#f2f2f2",
+        white: "#ffffff",
         black: "#1a1a1a",
         grey: "#7f7f7f",
         blue: "#0a58d1",
@@ -26,7 +25,7 @@ export const lightTheme = {
         primary: "#1B52C1",
         secondary: "#ffdf00",
 
-        background: "#ffffff",
+        background: "#f8f8f8",
         light: "#f2f2f2",
         dark: "#1a1a1a",
     },
@@ -36,10 +35,10 @@ export const darkTheme = {
     ...defaultTheme,
     colors: {
         ...defaultTheme.colors,
-        primary: "blue",
+        primary: "#73a5c6",
         secondary: "yellow",
 
-        background: "#1a1a1a",
+        background: "#3f3f3f",
         light: "#1a1a1a",
         dark: "#f2f2f2",
     },
@@ -53,6 +52,7 @@ export const theme = () => {
 };
 
 export const themeType = () => {
-    const scheme = useColorScheme();
-    return scheme === "dark" ? "dark" : "light";
+    // const scheme = useColorScheme();
+    // return scheme === "dark" ? "dark" : "light";
+    return "light";
 };

@@ -15,7 +15,7 @@ const NextButton = ({
     style?: any;
 }) => {
     const size = 100;
-    const strokeWidth = 3;
+    const strokeWidth = 3.5;
     const center = size / 2;
     const radius = size / 2 - strokeWidth / 2;
     const circumference = 2 * Math.PI * radius;

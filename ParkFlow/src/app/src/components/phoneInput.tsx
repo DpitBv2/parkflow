@@ -17,6 +17,7 @@ interface PhoneInputProps {
     errorEmpty?: boolean;
     editable?: boolean;
     color?: string;
+    defaultCountry?: string;
 }
 
 const PhoneInput = ({
@@ -30,6 +31,7 @@ const PhoneInput = ({
     errorEmpty = false,
     editable = true,
     color = theme().colors.dark,
+    defaultCountry = "RO",
 }: any) => {
     const phoneInput = useRef<PInput>(null);
     const [isFocused, setIsFocused] = useState(false);
@@ -57,7 +59,7 @@ const PhoneInput = ({
                 disabled={!editable}
                 ref={phoneInput}
                 defaultValue={value}
-                defaultCode="RO"
+                defaultCode={defaultCountry}
                 layout="first"
                 onChangeText={(text) => {
                     setValue(text);

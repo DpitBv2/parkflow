@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     line: {
         height: 6,
         width: 80,
-        backgroundColor: theme().colors.background,
+        backgroundColor: theme().colors.white,
         borderRadius: 50,
         alignSelf: "center",
         marginVertical: 10,

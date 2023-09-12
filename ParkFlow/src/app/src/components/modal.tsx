@@ -1,5 +1,12 @@
-import { Modal as RNModal, StyleSheet, View } from "react-native";
-import { IconButton } from "react-native-paper";
+import {
+    Modal as RNModal,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+} from "react-native";
+import FAIcon from "react-native-vector-icons/FontAwesome5";
+import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
 
 interface ModalProps {
@@ -24,33 +31,37 @@ const Modal = ({
             visible={visible}
             onRequestClose={() => setVisible(false)}
             style={{ top: 100 }}>
-            <View style={styles.container}>
-                <View
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        ...style,
-                    }}>
+            <TouchableOpacity
+                style={{ width: "100%", height: "100%" }}
+                onPress={onClose}
+                activeOpacity={1}>
+                <View style={styles.container}>
                     <View
                         style={{
-                            ...styles.modal,
-                            backgroundColor: theme().colors.background,
+                            width: "100%",
+                            height: "100%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            ...style,
                         }}>
-                        <IconButton
-                            icon="close"
-                            iconColor={theme().colors.white}
-                            containerColor={theme().colors.danger}
-                            size={24}
-                            style={styles.icon}
-                            animated
-                            onPress={onClose}
-                        />
-                        {children}
+                        <TouchableWithoutFeedback>
+                            <View style={{ ...styles.modal }}>
+                                <TouchableOpacity
+                                    activeOpacity={ActiveOpacity}
+                                    style={styles.iconContainer}
+                                    onPress={onClose}>
+                                    <FAIcon
+                                        name="times"
+                                        color={theme().colors.white}
+                                        size={20}
+                                    />
+                                </TouchableOpacity>
+                                {children}
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         </RNModal>
     );
 };
@@ -61,12 +72,12 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.6)",
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
     },
     modal: {
         borderRadius: 20,
         padding: 20,
-        paddingHorizontal: 30,
-        alignItems: "center",
+        // alignItems: "center",
         shadowOffset: {
             width: 0,
             height: 2,
@@ -74,13 +85,19 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        backgroundColor: theme().colors.background,
     },
-    icon: {
-        width: 35,
+    iconContainer: {
         height: 35,
+        width: 35,
+        borderRadius: 100,
+        backgroundColor: theme().colors.danger,
+
         position: "absolute",
-        top: 5,
-        right: 5,
+        top: 10,
+        right: 10,
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
 

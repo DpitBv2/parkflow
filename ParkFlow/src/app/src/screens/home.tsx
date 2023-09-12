@@ -6,12 +6,11 @@ import { IconButton } from "react-native-paper";
 import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
 import MenuButton from "../components/menuButton";
 import SearchBar from "../components/searchBar";
-import { MapDegreesInitial } from "../util/constants";
+import { MapDeltaInitial } from "../util/constants";
 import { theme } from "../util/theme";
 import Loading from "./loading";
 
 const Home = ({ navigation }: { navigation: any }) => {
-    // TODO: make initial region change based on user location
     const [initialRegion, setInitialRegion] = useState<any>(null);
     const [currentRegion, setCurrentRegion] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -21,8 +20,10 @@ const Home = ({ navigation }: { navigation: any }) => {
         bottomSheetRef.current?.scrollTo(-200);
     }, []);
 
+    // TODO: make initial region change based on user location
+
     useEffect(() => {
-        (async () => {
+        const getLocation = async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== "granted") {
                 console.error("Location permission not granted");
@@ -34,14 +35,15 @@ const Home = ({ navigation }: { navigation: any }) => {
             const initial = {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: MapDegreesInitial,
-                longitudeDelta: MapDegreesInitial,
+                latitudeDelta: MapDeltaInitial,
+                longitudeDelta: MapDeltaInitial,
             };
 
             setInitialRegion(initial);
-            setCurrentRegion(initial);
-            console.log(location);
-        })();
+            if (currentRegion === null) setCurrentRegion(initial);
+        };
+
+        getLocation();
     }, []);
 
     const mapRef = createRef<MapView>();
@@ -57,14 +59,36 @@ const Home = ({ navigation }: { navigation: any }) => {
                         latitude: 45.643762029499506,
                         longitude: 25.630817357450724,
                     }}
-                    onPress={onPress}
+                    onPress={() => {
+                        mapRef.current?.animateToRegion(
+                            {
+                                latitude: 45.643762029499506,
+                                longitude: 25.630817357450724,
+                                latitudeDelta: MapDeltaInitial,
+                                longitudeDelta: MapDeltaInitial,
+                            },
+                            1000
+                        );
+                        onPress();
+                    }}
                 />
                 <Marker
                     coordinate={{
                         latitude: 45.65385581575959,
                         longitude: 25.625012386590242,
                     }}
-                    onPress={onPress}
+                    onPress={() => {
+                        mapRef.current?.animateToRegion(
+                            {
+                                latitude: 45.65385581575959,
+                                longitude: 25.625012386590242,
+                                latitudeDelta: MapDeltaInitial,
+                                longitudeDelta: MapDeltaInitial,
+                            },
+                            1000
+                        );
+                        onPress();
+                    }}
                 />
             </>
         );
@@ -81,6 +105,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                 initialRegion={initialRegion}
                 rotateEnabled={false}
                 onRegionChange={setCurrentRegion}
+                moveOnMarkerPress={false}
                 mapType="standard">
                 {markers()}
             </MapView>
@@ -89,23 +114,24 @@ const Home = ({ navigation }: { navigation: any }) => {
                 <MenuButton
                     navigation={navigation}
                     style={{
-                        marginHorizontal: 5,
-                        marginVertical: 8,
+                        marginVertical: 10,
                     }}
                 />
 
                 <SearchBar
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
-                    style={{ marginHorizontal: 5, flex: 1 }}
+                    style={{ marginHorizontal: 10, flex: 1 }}
                 />
 
                 <IconButton
                     icon="crosshairs-gps"
                     iconColor={theme().colors.primary}
                     size={30}
+                    containerColor={theme().colors.white}
                     style={{
-                        backgroundColor: theme().colors.background,
+                        marginTop: 8,
+                        marginHorizontal: 0,
                     }}
                     onPress={() => {
                         mapRef.current?.animateToRegion(initialRegion, 1000);
@@ -141,7 +167,7 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         justifyContent: "center",
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
     },
 });
 

@@ -1,10 +1,11 @@
-package com.example.parkflow.Service;
+package com.example.parkflow.Service.Impl;
 
 import com.example.parkflow.Domain.Authority;
 import com.example.parkflow.Domain.User;
 import com.example.parkflow.Repository.AuthorityRepository;
 import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Security.PasswordEncoder;
+import com.example.parkflow.Service.UserService;
 import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

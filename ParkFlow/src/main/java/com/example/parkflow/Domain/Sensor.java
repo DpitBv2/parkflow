@@ -23,6 +23,9 @@ public class Sensor {
     private LocalDateTime createdAtTimestamp;
     private LocalDateTime updatedAtTimestamp;
     private BigDecimal reservationPricePerHour;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User owner;
 
     @ManyToOne
     @JsonBackReference
@@ -113,5 +116,17 @@ public class Sensor {
 
     public void setHub(Hub hub) {
         this.hub = hub;
+    }
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+    public Boolean getAvailable() {
+        return available;
+    }
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 }

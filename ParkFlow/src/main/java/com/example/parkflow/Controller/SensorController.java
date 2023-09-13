@@ -139,7 +139,7 @@ public class SensorController {
             return e.toResponseEntity();
         }
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
     @PutMapping("/{id}/availability")
     public ResponseEntity<Void> updateSensorAvailability(
             @PathVariable Long id,

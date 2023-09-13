@@ -59,6 +59,12 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Hub> ownedHubs = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Sensor> ownedSensors = new HashSet<>();
+
     public User() {
     }
 
@@ -83,6 +89,22 @@ public class User implements UserDetails {
         this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
         this.authorities = authorities;
+    }
+    public void addHub(Hub hub) {
+        ownedHubs.add(hub);
+        hub.setOwner(this);
+    }
+    public void removeHub(Hub hub) {
+        ownedHubs.remove(hub);
+        hub.setOwner(null);
+    }
+    public void addSensor(Sensor sensor) {
+        ownedSensors.add(sensor);
+        sensor.setOwner(this);
+    }
+    public void removeSensor(Sensor sensor) {
+        ownedSensors.remove(sensor);
+        sensor.setOwner(null);
     }
     public Set<Role> getRoles() {
         return roles;

@@ -2,6 +2,7 @@ package com.example.parkflow.Service;
 
 import com.example.parkflow.Domain.Authority;
 import com.example.parkflow.Domain.User;
+import com.example.parkflow.Utils.ResponseException;
 
 import java.util.Set;
 
@@ -23,4 +24,6 @@ public interface UserService {
     Authority getUserAuthority();
 
     void update(User user);
+
+    void changeUserRoleByEmail(String email, String newRole) throws ResponseException;
 }

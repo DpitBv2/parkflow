@@ -31,8 +31,6 @@ public class UserServiceImpl implements UserService {
         authorityRepository.findByAuthority("user")
                 .ifPresent(authority -> userAuthority = authority);
     }
-
-
     @Override
     public void create(
             String firstName,
@@ -58,10 +56,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setPhoneNumber(phoneNumber);
+        Authority userRole = getUserAuthority();
+        user.getAuthorities().add(userRole);
         user.getAuthorities().addAll(authorities);
         userRepository.save(user);
     }
-
     @Override
     public boolean exists(String email) {
         return userRepository.existsByEmail(email);
@@ -97,6 +96,13 @@ public class UserServiceImpl implements UserService {
             throw new ResponseException("Invalid data");
         if (userRepository.existsByEmail(user.getEmail()) && !userRepository.findByEmail(user.getEmail()).get().getId().equals(user.getId()))
             throw new ResponseException("Email is already used.");
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeUserRoleByEmail(String email, String newRole) throws ResponseException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
         userRepository.save(user);
     }
 }

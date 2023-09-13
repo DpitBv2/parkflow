@@ -117,4 +117,16 @@ public class UserController {
         }
         return ResponseEntity.ok().build();
     }
+    @PutMapping("/changerole")
+    public ResponseEntity<String> changeUserRoleByEmail(
+            @RequestParam String email,
+            @RequestParam String newRole
+    ) {
+        try {
+            userService.changeUserRoleByEmail(email, newRole);
+            return ResponseEntity.ok("User role updated successfully.");
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

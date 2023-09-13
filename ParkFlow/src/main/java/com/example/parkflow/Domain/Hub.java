@@ -17,6 +17,10 @@ public class Hub {
     private double latitude;
     private double longitude;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User owner;
+
     @OneToMany(mappedBy = "hub", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Sensor> sensors = new ArrayList<>();
@@ -57,6 +61,13 @@ public class Hub {
 
     public void setSensors(List<Sensor> sensors) {
         this.sensors = sensors;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public void addSensor(Sensor sensor) {

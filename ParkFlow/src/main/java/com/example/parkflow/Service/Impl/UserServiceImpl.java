@@ -56,11 +56,12 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setPhoneNumber(phoneNumber);
-        Authority userRole = getUserAuthority();
+        Authority userRole = getAuthority();
         user.getAuthorities().add(userRole);
         user.getAuthorities().addAll(authorities);
         userRepository.save(user);
     }
+
     @Override
     public boolean exists(String email) {
         return userRepository.existsByEmail(email);
@@ -83,11 +84,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Authority getUserAuthority() {
-        return userAuthority;
-    }
-
-    @Override
     public void update(User user) {
         if (
                 user.getEmail().isEmpty() ||
@@ -100,9 +96,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Authority getAuthority() {
+        return userAuthority;
+    }
+
+    @Override
     public void changeUserRoleByEmail(String email, String newRole) throws ResponseException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        Authority newAuthority = new Authority(newRole);
+//        user.getAuthorities().clear();
+        user.getAuthorities().add(newAuthority);
+        System.out.println(newAuthority);
         userRepository.save(user);
+    }
+
+    @Override
+    public Authority getUserAuthorityByEmail(String email) throws ResponseException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        return user.getAuthorities().stream()
+                .findFirst()
+                .orElseThrow(() -> new ResponseException("Role not found.", HttpStatus.NOT_FOUND));
     }
 }

@@ -51,7 +51,7 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -247,6 +247,7 @@ public class User implements UserDetails {
                 ", credentialsNonExpired=" + credentialsNonExpired +
                 ", createdAt=" + createdAt +
                 ", authorities=" + authorities +
+                ", roles=" + roles +
                 '}';
     }
 }

@@ -21,9 +21,11 @@ public interface UserService {
     User get(Long id);
     User get(String email);
 
-    Authority getUserAuthority();
-
     void update(User user);
 
+    Authority getAuthority();
+
     void changeUserRoleByEmail(String email, String newRole) throws ResponseException;
+
+    Authority getUserAuthorityByEmail(String email) throws ResponseException;
 }

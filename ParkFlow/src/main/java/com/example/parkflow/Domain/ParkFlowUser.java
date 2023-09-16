@@ -17,7 +17,7 @@ public class ParkFlowUser {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

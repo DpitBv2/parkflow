@@ -1,6 +1,7 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.UserDTO;
+import com.example.parkflow.Domain.Authority;
 import com.example.parkflow.Security.AuthenticationUtils;
 import com.example.parkflow.Service.UserService;
 import com.example.parkflow.Utils.ResponseException;
@@ -9,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -110,13 +112,15 @@ public class UserController {
     )
     public ResponseEntity<?> register(@RequestBody RegisterBody registerBody) {
         try {
+            Set<Authority> authorities = new HashSet<>();
+            authorities.add(userService.getAuthority());
             userService.create(
                     registerBody.firstName,
                     registerBody.lastName,
                     registerBody.email,
                     registerBody.password,
                     registerBody.phoneNumber,
-                    Set.of(userService.getAuthority())
+                    authorities
             );
         } catch (ResponseException e) {
             return e.toResponseEntity();

@@ -142,11 +142,10 @@ public class UserController {
     }
 
     @GetMapping("/role")
-    public ResponseEntity<String> getUserRoleByEmail(
-            @RequestParam String email
-    ) {
+    public ResponseEntity<String> getUserRoleByEmail(@RequestParam String email) {
         try {
-            return ResponseEntity.ok(userService.getUserAuthorityByEmail(email).getAuthority());
+            String userRole = userService.getUserRoleByEmail(email);
+            return ResponseEntity.ok(userRole);
         } catch (ResponseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

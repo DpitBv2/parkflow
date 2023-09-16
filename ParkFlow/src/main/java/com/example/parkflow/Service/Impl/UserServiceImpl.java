@@ -124,13 +124,18 @@ public class UserServiceImpl implements UserService {
         List<String> validRoles = Arrays.asList("ADMIN","CUSTOMER","USER");
         return validRoles.contains(role);
     }
-
     @Override
-    public Authority getUserAuthorityByEmail(String email) throws ResponseException {
+    public String getUserRoleByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
-        return user.getAuthorities().stream()
-                .findFirst()
-                .orElseThrow(() -> new ResponseException("Role not found.", HttpStatus.NOT_FOUND));
+        if (user.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("USER"))) {
+            return "USER";
+        } else if (user.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ADMIN"))) {
+            return "ADMIN";
+        } else if (user.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("CUSTOMER"))) {
+            return "CUSTOMER";
+        } else {
+            throw new ResponseException("User has no valid roles.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

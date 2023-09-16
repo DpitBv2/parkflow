@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -104,11 +106,23 @@ public class UserServiceImpl implements UserService {
     public void changeUserRoleByEmail(String email, String newRole) throws ResponseException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
-        Authority newAuthority = new Authority(newRole);
-//        user.getAuthorities().clear();
-        user.getAuthorities().add(newAuthority);
-        System.out.println(newAuthority);
-        userRepository.save(user);
+        user.getAuthorities().removeIf(authority ->
+                authority.getAuthority().equals("USER") ||
+                authority.getAuthority().equals("ADMIN") ||
+                authority.getAuthority().equals("CUSTOMER"));
+
+        if (isValidRole(newRole)) {
+            Authority newAuthority = new Authority(newRole);
+            user.getAuthorities().add(newAuthority);
+            userRepository.save(user);
+        } else {
+            throw new ResponseException("Invalid role: " + newRole, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private boolean isValidRole(String role) {
+        List<String> validRoles = Arrays.asList("ADMIN","CUSTOMER","USER");
+        return validRoles.contains(role);
     }
 
     @Override

@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f14482fd-1972-41a5-b7d8-5abdb7fb52a7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/ParkFlowUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/ParkFlowUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

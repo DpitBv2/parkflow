@@ -55,8 +55,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
                     resolve(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
-                    console.log(error.response.data.message);
                     reject(error);
                 });
         });

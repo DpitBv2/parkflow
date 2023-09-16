@@ -23,7 +23,7 @@ const MidTranslateY = -WindowHeight / 4;
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
     ({ children }, ref) => {
-        const translateY = useSharedValue(0);
+        const translateY = useSharedValue(-10);
 
         const state = useSharedValue<"closed" | "mid" | "open">("closed");
 
@@ -57,7 +57,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
                 translateY.value = Math.max(translateY.value, MaxTranslateY);
             })
             .onEnd(() => {
-                if (translateY.value > -WindowHeight / 10) scrollTo(0);
+                if (translateY.value > -WindowHeight / 10) scrollTo(-5);
                 else if (translateY.value > -WindowHeight / 2)
                     scrollTo(MidTranslateY);
                 else scrollTo(MaxTranslateY);

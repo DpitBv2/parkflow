@@ -1,11 +1,21 @@
 import * as Location from "expo-location";
-import { createRef, useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import {
+    createRef,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+import { Image, StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { IconButton } from "react-native-paper";
 import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
 import MenuButton from "../components/menuButton";
 import SearchBar from "../components/searchBar";
+import Text from "../components/text";
+import { AuthContext } from "../context/authContext";
+import { SensorContext } from "../context/sensorContext";
 import { MapDeltaInitial } from "../util/constants";
 import { theme } from "../util/theme";
 import Loading from "./loading";
@@ -15,10 +25,16 @@ const Home = ({ navigation }: { navigation: any }) => {
     const [currentRegion, setCurrentRegion] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
+    const [sensors, setSensors] = useState<any>(null);
+    const [currentSensor, setCurrentSensor] = useState<any>(null);
+
     const bottomSheetRef = useRef<BottomSheetRefProps>(null);
     const onPress = useCallback(() => {
         bottomSheetRef.current?.scrollTo(-200);
     }, []);
+
+    const { userToken } = useContext(AuthContext);
+    const { getClosest, getByID } = useContext(SensorContext);
 
     // TODO: make initial region change based on user location
 
@@ -41,6 +57,14 @@ const Home = ({ navigation }: { navigation: any }) => {
 
             setInitialRegion(initial);
             if (currentRegion === null) setCurrentRegion(initial);
+
+            await getClosest(userToken, initial.latitude, initial.longitude)
+                .then((res: any) => {
+                    setSensors(res);
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                });
         };
 
         getLocation();
@@ -48,48 +72,44 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     const mapRef = createRef<MapView>();
 
-    //TODO: fix loading
-    if (!initialRegion) return <Loading />;
+    if (initialRegion === null || sensors === null) return <Loading />;
 
     const markers = () => {
         return (
             <>
-                <Marker
-                    coordinate={{
-                        latitude: 45.643762029499506,
-                        longitude: 25.630817357450724,
-                    }}
-                    onPress={() => {
-                        mapRef.current?.animateToRegion(
-                            {
-                                latitude: 45.643762029499506,
-                                longitude: 25.630817357450724,
-                                latitudeDelta: MapDeltaInitial,
-                                longitudeDelta: MapDeltaInitial,
-                            },
-                            1000
-                        );
-                        onPress();
-                    }}
-                />
-                <Marker
-                    coordinate={{
-                        latitude: 45.65385581575959,
-                        longitude: 25.625012386590242,
-                    }}
-                    onPress={() => {
-                        mapRef.current?.animateToRegion(
-                            {
-                                latitude: 45.65385581575959,
-                                longitude: 25.625012386590242,
-                                latitudeDelta: MapDeltaInitial,
-                                longitudeDelta: MapDeltaInitial,
-                            },
-                            1000
-                        );
-                        onPress();
-                    }}
-                />
+                {sensors.map((sensor: any, key: any) => {
+                    return (
+                        <Marker
+                            key={key}
+                            coordinate={{
+                                latitude: sensor.latitude,
+                                longitude: sensor.longitude,
+                            }}
+                            onPress={() => {
+                                mapRef.current?.animateToRegion(
+                                    {
+                                        latitude: sensor.latitude,
+                                        longitude: sensor.longitude,
+                                        latitudeDelta: MapDeltaInitial,
+                                        longitudeDelta: MapDeltaInitial,
+                                    },
+                                    1000
+                                );
+
+                                setCurrentSensor(sensor);
+                                onPress();
+                            }}>
+                            <Image
+                                key={key}
+                                source={require("../../assets/icon.png")}
+                                style={{
+                                    height: 40,
+                                    aspectRatio: 1,
+                                }}
+                            />
+                        </Marker>
+                    );
+                })}
             </>
         );
     };
@@ -144,7 +164,9 @@ const Home = ({ navigation }: { navigation: any }) => {
                     style={{
                         flex: 1,
                         width: "100%",
-                    }}></View>
+                    }}>
+                    <Text>{currentSensor?.latitude}</Text>
+                </View>
             </BottomSheet>
         </View>
     );

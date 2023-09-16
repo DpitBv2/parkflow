@@ -101,7 +101,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                             }}>
                             <Image
                                 key={key}
-                                source={require("../../assets/icon.png")}
+                                source={require("../../assets/images/pin.png")}
                                 style={{
                                     height: 40,
                                     aspectRatio: 1,

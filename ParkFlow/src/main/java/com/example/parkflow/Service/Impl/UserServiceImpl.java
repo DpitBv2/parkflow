@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setPhoneNumber(phoneNumber);
-        Authority userRole = getAuthority();
+        Authority userRole = new Authority("USER");
         user.getAuthorities().add(userRole);
         user.getAuthorities().addAll(authorities);
         userRepository.save(user);

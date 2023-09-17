@@ -11,9 +11,12 @@ import com.example.parkflow.Utils.Constants;
 import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.nio.file.AccessDeniedException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +35,17 @@ public class SensorServiceImpl implements SensorService {
         this.reservationRepository = reservationRepository;
         this.hubRepository = hubRepository;
     }
+    private void authorizeCustomerOrAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
+            throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
+        }
+    }
 
     @Override
     public void updatePricePerHour(Long sensorId, BigDecimal pricePerHour) {
+        authorizeCustomerOrAdmin();
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
@@ -46,6 +57,7 @@ public class SensorServiceImpl implements SensorService {
     }
     @Override
     public Sensor create(double latitude, double longitude, Address address) {
+        authorizeCustomerOrAdmin();
         var sensor = new Sensor(latitude, longitude, address);
         return sensorRepository.save(sensor);
     }
@@ -64,6 +76,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public Sensor update(double latitude, double longitude, Address address, Long id) {
+        authorizeCustomerOrAdmin();
         return sensorRepository.findById(id)
                 .map(sensor -> {
                     sensor.setLatitude(latitude);
@@ -82,6 +95,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public void delete(Long id) {
+        authorizeCustomerOrAdmin();
         sensorRepository.deleteById(id);
     }
 
@@ -138,6 +152,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public boolean updateSensorAvailability(Long sensorId, Boolean available) {
+        authorizeCustomerOrAdmin();
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();

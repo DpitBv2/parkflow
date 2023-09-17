@@ -27,4 +27,5 @@ public interface UserService {
 
     void changeUserRoleByEmail(String email, String newRole) throws ResponseException;
 
+    String getUserRoleByEmail(String email) throws ResponseException;
 }

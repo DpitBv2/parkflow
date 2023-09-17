@@ -5,8 +5,12 @@ import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Repository.HubRepository;
 import com.example.parkflow.Repository.SensorRepository;
 import com.example.parkflow.Service.HubService;
+import com.example.parkflow.Utils.ResponseException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,15 +28,21 @@ public class HubServiceImpl implements HubService {
         this.hubRepository = hubRepository;
         this.sensorRepository = sensorRepository;
     }
-
+    private void authorizeCustomerOrAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
+            throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
+        }
+    }
     @Override
     public Hub create(double latitude, double longitude) {
+        authorizeCustomerOrAdmin();
         Hub hub = new Hub();
         hub.setLatitude(latitude);
         hub.setLongitude(longitude);
         return hubRepository.save(hub);
     }
-
     @Transactional
     @Override
     public List<Hub> getAllWithSensors() {
@@ -60,6 +70,7 @@ public class HubServiceImpl implements HubService {
 
     @Override
     public Hub update(Long hubId, double latitude, double longitude) {
+        authorizeCustomerOrAdmin();
         Optional<Hub> hubOptional = hubRepository.findById(hubId);
         if (hubOptional.isPresent()) {
             Hub hub = hubOptional.get();
@@ -72,11 +83,13 @@ public class HubServiceImpl implements HubService {
 
     @Override
     public void delete(Long hubId) {
+        authorizeCustomerOrAdmin();
         hubRepository.deleteById(hubId);
     }
 
     @Override
     public Hub addSensorToHub(Long hubId, Long sensorId) {
+        authorizeCustomerOrAdmin();
         Optional<Hub> hubOptional = hubRepository.findById(hubId);
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
 

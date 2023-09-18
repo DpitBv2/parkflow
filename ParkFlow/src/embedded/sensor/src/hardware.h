@@ -4,6 +4,8 @@
 #include <HardwareSerial.h>
 #include <Servo.h>
 #include <Arduino.h>
+#include <SPI.h>
+#include <LoRa.h>
 
 namespace Hardware
 {
@@ -36,22 +38,96 @@ namespace Hardware
     {
     private:
         Servo servo;
+        bool reverse = false;
 
     public:
         ServoControl(int pin)
         {
             servo.attach(pin);
-            servo.write(0);
+            write(0);
+        }
+
+        ServoControl(int pin, bool reverse)
+        {
+            servo.attach(pin);
+            this->reverse = reverse;
+            write(0);
+        }
+
+        int calculate(int angle)
+        {
+            if (reverse)
+                return 180 - angle;
+            return angle;
         }
 
         void write(int angle)
         {
-            servo.write(angle);
+            servo.write(calculate(angle));
         }
     };
 
-    class LoRa
+    class UltrasonicSensor
     {
+    private:
+        int trigPin, echoPin;
+
+    public:
+        UltrasonicSensor(int trigPin, int echoPin)
+        {
+            this->trigPin = trigPin;
+            this->echoPin = echoPin;
+
+            pinMode(trigPin, OUTPUT);
+            pinMode(echoPin, INPUT);
+        }
+
+        double read()
+        {
+            digitalWrite(trigPin, LOW);
+            delayMicroseconds(2);
+
+            digitalWrite(trigPin, HIGH);
+            delayMicroseconds(10);
+
+            digitalWrite(trigPin, LOW);
+
+            double duration = pulseIn(echoPin, HIGH);
+            return duration * 0.034 / 2;
+        }
+    };
+
+    class LoRaTransceiver
+    {
+    public:
+        LoRaTransceiver()
+        {
+            if (!LoRa.begin(433E6))
+            {
+                Serial.println("Starting LoRa failed!");
+            }
+        }
+
+        void sendData(String data)
+        {
+            LoRa.beginPacket();
+            LoRa.print(data);
+            LoRa.endPacket();
+        }
+
+        String recieveData()
+        {
+            int packetSize = LoRa.parsePacket();
+            if (packetSize)
+            {
+                String data = "";
+                while (LoRa.available())
+                    data += (char)LoRa.read();
+                LoRa.packetRssi();
+                return data;
+            }
+            return "";
+        }
     };
 }
 

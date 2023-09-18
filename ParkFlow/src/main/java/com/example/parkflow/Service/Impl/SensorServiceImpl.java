@@ -3,9 +3,11 @@ package com.example.parkflow.Service.Impl;
 import com.example.parkflow.Domain.Address;
 import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Domain.Reservation;
+import com.example.parkflow.Domain.User;
 import com.example.parkflow.Repository.HubRepository;
 import com.example.parkflow.Repository.ReservationRepository;
 import com.example.parkflow.Repository.SensorRepository;
+import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Service.SensorService;
 import com.example.parkflow.Utils.Constants;
 import com.example.parkflow.Utils.ResponseException;
@@ -16,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.nio.file.AccessDeniedException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -26,23 +27,33 @@ import java.time.LocalDateTime;
 @Service
 public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
+    private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final HubRepository hubRepository;
 
     @Autowired
-    public SensorServiceImpl(SensorRepository sensorRepository, ReservationRepository reservationRepository, HubRepository hubRepository) {
+    public SensorServiceImpl(SensorRepository sensorRepository, UserRepository userRepository, ReservationRepository reservationRepository, HubRepository hubRepository) {
         this.sensorRepository = sensorRepository;
+        this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
         this.hubRepository = hubRepository;
     }
     private void authorizeCustomerOrAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
-            throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            System.out.println("Principal: " + principal);
+            if (principal != null) {
+                User user = userRepository.findByEmail(principal.toString()).orElse(null);
+                System.out.println("User: " + user.getUsername() + " has authorities: " + user.getAuthorities());
+                if (user.getAuthorities().stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
+                    return;
+                }
+            }
         }
+        throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
     }
-
     @Override
     public void updatePricePerHour(Long sensorId, BigDecimal pricePerHour) {
         authorizeCustomerOrAdmin();

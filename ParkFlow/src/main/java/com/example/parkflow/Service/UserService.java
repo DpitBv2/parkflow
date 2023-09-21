@@ -31,5 +31,5 @@ public interface UserService {
 
     String getUserRoleByEmail(String email) throws ResponseException;
 
-    List<Reservation> getUserReservations(Long userId);
+    List<Reservation> getUserReservations(Long userId, int page);
 }

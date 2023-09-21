@@ -130,27 +130,53 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Reservation reserveSensor(Long sensorId, Long userId, int reservationDurationInHours) {
+    public Sensor reserveSensor(Long sensorId, Long userId) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
             if (!sensor.isAvailable()) {
                 return null;
             }
-            BigDecimal reservationCost = calculateReservationCost(sensorId, reservationDurationInHours);
-            LocalDateTime reservationStartTime = LocalDateTime.now();
-            LocalDateTime reservationEndTime = reservationStartTime.plusHours(reservationDurationInHours);
-            Reservation reservation = new Reservation(sensorId, userId, reservationStartTime, reservationEndTime, reservationCost);
-            reservationRepository.save(reservation);
+            sensor.setReservationStartTimestamp(LocalDateTime.now());
+            sensor.setReservedByUserId(userId);
             sensor.setAvailable(false);
             sensorRepository.save(sensor);
-            return reservation;
-        } else {
-            return null;
+            return sensor;
         }
+        return null;
     }
 
-    public BigDecimal calculateReservationCost(Long sensorId, int reservationDurationInHours) {
+    @Override
+    public Reservation endReservation(Long sensorId, Long userId, String paymentMethod) {
+        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+        if (sensorOptional.isPresent()) {
+            Sensor sensor = sensorOptional.get();
+            if (sensor.isAvailable()) {
+                return null;
+            }
+            if (!sensor.getReservedByUserId().equals(userId)) {
+                return null;
+            }
+
+            long reservationHours = sensor.getReservationStartTimestamp().until(LocalDateTime.now(), java.time.temporal.ChronoUnit.HOURS);
+            BigDecimal reservationCost = calculateReservationCost(sensorId, reservationHours + 1);
+            LocalDateTime reservationStartTime = sensor.getReservationStartTimestamp();
+            LocalDateTime reservationEndTime = LocalDateTime.now();
+            Reservation reservation = new Reservation(sensorId, userId, reservationStartTime, reservationEndTime, reservationCost, paymentMethod);
+            reservationRepository.save(reservation);
+
+            sensor.setReservationStartTimestamp(null);
+            sensor.setReservedByUserId(null);
+            sensor.setAvailable(true);
+            sensor.setLifted(true);
+            sensorRepository.save(sensor);
+
+            return reservation;
+        }
+        return null;
+    }
+
+    public BigDecimal calculateReservationCost(Long sensorId, long reservationDurationInHours) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
@@ -173,5 +199,25 @@ public class SensorServiceImpl implements SensorService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Sensor lowerSensor(Long sensorId, Long userId) {
+        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+        if (sensorOptional.isPresent()) {
+            Sensor sensor = sensorOptional.get();
+            if (sensor.isAvailable()) {
+                return null;
+            }
+            if (!sensor.getReservedByUserId().equals(userId)) {
+                return null;
+            }
+            if (sensor.isLifted()) {
+                sensor.setLifted(false);
+                sensorRepository.save(sensor);
+                return sensor;
+            }
+        }
+        return null;
     }
 }

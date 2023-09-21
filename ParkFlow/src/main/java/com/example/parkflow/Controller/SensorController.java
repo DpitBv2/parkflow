@@ -1,15 +1,16 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.SensorDTO;
-import com.example.parkflow.Domain.Hub;
 import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Domain.Sensor;
+import com.example.parkflow.Domain.User;
 import com.example.parkflow.Service.Impl.SensorServiceImpl;
+import com.example.parkflow.Service.Impl.UserServiceImpl;
 import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -20,11 +21,13 @@ import java.util.List;
 @RequestMapping("/api/v1/sensors")
 public class SensorController {
     private final SensorServiceImpl sensorService;
+    private final UserServiceImpl userService;
     private List<Sensor> sensorList = new ArrayList<>();
 
     @Autowired
-    public SensorController(SensorServiceImpl sensorService) {
+    public SensorController(SensorServiceImpl sensorService, UserServiceImpl userService) {
         this.sensorService = sensorService;
+        this.userService = userService;
     }
 
     /**
@@ -109,16 +112,22 @@ public class SensorController {
         List<Sensor> closestSensors = sensorService.getClosest(latitude, longitude, number);
         return ResponseEntity.ok(closestSensors);
     }
+
+    /**
+     * {@code POST /api/v1/sensors/reserve} : Reserve sensor
+     * @param sensorId : sensor id
+     * @return
+     */
     @PostMapping("/reserve")
     public ResponseEntity<?> reserveSensor(
             @RequestParam Long sensorId,
-            @RequestParam Long userId,
-            @RequestParam int reservationDurationInHours
+            Authentication authentication
     ) {
         try {
-            Reservation reservation = sensorService.reserveSensor(sensorId, userId, reservationDurationInHours);
-            if (reservation != null) {
-                return ResponseEntity.ok(reservation);
+            User user = userService.get((String) authentication.getPrincipal());
+            Sensor sensor = sensorService.reserveSensor(sensorId, user.getId());
+            if (sensor != null) {
+                return ResponseEntity.ok(sensor);
             } else {
                 return ResponseEntity.badRequest().body("Failed to reserve the sensor.");
             }
@@ -126,6 +135,61 @@ public class SensorController {
             return e.toResponseEntity();
         }
     }
+
+    /**
+     * {@code PUT /api/v1/sensors/reserve} : End reservation
+     * @param sensorId : sensor id
+     * @param paymentMethod : payment method
+     * @return
+     */
+    @PutMapping("/reserve")
+    public ResponseEntity<?> endReservation(
+            @RequestParam Long sensorId,
+            @RequestParam String paymentMethod,
+            Authentication authentication
+    ) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            Reservation reservation = sensorService.endReservation(sensorId, user.getId(), paymentMethod);
+            if (reservation != null) {
+                return ResponseEntity.ok(reservation);
+            } else {
+                return ResponseEntity.badRequest().body("Failed to end the reservation.");
+            }
+        } catch (ResponseException e) {
+            return e.toResponseEntity();
+        }
+    }
+
+    /**
+     * {@code PUT /api/v1/sensors/reserve/lower} : Lower sensor
+     * @param sensorId : sensor id
+     * @return
+     */
+    @PutMapping("/reserve/lower")
+    public ResponseEntity<?> lowerSensor(
+            @RequestParam Long sensorId,
+            Authentication authentication
+    ) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            Sensor sensor = sensorService.lowerSensor(sensorId, user.getId());
+            if (sensor != null) {
+                return ResponseEntity.ok(sensor);
+            } else {
+                return ResponseEntity.badRequest().body("Failed to lower the sensor.");
+            }
+        } catch (ResponseException e) {
+            return e.toResponseEntity();
+        }
+    }
+
+    /**
+     * {@code PUT /api/v1/sensors/{sensorId}/price} : Update sensor price per hour
+     * @param sensorId : sensor id
+     * @param pricePerHour : price per hour
+     * @return
+     */
     @PutMapping("/{sensorId}/price")
     public ResponseEntity<?> setPricePerHour(@PathVariable Long sensorId, @RequestParam BigDecimal pricePerHour) {
         try {
@@ -135,6 +199,13 @@ public class SensorController {
             return e.toResponseEntity();
         }
     }
+
+    /**
+     * {@code PUT /api/v1/sensors/{id}/availability} : Update sensor availability
+     * @param id : sensor id
+     * @param available : availability
+     * @return
+     */
     @PutMapping("/{id}/availability")
     public ResponseEntity<Void> updateSensorAvailability(
             @PathVariable Long id,

@@ -8,12 +8,14 @@ import com.example.parkflow.Repository.ReservationRepository;
 import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Security.PasswordEncoder;
 import com.example.parkflow.Service.UserService;
+import com.example.parkflow.Utils.Constants;
 import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -29,10 +31,12 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(
             UserRepository userRepository,
             AuthorityRepository authorityRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            ReservationRepository reservationRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.reservationRepository = reservationRepository;
 
         authorityRepository.findByAuthority("user")
                 .ifPresent(authority -> userAuthority = authority);
@@ -143,7 +147,9 @@ public class UserServiceImpl implements UserService {
         }
     }
     @Override
-    public List<Reservation> getUserReservations(Long userId) {
-        return reservationRepository.findByUserId(userId);
+    public List<Reservation> getUserReservations(Long userId, int page) {
+        List<Reservation> reservationList = reservationRepository.findByUserId(userId);
+        reservationList.sort(Comparator.comparing(Reservation::getId));
+        return reservationList.subList(page * Constants.PAGE_SIZE, Math.min((page + 1) * Constants.PAGE_SIZE, reservationList.size()));
     }
 }

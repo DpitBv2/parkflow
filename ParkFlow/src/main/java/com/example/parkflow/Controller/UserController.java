@@ -3,12 +3,15 @@ package com.example.parkflow.Controller;
 import com.example.parkflow.Controller.DTO.UserDTO;
 import com.example.parkflow.Domain.Authority;
 import com.example.parkflow.Domain.Reservation;
+import com.example.parkflow.Domain.User;
 import com.example.parkflow.Security.AuthenticationUtils;
 import com.example.parkflow.Service.UserService;
 import com.example.parkflow.Utils.ResponseException;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -130,6 +133,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+
     @PutMapping("/role")
     public ResponseEntity<String> changeUserRoleByEmail(
             @RequestParam String email,
@@ -143,6 +147,10 @@ public class UserController {
         }
     }
 
+    /**
+     * {@code GET /api/v1/user/role} : Get user role by email
+     * @return status {@code 200 (OK)} and body {@link String}
+     */
     @GetMapping("/role")
     public ResponseEntity<String> getUserRoleByEmail(@RequestParam String email) {
         try {
@@ -152,15 +160,16 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     /**
      * {@code GET /api/v1/user/reservations/{userId}} : Get reservations made by a user
-     * @param userId : User ID
      * @return status {@code 200 (OK)} and body {@link List<Reservation>}
      */
-    @GetMapping("/reservations/{userId}")
-    public ResponseEntity<?> getUserReservations(@PathVariable Long userId) {
+    @GetMapping("/reservations")
+    public ResponseEntity<?> getUserReservations(Authentication authentication, @RequestParam(value = "page", defaultValue = "0") int page) {
         try {
-            List<Reservation> userReservations = userService.getUserReservations(userId);
+            User user = userService.get((String) authentication.getPrincipal());
+            List<Reservation> userReservations = userService.getUserReservations(user.getId(), page);
             return ResponseEntity.ok(userReservations);
         } catch (ResponseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

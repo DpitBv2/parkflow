@@ -58,6 +58,10 @@ public class HubController {
         return ResponseEntity.ok(hubs);
     }
 
+    /**
+     * Get hubs count
+     * @return status {@code 200 (OK)} and body {@link Long}
+     */
     @GetMapping("/count")
     public ResponseEntity<Long> getHubsCount() {
         return ResponseEntity.ok(hubService.getCount());
@@ -90,6 +94,13 @@ public class HubController {
         hubService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Add sensor to hub
+     * @param hubId : hub id
+     * @param sensorId : sensor id
+     * @return status {@code 200 (OK)} and body {@link Hub}
+     */
     @PutMapping("/sensor")
     public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId) {
         Hub updatedHub = hubService.addSensorToHub(hubId, sensorId);

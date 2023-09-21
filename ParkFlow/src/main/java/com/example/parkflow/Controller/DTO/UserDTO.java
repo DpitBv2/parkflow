@@ -1,7 +1,10 @@
 package com.example.parkflow.Controller.DTO;
 
+import com.example.parkflow.Domain.Role;
 import com.example.parkflow.Domain.User;
 import lombok.*;
+
+import java.util.Set;
 
 @Getter
 @Setter

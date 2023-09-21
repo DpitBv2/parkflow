@@ -3,14 +3,18 @@ package com.example.parkflow.Service.Impl;
 import com.example.parkflow.Domain.Address;
 import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Domain.Reservation;
+import com.example.parkflow.Domain.User;
 import com.example.parkflow.Repository.HubRepository;
 import com.example.parkflow.Repository.ReservationRepository;
 import com.example.parkflow.Repository.SensorRepository;
+import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Service.SensorService;
 import com.example.parkflow.Utils.Constants;
 import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,18 +27,36 @@ import java.time.LocalDateTime;
 @Service
 public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
+    private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final HubRepository hubRepository;
 
     @Autowired
-    public SensorServiceImpl(SensorRepository sensorRepository, ReservationRepository reservationRepository, HubRepository hubRepository) {
+    public SensorServiceImpl(SensorRepository sensorRepository, UserRepository userRepository, ReservationRepository reservationRepository, HubRepository hubRepository) {
         this.sensorRepository = sensorRepository;
+        this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
         this.hubRepository = hubRepository;
     }
-
+    private void authorizeCustomerOrAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            System.out.println("Principal: " + principal);
+            if (principal != null) {
+                User user = userRepository.findByEmail(principal.toString()).orElse(null);
+                System.out.println("User: " + user.getUsername() + " has authorities: " + user.getAuthorities());
+                if (user.getAuthorities().stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
+                    return;
+                }
+            }
+        }
+        throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
+    }
     @Override
     public void updatePricePerHour(Long sensorId, BigDecimal pricePerHour) {
+        authorizeCustomerOrAdmin();
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
@@ -46,6 +68,7 @@ public class SensorServiceImpl implements SensorService {
     }
     @Override
     public Sensor create(double latitude, double longitude, Address address) {
+        authorizeCustomerOrAdmin();
         var sensor = new Sensor(latitude, longitude, address);
         return sensorRepository.save(sensor);
     }
@@ -64,6 +87,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public Sensor update(double latitude, double longitude, Address address, Long id) {
+        authorizeCustomerOrAdmin();
         return sensorRepository.findById(id)
                 .map(sensor -> {
                     sensor.setLatitude(latitude);
@@ -82,6 +106,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public void delete(Long id) {
+        authorizeCustomerOrAdmin();
         sensorRepository.deleteById(id);
     }
 
@@ -105,27 +130,53 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Reservation reserveSensor(Long sensorId, Long userId, int reservationDurationInHours) {
+    public Sensor reserveSensor(Long sensorId, Long userId) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
             if (!sensor.isAvailable()) {
                 return null;
             }
-            BigDecimal reservationCost = calculateReservationCost(sensorId, reservationDurationInHours);
-            LocalDateTime reservationStartTime = LocalDateTime.now();
-            LocalDateTime reservationEndTime = reservationStartTime.plusHours(reservationDurationInHours);
-            Reservation reservation = new Reservation(sensorId, userId, reservationStartTime, reservationEndTime, reservationCost);
-            reservationRepository.save(reservation);
+            sensor.setReservationStartTimestamp(LocalDateTime.now());
+            sensor.setReservedByUserId(userId);
             sensor.setAvailable(false);
             sensorRepository.save(sensor);
-            return reservation;
-        } else {
-            return null;
+            return sensor;
         }
+        return null;
     }
 
-    public BigDecimal calculateReservationCost(Long sensorId, int reservationDurationInHours) {
+    @Override
+    public Reservation endReservation(Long sensorId, Long userId, String paymentMethod) {
+        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+        if (sensorOptional.isPresent()) {
+            Sensor sensor = sensorOptional.get();
+            if (sensor.isAvailable()) {
+                return null;
+            }
+            if (!sensor.getReservedByUserId().equals(userId)) {
+                return null;
+            }
+
+            long reservationHours = sensor.getReservationStartTimestamp().until(LocalDateTime.now(), java.time.temporal.ChronoUnit.HOURS);
+            BigDecimal reservationCost = calculateReservationCost(sensorId, reservationHours + 1);
+            LocalDateTime reservationStartTime = sensor.getReservationStartTimestamp();
+            LocalDateTime reservationEndTime = LocalDateTime.now();
+            Reservation reservation = new Reservation(sensorId, userId, reservationStartTime, reservationEndTime, reservationCost, paymentMethod);
+            reservationRepository.save(reservation);
+
+            sensor.setReservationStartTimestamp(null);
+            sensor.setReservedByUserId(null);
+            sensor.setAvailable(true);
+            sensor.setLifted(true);
+            sensorRepository.save(sensor);
+
+            return reservation;
+        }
+        return null;
+    }
+
+    public BigDecimal calculateReservationCost(Long sensorId, long reservationDurationInHours) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
@@ -138,6 +189,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public boolean updateSensorAvailability(Long sensorId, Boolean available) {
+        authorizeCustomerOrAdmin();
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
@@ -147,5 +199,25 @@ public class SensorServiceImpl implements SensorService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Sensor lowerSensor(Long sensorId, Long userId) {
+        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+        if (sensorOptional.isPresent()) {
+            Sensor sensor = sensorOptional.get();
+            if (sensor.isAvailable()) {
+                return null;
+            }
+            if (!sensor.getReservedByUserId().equals(userId)) {
+                return null;
+            }
+            if (sensor.isLifted()) {
+                sensor.setLifted(false);
+                sensorRepository.save(sensor);
+                return sensor;
+            }
+        }
+        return null;
     }
 }

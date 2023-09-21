@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDate createdAt = LocalDate.now();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Authority> authorities = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -58,6 +58,15 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Hub> ownedHubs = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Sensor> ownedSensors = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Reservation> reservations = new HashSet<>();
 
     public User() {
     }
@@ -83,6 +92,22 @@ public class User implements UserDetails {
         this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
         this.authorities = authorities;
+    }
+    public void addHub(Hub hub) {
+        ownedHubs.add(hub);
+        hub.setOwner(this);
+    }
+    public void removeHub(Hub hub) {
+        ownedHubs.remove(hub);
+        hub.setOwner(null);
+    }
+    public void addSensor(Sensor sensor) {
+        ownedSensors.add(sensor);
+        sensor.setOwner(this);
+    }
+    public void removeSensor(Sensor sensor) {
+        ownedSensors.remove(sensor);
+        sensor.setOwner(null);
     }
     public Set<Role> getRoles() {
         return roles;
@@ -225,6 +250,7 @@ public class User implements UserDetails {
                 ", credentialsNonExpired=" + credentialsNonExpired +
                 ", createdAt=" + createdAt +
                 ", authorities=" + authorities +
+                ", roles=" + roles +
                 '}';
     }
 }

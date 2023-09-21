@@ -5,7 +5,6 @@ import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Domain.Sensor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SensorService {
@@ -26,7 +25,11 @@ public interface SensorService {
 
     List<Sensor> getClosest(double myLatitude, double myLongitude, int number);
 
-    Reservation reserveSensor(Long sensorId, Long userId, int reservationDurationInHours);
+    Sensor reserveSensor(Long sensorId, Long userId);
+
+    Reservation endReservation(Long sensorId, Long userId, String paymentMethod);
 
     boolean updateSensorAvailability(Long sensorId, Boolean available);
+
+    Sensor lowerSensor(Long sensorId, Long userId);
 }

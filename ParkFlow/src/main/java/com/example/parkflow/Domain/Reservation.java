@@ -1,5 +1,6 @@
 package com.example.parkflow.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
@@ -13,13 +14,17 @@ public class Reservation {
     private Long id;
 
     private Long sensorId;
-
     private Long userId;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
     private BigDecimal cost;
+    private String paymentMethod;
+    @ManyToOne
+    @JoinColumn(name = "userReservedId", referencedColumnName = "id")
+    @JsonManagedReference
+    private User user;
 
     public Reservation() {
     }
@@ -29,13 +34,15 @@ public class Reservation {
             Long userId,
             LocalDateTime startTime,
             LocalDateTime endTime,
-            BigDecimal cost
+            BigDecimal cost,
+            String paymentMethod
     ) {
         this.sensorId = sensorId;
         this.userId = userId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.cost = cost;
+        this.paymentMethod = paymentMethod;
     }
     public Long getId() {
         return id;
@@ -83,5 +90,13 @@ public class Reservation {
 
     public void setCost(BigDecimal cost) {
         this.cost = cost;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

@@ -11,6 +11,8 @@ interface TextProps {
     fontSize?: number;
     center?: boolean;
     numberOfLines?: number;
+    overflow?: boolean;
+    justify?: boolean;
 }
 
 const Text = ({
@@ -22,15 +24,22 @@ const Text = ({
     fontSize = 15,
     center = false,
     numberOfLines,
+    overflow = false,
+    justify = false,
 }: TextProps) => {
     return (
         <DefaultText
-            numberOfLines={numberOfLines}
+            numberOfLines={overflow ? 1 : numberOfLines}
+            ellipsizeMode="tail"
             style={[
                 style,
                 bold ? styles.bold : styles.regular,
-                { fontSize: fontSize, letterSpacing: LetterSpacing },
+                {
+                    fontSize: fontSize,
+                    letterSpacing: LetterSpacing,
+                },
                 center ? { textAlign: "center" } : {},
+                justify ? { textAlign: "justify" } : {},
                 inverted
                     ? { color: theme().colors.light }
                     : { color: theme().colors.dark },

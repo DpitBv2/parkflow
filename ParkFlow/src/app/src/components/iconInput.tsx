@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ActiveOpacity, Font, LetterSpacing } from "../util/constants";
 import { theme } from "../util/theme";
 
@@ -17,6 +17,7 @@ interface IconInputProps {
     errorEmpty?: boolean;
     editable?: boolean;
     color?: string;
+    autoCapitalize?: boolean;
 }
 
 const IconInput = ({
@@ -32,6 +33,7 @@ const IconInput = ({
     errorEmpty = false,
     editable = true,
     color = theme().colors.dark,
+    autoCapitalize = false,
 }: IconInputProps) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isHidden, setIsHidden] = useState(hidden);
@@ -53,7 +55,7 @@ const IconInput = ({
                 },
             ]}>
             <View style={styles.iconContainer}>
-                <Icon
+                <MIcon
                     name={icon}
                     color={theme().colors.grey}
                     style={{ marginLeft: 5 }}
@@ -72,7 +74,7 @@ const IconInput = ({
                 onChangeText={(text) => {
                     onChange(text);
                     if (validate && onValidateChange)
-                        onValidateChange(validate(value));
+                        onValidateChange(validate(text.trim()));
                 }}
                 value={value}
                 placeholder={placeholder}
@@ -83,6 +85,7 @@ const IconInput = ({
                 }}
                 selectionColor={theme().colors.grey}
                 editable={editable}
+                autoCapitalize={autoCapitalize ? "words" : "none"}
             />
             {hidden && (
                 <View style={styles.iconContainer}>
@@ -91,7 +94,7 @@ const IconInput = ({
                         onPress={() => {
                             setIsHidden(!isHidden);
                         }}>
-                        <Icon
+                        <MIcon
                             name={isHidden ? "eye" : "eye-off"}
                             color={theme().colors.grey}
                             size={24}

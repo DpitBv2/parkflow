@@ -1,9 +1,8 @@
 import { ImageBackground, StyleSheet, View } from "react-native";
-import { theme } from "../util/theme";
 
 const Background = ({
     children,
-    opacity = 0.2,
+    opacity = 0.25,
     borderRadius = 0,
     padding = 0,
     flip,
@@ -35,7 +34,7 @@ const Background = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: theme().colors.white,
+        backgroundColor: "#ffffff",
     },
     image: {
         flex: 1,

@@ -5,9 +5,9 @@ import { theme } from "../util/theme";
 
 interface ButtonProps {
     text: string;
-    width?: number;
+    width?: any;
     height?: number;
-    bgcolor?: string;
+    backgroundColor?: string;
     color?: string;
     style?: object;
     onPress?: () => void;
@@ -16,7 +16,7 @@ interface ButtonProps {
 const Button = ({
     width = 250,
     height = 40,
-    bgcolor,
+    backgroundColor = theme().colors.primary,
     color,
     style,
     text,
@@ -29,24 +29,13 @@ const Button = ({
                 {
                     ...style,
                     ...styles.button,
-                    height: height,
-                    width: width,
-                    backgroundColor:
-                        bgcolor === undefined
-                            ? theme().colors.primary
-                            : bgcolor,
+                    height,
+                    width,
+                    backgroundColor,
                 },
             ]}
             onPress={onPress}>
-            <Text
-                inverted={true}
-                style={[
-                    styles.text,
-                    // {
-                    //     color:
-                    //         color === undefined ? theme().colors.light : color,
-                    // },
-                ]}>
+            <Text color={theme().colors.white} style={styles.text}>
                 {text}
             </Text>
         </TouchableOpacity>

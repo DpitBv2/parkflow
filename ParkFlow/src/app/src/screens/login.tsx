@@ -16,7 +16,7 @@ import Text from "../components/text";
 import { AuthContext } from "../context/authContext";
 import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
-import { validateEmail } from "../util/validate";
+import { validateEmail } from "../util/util";
 import Loading from "./loading";
 
 const Login = ({ navigation, route }: { navigation: any; route: any }) => {
@@ -100,19 +100,26 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
                     </TouchableOpacity>
 
                     <Button
-                        bgcolor={theme().colors.primary}
+                        backgroundColor={theme().colors.primary}
                         color={theme().colors.light}
                         text="Log in"
                         onPress={() => {
                             if (!email || !password) setShowError(true);
                             else {
                                 setIsLoading(true);
-                                login(email, password)
+                                login(email.trim(), password)
                                     .then(() => {
                                         setIsLoading(false);
                                     })
                                     .catch((error: any) => {
-                                        setError(error.message);
+                                        if (
+                                            error.message ===
+                                            "Request failed with status code 400"
+                                        )
+                                            setError(
+                                                "Invalid email or password"
+                                            );
+                                        else setError(error.message);
                                         setShowError(true);
                                         setIsLoading(false);
                                     });

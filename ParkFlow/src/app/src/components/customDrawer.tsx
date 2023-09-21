@@ -53,9 +53,13 @@ const CustomDrawer = ({
                             source={require("../../assets/images/default/profile.png")}
                             style={styles.image}
                         />
-                        <View>
-                            <Text bold fontSize={20}>
-                                {userInfo.firstName} {userInfo.lastName}
+                        <View style={{ maxWidth: "80%" }}>
+                            <Text
+                                bold
+                                fontSize={
+                                    userInfo.firstName.length > 10 ? 18 : 20
+                                }>
+                                {userInfo.firstName}
                             </Text>
                             <TouchableOpacity
                                 activeOpacity={ActiveOpacity}
@@ -112,7 +116,7 @@ const CustomDrawer = ({
                     visible={visible}
                     setVisible={setVisible}
                     onClose={() => setVisible(false)}>
-                    <Text bold fontSize={18} style={{ paddingTop: 10 }}>
+                    <Text bold fontSize={18} style={{ paddingTop: 10 }} center>
                         Log out?
                     </Text>
                     <Button
@@ -123,7 +127,7 @@ const CustomDrawer = ({
                         }}
                         style={{ marginTop: 30 }}
                         width={200}
-                        bgcolor={theme().colors.danger}
+                        backgroundColor={theme().colors.danger}
                     />
                 </Modal>
             </View>
@@ -139,6 +143,7 @@ const styles = StyleSheet.create({
     },
     button: {
         padding: 10,
+        marginLeft: 5,
         width: "100%",
         borderRadius: 10,
     },

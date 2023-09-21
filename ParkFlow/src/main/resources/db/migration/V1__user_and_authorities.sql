@@ -45,7 +45,7 @@ INSERT INTO authorities (authority) VALUES ('ADMIN');
 INSERT INTO users
 (first_name, last_name, email, password, phone_number, enabled, account_non_expired, account_non_locked, credentials_non_expired, created_at)
 VALUES
-    ('user', 'user', 'user@email.com', '$2a$10$COl0Wr4q2LJ0WZNo.SOqGuWdOWRCvw7srmdjwhvBW0BuiNjjP7pEm', '+11234567890', true, true, true, true, now());
+    ('user', 'user', 'user@email.com', '$2a$10$COl0Wr4q2LJ0WZNo.SOqGuWdOWRCvw7srmdjwhvBW0BuiNjjP7pEm', '+1 12345678900', true, true, true, true, now());
 INSERT INTO users_authorities(user_id, authorities_id) VALUES (
                                                                   (SELECT id FROM users WHERE email='user@email.com'),
                                                                   (SELECT id FROM authorities WHERE authority='USER')
@@ -54,7 +54,7 @@ INSERT INTO users_authorities(user_id, authorities_id) VALUES (
 INSERT INTO users
 (first_name, last_name, email, password, phone_number, enabled, account_non_expired, account_non_locked, credentials_non_expired, created_at)
 VALUES
-    ('admin', 'admin', 'admin@email.com', '$2a$10$tN4.kfda/ezxPuue/4StsuG0KnpyE5nqYkxNW7vcMh3buMr1lp4Vu', '+11234567890', true, true, true, true, now());
+    ('admin', 'admin', 'admin@email.com', '$2a$10$tN4.kfda/ezxPuue/4StsuG0KnpyE5nqYkxNW7vcMh3buMr1lp4Vu', '+1 12345678900', true, true, true, true, now());
 INSERT INTO users_authorities(user_id, authorities_id) VALUES (
                                                                   (SELECT id FROM users WHERE email='admin@email.com'),
                                                                   (SELECT id FROM authorities WHERE authority='ADMIN')

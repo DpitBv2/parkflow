@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
 import api from "../util/api";
-import { LoginURL, UserURL } from "../util/links";
+import { LoginURL, RegisterURL, UserURL } from "../util/links";
 
 export const AuthContext = createContext<any>(null);
 
@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const login = (email: string, password: string) => {
         return new Promise((resolve, reject) => {
             api.post(LoginURL, {
-                username: email,
-                password: password,
+                email,
+                password,
             })
                 .then((response) => {
                     getUserInfo(response.data)
@@ -40,22 +40,21 @@ export const AuthProvider = ({ children }: { children: any }) => {
         lastName: string,
         email: string,
         password: string,
-        phone: string
+        phoneNumber: string
     ) => {
+        console.log(phoneNumber);
         return new Promise((resolve, reject) => {
-            api.post(LoginURL, {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-                phone: phone,
+            api.post(RegisterURL, {
+                firstName,
+                lastName,
+                email,
+                password,
+                phoneNumber,
             })
                 .then((response) => {
                     resolve(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
-                    console.log(error.response.data.message);
                     reject(error);
                 });
         });
@@ -84,19 +83,19 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     const update = (
         token: string,
-        username: string,
         firstName: string,
         lastName: string,
-        email: string
+        email: string,
+        phoneNumber: string
     ) => {
         return new Promise((resolve, reject) => {
             api.put(
                 UserURL,
                 {
-                    username: username,
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber,
                 },
                 {
                     headers: {
@@ -105,7 +104,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 }
             )
                 .then((response) => {
-                    setUserInfo(response.data);
+                    getUserInfo(token);
                     resolve(response.data);
                 })
                 .catch((error) => {

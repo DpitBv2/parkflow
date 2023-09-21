@@ -17,7 +17,7 @@ import Text from "../components/text";
 import { AuthContext } from "../context/authContext";
 import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
-import { validateEmail } from "../util/validate";
+import { getCountryCode, validateEmail } from "../util/util";
 import Loading from "./loading";
 
 const Register = ({ navigation }: { navigation: any }) => {
@@ -59,7 +59,7 @@ const Register = ({ navigation }: { navigation: any }) => {
                         {showError && password !== confirmPassword && (
                             <ErrorText text="Passwords don't match" />
                         )}
-                        {showError && password && password.length <= 4 && (
+                        {showError && password && password.length < 8 && (
                             <ErrorText text="Password too short" />
                         )}
                         {showError && error && <ErrorText text={error} />}
@@ -78,6 +78,8 @@ const Register = ({ navigation }: { navigation: any }) => {
                             onChange={setFirstName}
                             style={{ width: 120 }}
                             errorEmpty={showError && !firstName}
+                            autoCapitalize
+                            maxLength={15}
                         />
                         <Input
                             placeholder="Last name"
@@ -85,6 +87,8 @@ const Register = ({ navigation }: { navigation: any }) => {
                             onChange={setLastName}
                             style={{ width: 120, marginLeft: 10 }}
                             errorEmpty={showError && !lastName}
+                            autoCapitalize
+                            maxLength={15}
                         />
                     </View>
 
@@ -131,7 +135,7 @@ const Register = ({ navigation }: { navigation: any }) => {
                     />
 
                     <Button
-                        bgcolor={theme().colors.primary}
+                        backgroundColor={theme().colors.primary}
                         color={theme().colors.light}
                         text="Register"
                         onPress={() => {
@@ -149,17 +153,27 @@ const Register = ({ navigation }: { navigation: any }) => {
                             ) {
                                 setIsLoading(true);
                                 register(
-                                    firstName,
-                                    lastName,
-                                    email,
+                                    firstName.trim(),
+                                    lastName.trim(),
+                                    email.trim(),
                                     password,
-                                    phone
+                                    getCountryCode(phone, phoneFormatted) +
+                                        " " +
+                                        phone
                                 )
                                     .then(() => {
                                         setIsLoading(false);
+                                        navigation.navigate("Login", {
+                                            registered: true,
+                                        });
                                     })
                                     .catch((error: any) => {
-                                        setError(error.message);
+                                        setError(error.response.data.message);
+                                        if (
+                                            error.response.data.message ===
+                                            undefined
+                                        )
+                                            setError("Something went wrong.");
                                         setShowError(true);
                                         setIsLoading(false);
                                     });
@@ -197,7 +211,9 @@ const Register = ({ navigation }: { navigation: any }) => {
                         </Text>
                         <TouchableOpacity
                             activeOpacity={ActiveOpacity}
-                            onPress={() => navigation.navigate("Login")}>
+                            onPress={() => {
+                                navigation.navigate("Login");
+                            }}>
                             <Text
                                 bold={true}
                                 color={theme().colors.lightBlue}

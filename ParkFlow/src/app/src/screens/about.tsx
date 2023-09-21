@@ -46,7 +46,7 @@ const About = ({ navigation }: { navigation: any }) => {
                     <Button
                         text={"Learn more"}
                         width={200}
-                        style={{ marginTop: 20 }}
+                        style={{ marginTop: 20, marginBottom: 10 }}
                         onPress={() => {
                             Linking.openURL(
                                 "https://www.facebook.com/parkflowbv"

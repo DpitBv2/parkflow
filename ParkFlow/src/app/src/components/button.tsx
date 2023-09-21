@@ -5,7 +5,7 @@ import { theme } from "../util/theme";
 
 interface ButtonProps {
     text: string;
-    width?: number;
+    width?: any;
     height?: number;
     backgroundColor?: string;
     color?: string;
@@ -29,8 +29,8 @@ const Button = ({
                 {
                     ...style,
                     ...styles.button,
-                    height: height,
-                    width: width,
+                    height,
+                    width,
                     backgroundColor,
                 },
             ]}

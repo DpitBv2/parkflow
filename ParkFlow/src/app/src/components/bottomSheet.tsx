@@ -15,15 +15,17 @@ export type BottomSheetProps = {
 export type BottomSheetRefProps = {
     scrollTo: (destination: number) => void;
     state: "closed" | "mid" | "open";
+    translateY: number;
 };
 
 const { height: WindowHeight } = Dimensions.get("window");
 const MaxTranslateY = -WindowHeight + 200;
-const MidTranslateY = -WindowHeight / 4;
+const MidTranslateY = -150;
+const MinTranslateY = 10;
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
     ({ children }, ref) => {
-        const translateY = useSharedValue(-10);
+        const translateY = useSharedValue(10);
 
         const state = useSharedValue<"closed" | "mid" | "open">("closed");
 
@@ -31,11 +33,11 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
             "worklet";
             translateY.value = withSpring(destination, { damping: 10 });
 
-            if (destination === 0) state.value = "closed";
+            if (destination === MinTranslateY) state.value = "closed";
             else if (destination === MidTranslateY) state.value = "mid";
             else state.value = "open";
 
-            // console.log(state.value);
+            console.log(state.value);
         }, []);
 
         useImperativeHandle(
@@ -43,6 +45,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
             () => ({
                 scrollTo,
                 state: state.value,
+                translateY: translateY.value,
             }),
             [scrollTo, state.value]
         );
@@ -53,12 +56,14 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
                 context.value = { y: translateY.value };
             })
             .onUpdate((event: any) => {
+                if (state.value === "closed") return;
                 translateY.value = event.translationY + context.value.y;
                 translateY.value = Math.max(translateY.value, MaxTranslateY);
             })
             .onEnd(() => {
-                if (translateY.value > -WindowHeight / 10) scrollTo(-5);
-                else if (translateY.value > -WindowHeight / 2)
+                // if (translateY.value > -WindowHeight / 10)
+                //     scrollTo(MinTranslateY);
+                if (translateY.value > -WindowHeight / 2)
                     scrollTo(MidTranslateY);
                 else scrollTo(MaxTranslateY);
             });

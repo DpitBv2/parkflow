@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     textContainer: {
         width: "56%",
         justifyContent: "center",
-        marginRight: 10,
+        marginRight: 8,
         marginLeft: -5,
     },
     map: {

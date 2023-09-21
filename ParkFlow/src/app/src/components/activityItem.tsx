@@ -18,12 +18,11 @@ const formatDuration = (ms: number) => {
     const seconds = Math.floor((ms / 1000) % 60);
     const minutes = Math.floor((ms / (1000 * 60)) % 60);
     const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
 
-    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")}`;
+    if (days > 0) return `${days}d ${hours}h ${minutes}m`;
 
-    return formattedTime;
+    return `${hours}h ${minutes}m`;
 };
 
 const ActivityItem = ({
@@ -112,7 +111,8 @@ const ActivityItem = ({
             <Modal
                 visible={isVisible}
                 setVisible={setIsVisible}
-                onClose={() => setIsVisible(false)}>
+                onClose={() => setIsVisible(false)}
+                width={"90%"}>
                 <View>
                     <Text bold fontSize={18}>
                         ParkFlow Spot
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     textContainer: {
         width: "56%",
         justifyContent: "center",
-        marginRight: 5,
+        marginRight: 10,
         marginLeft: -5,
     },
     map: {

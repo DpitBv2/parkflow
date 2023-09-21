@@ -4,7 +4,7 @@ import FAIcon from "react-native-vector-icons/FontAwesome5";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import CustomDrawer from "../components/customDrawer";
 import Text from "../components/text";
-import AboutUs from "../screens/aboutUs";
+import About from "../screens/about";
 import Activity from "../screens/activity";
 import Home from "../screens/home";
 import Shop from "../screens/shop";
@@ -130,8 +130,8 @@ const DrawerNavigator = ({ navigation }: { navigation: any }) => {
                 }}
             />
             <Drawer.Screen
-                name="About Us"
-                component={AboutUs}
+                name="About"
+                component={About}
                 options={{
                     drawerIcon: ({ focused }) => (
                         <View style={styles.icon}>

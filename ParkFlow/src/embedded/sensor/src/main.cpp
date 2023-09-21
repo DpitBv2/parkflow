@@ -18,12 +18,14 @@ void setup()
 {
   Serial.begin(9600);
 
+  Serial.println("Initialzing");
+
   rgb = new Hardware::RGB(A2, A1, A3);
 
-  rgb->light(0, 0, 255);
+  rgb->light(255, 255, 0);
 
-  servo = new Hardware::ServoControl(6);
-  inverseSensvo = new Hardware::ServoControl(3, true);
+  servo = new Hardware::ServoControl(6, true);
+  inverseSensvo = new Hardware::ServoControl(3);
 
   ultrasonicSensor = new Hardware::UltrasonicSensor(7, 8);
   ultrasonicSensor2 = new Hardware::UltrasonicSensor(5, 4);
@@ -32,7 +34,7 @@ void setup()
 
   rgb->light(255, 0, 0);
 
-  delay(2000);
+  Serial.println("Working");
 }
 
 double getAverage()
@@ -42,33 +44,44 @@ double getAverage()
 
 void loop()
 {
-  String data = loRa->recieveData();
-  if (data != "")
-  {
-    Serial.println(data);
+  // String data = loRa->recieveData();
+  // if (data != "")
+  // {
+  //   Serial.println(data);
 
-    if (data == "CLOSE")
-    {
-      if (getAverage() < CLOSE_DISTANCE)
-        loRa->sendData("REJECT");
-      else
-      {
-        loRa->sendData("ACCEPT");
+  //   if (data == "CLOSE")
+  //   {
+  //     if (getAverage() < CLOSE_DISTANCE)
+  //       loRa->sendData("REJECT");
+  //     else
+  //     {
+  //       loRa->sendData("ACCEPT");
 
-        servo->write(90);
-        inverseSensvo->write(90);
+  //       servo->write(90);
+  //       inverseSensvo->write(90);
 
-        rgb->light(255, 0, 0);
-      }
-    }
-    else if (data == "OPEN")
-    {
-      loRa->sendData("ACCEPT");
+  //       rgb->light(255, 0, 0);
+  //     }
+  //   }
+  //   else if (data == "OPEN")
+  //   {
+  //     loRa->sendData("ACCEPT");
 
-      servo->write(0);
-      inverseSensvo->write(0);
+  //     servo->write(0);
+  //     inverseSensvo->write(0);
 
-      rgb->light(0, 255, 0);
-    }
-  }
+  //     rgb->light(0, 255, 0);
+  //   }
+  // }
+  servo->write(0);
+  inverseSensvo->write(0);
+
+  delay(10000);
+
+  servo->write(80);
+  inverseSensvo->write(80);
+
+  delay(10000);
+
+  // delay(1000);
 }

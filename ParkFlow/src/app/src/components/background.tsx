@@ -2,7 +2,7 @@ import { ImageBackground, StyleSheet, View } from "react-native";
 
 const Background = ({
     children,
-    opacity = 0.3,
+    opacity = 0.25,
     borderRadius = 0,
     padding = 0,
     flip,

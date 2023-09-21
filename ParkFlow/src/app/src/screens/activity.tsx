@@ -1,5 +1,3 @@
-import * as Location from "expo-location";
-import { useEffect } from "react";
 import { FlatList, StyleSheet, View, ViewToken } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
@@ -9,12 +7,12 @@ import MenuButton from "../components/menuButton";
 import Text from "../components/text";
 import { theme } from "../util/theme";
 
-const data = new Array(25).fill(0).map((_, index) => ({
+const data = new Array(10).fill(0).map((_, index) => ({
     id: index,
     street: "Bulevardul Alexandru Vlahuta 63",
     country: "Romania",
     city: "Brasov",
-    startDate: new Date(),
+    startDate: new Date("2023-09-03"),
     endDate: new Date("2023-09-03"),
     price: 19.99,
     longitude: 25.630817357450724,
@@ -26,19 +24,17 @@ const data = new Array(25).fill(0).map((_, index) => ({
 const Activity = ({ navigation }: { navigation: any }) => {
     const viewableItems = useSharedValue<ViewToken[]>([]);
 
-    const days = 14;
-    const time = 200;
-    const money = 100;
-
-    useEffect(() => {
-        (async () => {
-            let adress = await Location.reverseGeocodeAsync({
-                latitude: 45.643762029499506,
-                longitude: 25.630817357450724,
-            });
-            console.log(adress);
-        })();
-    }, []);
+    const days = data
+        .map((item) => item.endDate.getDate() - item.startDate.getDate())
+        .reduce((a, b) => a + b, 0);
+    const hours = data.reduce((acc, item) => {
+        const start = item.startDate.getTime();
+        const end = item.endDate.getTime();
+        const diffInMilliseconds = end - start;
+        const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+        return acc + diffInHours;
+    }, 0);
+    const money = data.reduce((acc, item) => acc + item.price, 0);
 
     return (
         <Background>
@@ -61,11 +57,11 @@ const Activity = ({ navigation }: { navigation: any }) => {
                                 alignItems: "center",
                                 marginTop: 5,
                             }}>
-                            <Text fontSize={15}>You used ParkFlow</Text>
+                            <Text fontSize={15}>You used ParkFlow </Text>
                             <Text fontSize={15} bold>
-                                {" " + days + " "}
+                                {data.length}
                             </Text>
-                            <Text fontSize={15}>times.</Text>
+                            <Text fontSize={15}> times.</Text>
                         </View>
                         <View
                             style={{
@@ -84,7 +80,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                                 Saved
                             </Text>
                             <Text fontSize={15} bold>
-                                {" " + time + " minutes"}
+                                {" " + hours + " hours"}
                             </Text>
                         </View>
                         <View
@@ -104,7 +100,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                                 Spent
                             </Text>
                             <Text fontSize={15} bold>
-                                {" LEI " + time}
+                                {" LEI " + money.toFixed(2)}
                             </Text>
                         </View>
                     </View>

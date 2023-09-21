@@ -15,6 +15,7 @@ interface ModalProps {
     setVisible: (visible: boolean) => void;
     style?: any;
     onClose?: () => void;
+    width?: any;
 }
 
 const Modal = ({
@@ -23,6 +24,7 @@ const Modal = ({
     setVisible,
     style,
     onClose,
+    width,
 }: ModalProps) => {
     return (
         <RNModal
@@ -45,7 +47,11 @@ const Modal = ({
                             ...style,
                         }}>
                         <TouchableWithoutFeedback>
-                            <View style={{ ...styles.modal }}>
+                            <View
+                                style={[
+                                    styles.modal,
+                                    width !== undefined ? { width } : {},
+                                ]}>
                                 <TouchableOpacity
                                     activeOpacity={ActiveOpacity}
                                     style={styles.iconContainer}
@@ -77,7 +83,6 @@ const styles = StyleSheet.create({
     modal: {
         borderRadius: 20,
         padding: 20,
-        // alignItems: "center",
         shadowOffset: {
             width: 0,
             height: 2,

@@ -72,6 +72,10 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     const mapRef = createRef<MapView>();
 
+    // console.log(initialRegion);
+    // console.log(sensors);
+
+    // fix loading
     if (initialRegion === null || sensors === null) return <Loading />;
 
     const markers = () => {
@@ -126,6 +130,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                 rotateEnabled={false}
                 onRegionChange={setCurrentRegion}
                 moveOnMarkerPress={false}
+                showsCompass={false}
                 mapType="standard">
                 {markers()}
             </MapView>

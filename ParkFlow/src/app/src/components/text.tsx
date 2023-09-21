@@ -12,6 +12,7 @@ interface TextProps {
     center?: boolean;
     numberOfLines?: number;
     overflow?: boolean;
+    justify?: boolean;
 }
 
 const Text = ({
@@ -24,6 +25,7 @@ const Text = ({
     center = false,
     numberOfLines,
     overflow = false,
+    justify = false,
 }: TextProps) => {
     return (
         <DefaultText
@@ -37,6 +39,7 @@ const Text = ({
                     letterSpacing: LetterSpacing,
                 },
                 center ? { textAlign: "center" } : {},
+                justify ? { textAlign: "justify" } : {},
                 inverted
                     ? { color: theme().colors.light }
                     : { color: theme().colors.dark },

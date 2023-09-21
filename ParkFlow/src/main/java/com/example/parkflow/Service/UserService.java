@@ -1,9 +1,11 @@
 package com.example.parkflow.Service;
 
 import com.example.parkflow.Domain.Authority;
+import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Domain.User;
 import com.example.parkflow.Utils.ResponseException;
 
+import java.util.List;
 import java.util.Set;
 
 public interface UserService {
@@ -28,4 +30,6 @@ public interface UserService {
     void changeUserRoleByEmail(String email, String newRole) throws ResponseException;
 
     String getUserRoleByEmail(String email) throws ResponseException;
+
+    List<Reservation> getUserReservations(Long userId);
 }

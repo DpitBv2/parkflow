@@ -65,6 +65,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner")
     private Set<Sensor> ownedSensors = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Reservation> reservations = new HashSet<>();
+
     public User() {
     }
 

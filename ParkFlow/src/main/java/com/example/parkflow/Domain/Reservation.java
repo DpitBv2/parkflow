@@ -13,13 +13,15 @@ public class Reservation {
     private Long id;
 
     private Long sensorId;
-
     private Long userId;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
     private BigDecimal cost;
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
 
     public Reservation() {
     }

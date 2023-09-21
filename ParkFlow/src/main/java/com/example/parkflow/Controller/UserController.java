@@ -2,6 +2,7 @@ package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.UserDTO;
 import com.example.parkflow.Domain.Authority;
+import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Security.AuthenticationUtils;
 import com.example.parkflow.Service.UserService;
 import com.example.parkflow.Utils.ResponseException;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -150,4 +152,18 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    /**
+     * {@code GET /api/v1/user/reservations/{userId}} : Get reservations made by a user
+     * @param userId : User ID
+     * @return status {@code 200 (OK)} and body {@link List<Reservation>}
+     */
+    @GetMapping("/reservations/{userId}")
+    public ResponseEntity<?> getUserReservations(@PathVariable Long userId) {
+        try {
+            List<Reservation> userReservations = userService.getUserReservations(userId);
+            return ResponseEntity.ok(userReservations);
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }   
 }

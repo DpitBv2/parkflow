@@ -1,8 +1,10 @@
 package com.example.parkflow.Service.Impl;
 
 import com.example.parkflow.Domain.Authority;
+import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Domain.User;
 import com.example.parkflow.Repository.AuthorityRepository;
+import com.example.parkflow.Repository.ReservationRepository;
 import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Security.PasswordEncoder;
 import com.example.parkflow.Service.UserService;
@@ -20,6 +22,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private Authority userAuthority;
+
+    private ReservationRepository reservationRepository;
 
     @Autowired
     public UserServiceImpl(
@@ -137,5 +141,9 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new ResponseException("User has no valid roles.", HttpStatus.BAD_REQUEST);
         }
+    }
+    @Override
+    public List<Reservation> getUserReservations(Long userId) {
+        return reservationRepository.findByUserId(userId);
     }
 }

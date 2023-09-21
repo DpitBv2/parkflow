@@ -19,6 +19,7 @@ import { SensorContext } from "../context/sensorContext";
 import { MapDeltaInitial } from "../util/constants";
 import { theme } from "../util/theme";
 import Loading from "./loading";
+// import { decode } from "@mapbox/polyline";
 
 const Home = ({ navigation }: { navigation: any }) => {
     const [initialRegion, setInitialRegion] = useState<any>(null);

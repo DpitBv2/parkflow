@@ -78,8 +78,8 @@ void loop()
 
   delay(10000);
 
-  servo->write(80);
-  inverseSensvo->write(80);
+  servo->write(120);
+  inverseSensvo->write(120);
 
   delay(10000);
 

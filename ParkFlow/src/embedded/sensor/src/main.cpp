@@ -73,15 +73,18 @@ void loop()
   //     rgb->light(0, 255, 0);
   //   }
   // }
+
+  delay(60000);
+  rgb->light(0, 255, 0);
   servo->write(0);
   inverseSensvo->write(0);
 
-  delay(10000);
+  // delay(10000);
 
-  servo->write(120);
-  inverseSensvo->write(120);
+  // servo->write(120);
+  // inverseSensvo->write(120);
 
-  delay(10000);
+  // delay(10000);
 
   // delay(1000);
 }

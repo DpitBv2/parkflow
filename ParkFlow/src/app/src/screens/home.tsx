@@ -12,6 +12,7 @@ import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { IconButton } from "react-native-paper";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
+import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
 import Button from "../components/button";
 import MenuButton from "../components/menuButton";
@@ -31,20 +32,31 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     const [sensors, setSensors] = useState<any>(null);
     const [currentSensor, setCurrentSensor] = useState<any>(null);
+    const [reserved, setReserved] = useState<boolean>(false);
+    const [parked, setParked] = useState<boolean>(false);
+
+    const [seconds, setSeconds] = useState<number>(0);
 
     const bottomSheetRef = useRef<BottomSheetRefProps>(null);
-    const onPressOpen = useCallback(() => {
-        bottomSheetRef.current?.scrollTo(-150);
+
+    const onPressOpen = useCallback((higher: boolean = false) => {
+        bottomSheetRef.current?.scrollTo(higher ? -190 : -150);
     }, []);
     const onPressClose = useCallback(() => {
         bottomSheetRef.current?.scrollTo(10);
     }, []);
 
     const { userToken } = useContext(AuthContext);
-    const { getClosest, getByID } = useContext(SensorContext);
+    const { getClosest, reserve, park } = useContext(SensorContext);
 
     const [distance, setDistance] = useState<number>(0);
     const [visible, setVisible] = useState<boolean>(false);
+
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         if (reserved) setSeconds(seconds + 1);
+    //     }, 1000);
+    // }, []);
 
     // TODO: make initial region change based on user location
 
@@ -82,7 +94,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     const mapRef = createRef<MapView>();
 
-    if (sensors === null) return <Loading />;
+    if (initialRegion === null || sensors === null) return <Loading />;
 
     const markers = () => {
         return (
@@ -102,7 +114,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 key={key}
                                 source={require("../../assets/images/pin.png")}
                                 style={{
-                                    height: 40,
+                                    height: 50,
                                     aspectRatio: 1,
                                 }}
                             />
@@ -132,7 +144,11 @@ const Home = ({ navigation }: { navigation: any }) => {
                         origin={initialRegion}
                         destination={currentSensor}
                         strokeWidth={5}
-                        strokeColor={theme().colors.primary}
+                        strokeColor={
+                            reserved
+                                ? theme().colors.succes
+                                : theme().colors.primary
+                        }
                         apikey="AIzaSyAazdNjj3DF3yNBf80UqbmN7oVKIGOyEUE"
                         mode={"DRIVING"}
                         onReady={(result: any) => {
@@ -182,7 +198,9 @@ const Home = ({ navigation }: { navigation: any }) => {
                 />
             </View>
 
-            <BottomSheet ref={bottomSheetRef}>
+            <BottomSheet
+                ref={bottomSheetRef}
+                midTranslateY={reserved ? -190 : -150}>
                 <View style={styles.bottomSheet}>
                     {currentSensor !== null && (
                         <View>
@@ -220,7 +238,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                     }}>
                                     <Text fontSize={18}>LEI </Text>
                                     <Text fontSize={18} bold>
-                                        19.99/hour
+                                        2.50/hour
                                         {/* {currentSensor.reservationPricePerHour + "/hour"} */}
                                     </Text>
                                     <Text fontSize={18}> parking</Text>
@@ -257,15 +275,80 @@ const Home = ({ navigation }: { navigation: any }) => {
                                     </Text>
                                 </View>
                             </View>
+                            {reserved && (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        width: "100%",
+                                        marginTop: 15,
+                                    }}>
+                                    <MIcon
+                                        name="clock"
+                                        size={20}
+                                        color={theme().colors.primary}
+                                    />
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            marginLeft: 5,
+                                            bottom: 3,
+                                        }}>
+                                        <Text fontSize={18}>Duration: </Text>
+                                        <Text fontSize={18} bold>
+                                            00:00
+                                        </Text>
+                                    </View>
+                                </View>
+                            )}
                             <View style={styles.line} />
                             <View style={{ alignItems: "center" }}>
-                                <Button
-                                    text={"Reserve / Park"}
-                                    onPress={() => {
-                                        setVisible(true);
-                                    }}
-                                    width={"100%"}
-                                />
+                                {!reserved ? (
+                                    <Button
+                                        text={"Reserve / Park"}
+                                        onPress={() => {
+                                            setVisible(true);
+                                        }}
+                                        width={"100%"}
+                                    />
+                                ) : !parked ? (
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Button
+                                            text={"Park"}
+                                            backgroundColor={
+                                                theme().colors.succes
+                                            }
+                                            onPress={() => {
+                                                setParked(true);
+                                            }}
+                                            width={"50%"}
+                                            style={{ marginRight: 10 }}
+                                        />
+                                        <Button
+                                            text={"Cancel"}
+                                            backgroundColor={
+                                                theme().colors.danger
+                                            }
+                                            onPress={() => {
+                                                setReserved(false);
+                                                onPressOpen();
+                                                setSeconds(0);
+                                            }}
+                                            width={"50%"}
+                                        />
+                                    </View>
+                                ) : (
+                                    <Button
+                                        text={"Cancel"}
+                                        backgroundColor={theme().colors.danger}
+                                        onPress={() => {
+                                            setReserved(false);
+                                            setParked(false);
+                                            onPressOpen();
+                                            setSeconds(0);
+                                        }}
+                                        width={"100%"}
+                                    />
+                                )}
                             </View>
                         </View>
                     )}
@@ -287,14 +370,19 @@ const Home = ({ navigation }: { navigation: any }) => {
                     <Button
                         text="Reserve"
                         onPress={() => {
-                            getByID(userToken, currentSensor.id)
-                                .then((res: any) => {
-                                    setCurrentSensor(res);
-                                    setVisible(false);
-                                })
-                                .catch((error: any) => {
-                                    console.log(error);
-                                });
+                            setVisible(false);
+                            console.log(currentSensor.id);
+                            // reserve(userToken, currentSensor.id)
+                            //     .then((res: any) => {
+                            //         setCurrentSensor(res);
+                            //         console.log(res);
+                            //         setReserved(true);
+                            //     })
+                            //     .catch((error: any) => {
+                            //         console.log(error);
+                            //     });
+                            setReserved(true);
+                            onPressOpen(true);
                         }}
                         style={{ marginTop: 30 }}
                         width={125}
@@ -304,7 +392,35 @@ const Home = ({ navigation }: { navigation: any }) => {
                         text="Park"
                         onPress={() => {
                             setVisible(false);
-                            navigation.goBack();
+                            setReserved(true);
+                            setParked(true);
+                            onPressOpen(true);
+
+                            // reserve(userToken, currentSensor.id)
+                            //     .then((res: any) => {
+                            //         setCurrentSensor(res);
+                            //         console.log(res);
+                            //         setReserved(true);
+
+                            //         park(userToken, currentSensor.id)
+                            //             .then((res: any) => {
+                            //                 console.log(res);
+                            //             })
+                            //             .catch((error: any) => {
+                            //                 console.log(error);
+                            //             });
+                            //     })
+                            //     .catch((error: any) => {
+                            //         console.log(error);
+                            //     });
+                            // else
+                            // park(userToken, currentSensor.id)
+                            //     .then((res: any) => {
+                            //         console.log(res);
+                            //     })
+                            //     .catch((error: any) => {
+                            //         console.log(error);
+                            //     });
                         }}
                         style={{ marginTop: 30, marginLeft: 10 }}
                         width={125}
@@ -350,7 +466,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 1,
         backgroundColor: theme().colors.grey,
-        marginVertical: 20,
+        marginVertical: 17,
     },
     iconContainer: {
         height: 25,

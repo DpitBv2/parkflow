@@ -44,14 +44,14 @@ namespace Hardware
         ServoControl(int pin)
         {
             servo.attach(pin);
-            write(0);
+            write(180);
         }
 
         ServoControl(int pin, bool reverse)
         {
             servo.attach(pin);
             this->reverse = reverse;
-            write(0);
+            write(180);
         }
 
         int calculate(int angle)

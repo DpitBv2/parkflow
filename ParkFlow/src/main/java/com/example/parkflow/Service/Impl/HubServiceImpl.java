@@ -2,8 +2,10 @@ package com.example.parkflow.Service.Impl;
 
 import com.example.parkflow.Domain.Hub;
 import com.example.parkflow.Domain.Sensor;
+import com.example.parkflow.Domain.User;
 import com.example.parkflow.Repository.HubRepository;
 import com.example.parkflow.Repository.SensorRepository;
+import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Service.HubService;
 import com.example.parkflow.Utils.ResponseException;
 import jakarta.transaction.Transactional;
@@ -22,18 +24,29 @@ import static com.example.parkflow.Utils.Constants.PAGE_SIZE;
 public class HubServiceImpl implements HubService {
     private final HubRepository hubRepository;
     private final SensorRepository sensorRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public HubServiceImpl(HubRepository hubRepository, SensorRepository sensorRepository) {
+    public HubServiceImpl(HubRepository hubRepository, SensorRepository sensorRepository, UserRepository userRepository) {
         this.hubRepository = hubRepository;
         this.sensorRepository = sensorRepository;
+        this.userRepository = userRepository;
     }
     private void authorizeCustomerOrAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
-            throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            System.out.println("Principal: " + principal);
+            if (principal != null) {
+                User user = userRepository.findByEmail(principal.toString()).orElse(null);
+                System.out.println("User: " + user.getUsername() + " has authorities: " + user.getAuthorities());
+                if (user.getAuthorities().stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
+                    return;
+                }
+            }
         }
+        throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
     }
     @Override
     public Hub create(double latitude, double longitude) {

@@ -11,6 +11,7 @@ import Background from "./background";
 
 export type BottomSheetProps = {
     children: any;
+    midTranslateY?: number;
 };
 export type BottomSheetRefProps = {
     scrollTo: (destination: number) => void;
@@ -20,11 +21,10 @@ export type BottomSheetRefProps = {
 
 const { height: WindowHeight } = Dimensions.get("window");
 const MaxTranslateY = -WindowHeight + 200;
-const MidTranslateY = -150;
 const MinTranslateY = 10;
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
-    ({ children }, ref) => {
+    ({ children, midTranslateY = -150 }, ref) => {
         const translateY = useSharedValue(10);
 
         const state = useSharedValue<"closed" | "mid" | "open">("closed");
@@ -34,10 +34,8 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
             translateY.value = withSpring(destination, { damping: 10 });
 
             if (destination === MinTranslateY) state.value = "closed";
-            else if (destination === MidTranslateY) state.value = "mid";
+            else if (destination === midTranslateY) state.value = "mid";
             else state.value = "open";
-
-            console.log(state.value);
         }, []);
 
         useImperativeHandle(
@@ -64,7 +62,7 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
                 // if (translateY.value > -WindowHeight / 10)
                 //     scrollTo(MinTranslateY);
                 if (translateY.value > -WindowHeight / 2)
-                    scrollTo(MidTranslateY);
+                    scrollTo(midTranslateY);
                 else scrollTo(MaxTranslateY);
             });
 

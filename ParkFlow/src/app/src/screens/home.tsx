@@ -43,7 +43,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         bottomSheetRef.current?.scrollTo(higher ? -190 : -150);
     }, []);
     const onPressClose = useCallback(() => {
-        bottomSheetRef.current?.scrollTo(10);
+        bottomSheetRef.current?.scrollTo(50);
     }, []);
 
     const { userToken } = useContext(AuthContext);
@@ -52,13 +52,16 @@ const Home = ({ navigation }: { navigation: any }) => {
     const [distance, setDistance] = useState<number>(0);
     const [visible, setVisible] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         if (reserved) setSeconds(seconds + 1);
-    //     }, 1000);
-    // }, []);
-
     // TODO: make initial region change based on user location
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSeconds((prevSeconds) => prevSeconds + 1);
+        }, 1000);
+        // console.log("lol");
+
+        return () => clearInterval(interval);
+    }, [parked]);
 
     useEffect(() => {
         const getLocation = async () => {
@@ -115,7 +118,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 source={require("../../assets/images/pin.png")}
                                 style={{
                                     height: 50,
-                                    aspectRatio: 1,
+                                    width: 47,
                                 }}
                             />
                         </Marker>
@@ -157,12 +160,12 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 {
                                     latitude: currentSensor.latitude,
                                     longitude: currentSensor.longitude,
-                                    latitudeDelta: MapDeltaInitial * 2,
-                                    longitudeDelta: MapDeltaInitial * 2,
+                                    latitudeDelta: MapDeltaInitial / 5,
+                                    longitudeDelta: MapDeltaInitial / 5,
                                 },
                                 1000
                             );
-                            onPressOpen();
+                            onPressOpen(parked);
                         }}
                     />
                 )}
@@ -295,7 +298,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                         }}>
                                         <Text fontSize={18}>Duration: </Text>
                                         <Text fontSize={18} bold>
-                                            00:00
+                                            {seconds}
                                         </Text>
                                     </View>
                                 </View>
@@ -371,7 +374,6 @@ const Home = ({ navigation }: { navigation: any }) => {
                         text="Reserve"
                         onPress={() => {
                             setVisible(false);
-                            console.log(currentSensor.id);
                             // reserve(userToken, currentSensor.id)
                             //     .then((res: any) => {
                             //         setCurrentSensor(res);
@@ -381,6 +383,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                             //     .catch((error: any) => {
                             //         console.log(error);
                             //     });
+                            setSeconds(0);
                             setReserved(true);
                             onPressOpen(true);
                         }}
@@ -395,6 +398,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                             setReserved(true);
                             setParked(true);
                             onPressOpen(true);
+                            setSeconds(0);
 
                             // reserve(userToken, currentSensor.id)
                             //     .then((res: any) => {

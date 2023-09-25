@@ -56,8 +56,8 @@ const ActivityItem = ({
             <>
                 <Marker
                     coordinate={{
-                        latitude: item.latitude,
-                        longitude: item.longitude,
+                        latitude: item.sensor.latitude,
+                        longitude: item.sensor.longitude,
                     }}
                 />
             </>
@@ -75,37 +75,37 @@ const ActivityItem = ({
                 <Logo style={{ marginLeft: -10, height: 40 }} />
                 <View style={styles.textContainer}>
                     <Text fontSize={15} overflow>
-                        {item.street}
+                        {item.sensor.address.street}
                     </Text>
                     <Text fontSize={12}>
-                        {item.startDate.getDate() +
+                        {item.startTime.getDate() +
                             " " +
-                            item.startDate.toLocaleString("default", {
+                            item.startTime.toLocaleString("default", {
                                 month: "short",
                             }) +
                             ", " +
-                            String(item.startDate.getHours()).padStart(2, "0") +
+                            String(item.startTime.getHours()).padStart(2, "0") +
                             ":" +
-                            String(item.startDate.getMinutes()).padStart(
+                            String(item.startTime.getMinutes()).padStart(
                                 2,
                                 "0"
                             ) +
                             " - " +
-                            (item.startDate.getDate() !== item.endDate.getDate()
-                                ? item.endDate.getDate() +
+                            (item.startTime.getDate() !== item.endTime.getDate()
+                                ? item.endTime.getDate() +
                                   " " +
-                                  item.endDate.toLocaleString("default", {
+                                  item.endTime.toLocaleString("default", {
                                       month: "short",
                                   }) +
                                   ", "
                                 : "") +
-                            String(item.endDate.getHours()).padStart(2, "0") +
+                            String(item.endTime.getHours()).padStart(2, "0") +
                             ":" +
-                            String(item.endDate.getMinutes()).padStart(2, "0")}
+                            String(item.endTime.getMinutes()).padStart(2, "0")}
                     </Text>
                 </View>
                 <Text bold fontSize={18}>
-                    LEI {item.price}
+                    LEI {item.cost}
                 </Text>
             </TouchableOpacity>
             <Modal
@@ -118,19 +118,19 @@ const ActivityItem = ({
                         ParkFlow Spot
                     </Text>
                     <Text style={{ marginTop: 10 }}>
-                        {Weekdays[item.startDate.getDay()] +
+                        {Weekdays[item.startTime.getDay()] +
                             ", " +
-                            item.startDate.getDate() +
+                            item.startTime.getDate() +
                             " " +
-                            item.startDate.toLocaleString("default", {
+                            item.startTime.toLocaleString("default", {
                                 month: "short",
                             }) +
                             ", " +
-                            item.startDate.getFullYear() +
+                            item.startTime.getFullYear() +
                             " - " +
-                            item.city +
+                            item.sensor.address.city +
                             ", " +
-                            item.country}
+                            item.sensor.address.country}
                     </Text>
                     <Text overflow>{item.street}</Text>
                     <MapView
@@ -144,8 +144,8 @@ const ActivityItem = ({
                         zoomEnabled={false}
                         mapType="standard"
                         initialRegion={{
-                            latitude: item.latitude,
-                            longitude: item.longitude,
+                            latitude: item.sensor.address.latitude,
+                            longitude: item.sensor.address.longitude,
                             latitudeDelta: MapDeltaInitial / 2,
                             longitudeDelta: MapDeltaInitial / 2,
                         }}
@@ -153,28 +153,28 @@ const ActivityItem = ({
                         {marker()}
                     </MapView>
                     <Text fontSize={16}>
-                        {item.startDate.getDate() +
+                        {item.startTime.getDate() +
                             " " +
-                            item.startDate.toLocaleString("default", {
+                            item.startTime.toLocaleString("default", {
                                 month: "short",
                             }) +
                             ", " +
-                            String(item.startDate.getHours()).padStart(2, "0") +
+                            String(item.startTime.getHours()).padStart(2, "0") +
                             ":" +
-                            String(item.startDate.getMinutes()).padStart(
+                            String(item.startTime.getMinutes()).padStart(
                                 2,
                                 "0"
                             ) +
                             " - " +
-                            item.endDate.getDate() +
+                            item.endTime.getDate() +
                             " " +
-                            item.endDate.toLocaleString("default", {
+                            item.endTime.toLocaleString("default", {
                                 month: "short",
                             }) +
                             ", " +
-                            String(item.endDate.getHours()).padStart(2, "0") +
+                            String(item.endTime.getHours()).padStart(2, "0") +
                             ":" +
-                            String(item.endDate.getMinutes()).padStart(2, "0")}
+                            String(item.endTime.getMinutes()).padStart(2, "0")}
                     </Text>
                     <View
                         style={{
@@ -191,8 +191,8 @@ const ActivityItem = ({
                             <Text fontSize={16}>Duration: </Text>
                             <Text fontSize={16} bold>
                                 {formatDuration(
-                                    item.endDate.getTime() -
-                                        item.startDate.getTime()
+                                    item.endTime.getTime() -
+                                        item.startTime.getTime()
                                 )}
                             </Text>
                         </View>
@@ -224,7 +224,7 @@ const ActivityItem = ({
                             </View>
 
                             <Text fontSize={16} bold style={{ marginLeft: 5 }}>
-                                {item.payment}
+                                {item.paymentMethod}
                             </Text>
 
                             <View
@@ -232,7 +232,7 @@ const ActivityItem = ({
                                     marginLeft: "auto",
                                 }}>
                                 <Text bold fontSize={18}>
-                                    LEI {item.price}
+                                    LEI {item.cost}
                                 </Text>
                             </View>
                         </View>

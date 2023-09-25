@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -151,5 +152,21 @@ public class UserServiceImpl implements UserService {
         List<Reservation> reservationList = reservationRepository.findByUserId(userId);
         reservationList.sort(Comparator.comparing(Reservation::getId));
         return reservationList.subList(page * Constants.PAGE_SIZE, Math.min((page + 1) * Constants.PAGE_SIZE, reservationList.size()));
+    }
+
+    @Override
+    public int getUserReservationsCount(Long userId) {
+        List<Reservation> reservationList = reservationRepository.findByUserId(userId);
+        return reservationList.size();
+    }
+
+    @Override
+    public BigDecimal getUserReservationsCost(Long userId) {
+        List<Reservation> reservationList = reservationRepository.findByUserId(userId);
+        BigDecimal cost = BigDecimal.ZERO;
+        for (Reservation reservation : reservationList) {
+            cost = cost.add(reservation.getCost());
+        }
+        return cost;
     }
 }

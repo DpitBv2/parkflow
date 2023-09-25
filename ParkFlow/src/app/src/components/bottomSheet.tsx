@@ -21,7 +21,7 @@ export type BottomSheetRefProps = {
 
 const { height: WindowHeight } = Dimensions.get("window");
 const MaxTranslateY = -WindowHeight + 200;
-const MinTranslateY = 10;
+const MinTranslateY = 50;
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
     ({ children, midTranslateY = -150 }, ref) => {

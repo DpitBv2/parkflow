@@ -1,6 +1,7 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./src/context/authContext";
+import { ReservationProvider } from "./src/context/reservationContext";
 import { SensorProvider } from "./src/context/sensorContext";
 import AppNavigation from "./src/navigation/appNavigation";
 import { theme } from "./src/util/theme";
@@ -24,7 +25,9 @@ const App = () => {
             <PaperProvider theme={theme()}>
                 <SensorProvider>
                     <AuthProvider>
-                        <AppNavigation />
+                        <ReservationProvider>
+                            <AppNavigation />
+                        </ReservationProvider>
                     </AuthProvider>
                 </SensorProvider>
             </PaperProvider>

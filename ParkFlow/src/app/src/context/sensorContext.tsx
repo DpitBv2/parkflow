@@ -1,6 +1,10 @@
 import { createContext, useState } from "react";
 import api from "../util/api";
-import { GetByIdURL, GetClosestSensorsURL, ReserveURL } from "../util/links";
+import {
+    GetClosestSensorsURL,
+    GetSensorByIdURL,
+    ReserveSensorURL,
+} from "../util/links";
 
 export const SensorContext = createContext<any>(null);
 
@@ -36,7 +40,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
 
     const getByID = (token: string, id: number) => {
         return new Promise((resolve, reject) => {
-            api.get(GetByIdURL + id, {
+            api.get(GetSensorByIdURL + id, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -52,7 +56,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
 
     const reserve = (token: string, id: number) => {
         return new Promise((resolve, reject) => {
-            api.post(ReserveURL, {
+            api.post(ReserveSensorURL, {
                 params: {
                     sensorId: id,
                 },
@@ -75,7 +79,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
         paymentMethod: string
     ) => {
         return new Promise((resolve, reject) => {
-            api.put(ReserveURL, {
+            api.put(ReserveSensorURL, {
                 params: {
                     sensorId: id,
                     paymentMethod,
@@ -95,7 +99,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
 
     const park = (token: string, id: number) => {
         return new Promise((resolve, reject) => {
-            api.put(ReserveURL + id, {
+            api.put(ReserveSensorURL + id, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

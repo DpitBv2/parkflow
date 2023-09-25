@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View, ViewToken } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
@@ -5,36 +6,48 @@ import ActivityItem from "../components/activityItem";
 import Background from "../components/background";
 import MenuButton from "../components/menuButton";
 import Text from "../components/text";
+import { AuthContext } from "../context/authContext";
+import { ReservationContext } from "../context/reservationContext";
 import { theme } from "../util/theme";
-
-const data = new Array(10).fill(0).map((_, index) => ({
-    id: index,
-    street: "Bulevardul Alexandru Vlahuta 63",
-    country: "Romania",
-    city: "Brasov",
-    startDate: new Date("2023-09-03"),
-    endDate: new Date("2023-09-03"),
-    price: 19.99,
-    longitude: 25.630817357450724,
-    latitude: 45.643762029499506,
-    payment: "7791",
-    status: "inactive",
-}));
 
 const Activity = ({ navigation }: { navigation: any }) => {
     const viewableItems = useSharedValue<ViewToken[]>([]);
 
-    const days = data
-        .map((item) => item.endDate.getDate() - item.startDate.getDate())
-        .reduce((a, b) => a + b, 0);
-    const hours = data.reduce((acc, item) => {
-        const start = item.startDate.getTime();
-        const end = item.endDate.getTime();
-        const diffInMilliseconds = end - start;
-        const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
-        return acc + diffInHours;
-    }, 0);
-    const money = data.reduce((acc, item) => acc + item.price, 0);
+    const [reservations, setReservations] = useState<any[]>([]);
+    const [page, setPage] = useState<number>(0);
+    const [uses, setUses] = useState<number>(0);
+    const [time, setTime] = useState<number>(0);
+    const [money, setMoney] = useState<number>(0);
+
+    const { getAll } = useContext(ReservationContext);
+    const { userToken } = useContext(AuthContext);
+
+    useEffect(() => {
+        const getActivity = async () => {
+            await getAll(userToken, page)
+                .then((response: any) => {
+                    response = response.map((item: any) => {
+                        item.startTime = new Date(item.startTime);
+                        item.endTime = new Date(item.endTime);
+                        return item;
+                    });
+
+                    console.log(response);
+                    setReservations([...reservations, ...response]);
+
+                    setUses();
+                    setTime(1);
+                    setMoney(
+                        reservations.reduce((acc, item) => acc + item.cost, 0)
+                    );
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                });
+        };
+
+        getActivity();
+    }, []);
 
     return (
         <Background>
@@ -59,7 +72,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                             }}>
                             <Text fontSize={15}>You used ParkFlow </Text>
                             <Text fontSize={15} bold>
-                                {data.length}
+                                {reservations.length}
                             </Text>
                             <Text fontSize={15}> times.</Text>
                         </View>
@@ -80,7 +93,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                                 Saved
                             </Text>
                             <Text fontSize={15} bold>
-                                {" " + hours + " hours"}
+                                {" " + time + " hours"}
                             </Text>
                         </View>
                         <View
@@ -105,7 +118,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                         </View>
                     </View>
                 </View>
-                {data.length === 0 && (
+                {reservations.length === 0 && (
                     <View style={{ marginTop: 150 }}>
                         <Text bold fontSize={18} center>
                             No actvity yet.{"\n"}Reserve a parking spot!
@@ -113,7 +126,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                     </View>
                 )}
                 <FlatList
-                    data={data}
+                    data={reservations}
                     contentContainerStyle={{ paddingVertical: 0 }}
                     onViewableItemsChanged={({ viewableItems: vItems }) => {
                         viewableItems.value = vItems;

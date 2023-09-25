@@ -162,7 +162,8 @@ public class SensorServiceImpl implements SensorService {
             BigDecimal reservationCost = calculateReservationCost(sensorId, reservationHours + 1);
             LocalDateTime reservationStartTime = sensor.getReservationStartTimestamp();
             LocalDateTime reservationEndTime = LocalDateTime.now();
-            Reservation reservation = new Reservation(sensorId, userId, reservationStartTime, reservationEndTime, reservationCost, paymentMethod);
+
+            Reservation reservation = new Reservation(sensor, userId, reservationStartTime, reservationEndTime, reservationCost, paymentMethod);
             reservationRepository.save(reservation);
 
             sensor.setReservationStartTimestamp(null);

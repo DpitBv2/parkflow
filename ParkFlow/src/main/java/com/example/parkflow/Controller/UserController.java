@@ -174,5 +174,30 @@ public class UserController {
         } catch (ResponseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }   
+    }
+
+    /**
+     * {@code GET /api/v1/user/reservations/count} : Get reservations count made by a user
+     * @param authentication - the user's authentication
+     * @return status {@code 200 (OK)} and body {@link Integer}
+     */
+    @GetMapping("reservations/count")
+    public ResponseEntity<?> getUserReservationsCount(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserReservationsCount(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/reservations/cost")
+    public ResponseEntity<?> getUserReservationsCost(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserReservationsCost(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

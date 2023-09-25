@@ -13,7 +13,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long sensorId;
+    @OneToOne
+    private Sensor sensor;
     private Long userId;
 
     private LocalDateTime startTime;
@@ -30,14 +31,14 @@ public class Reservation {
     }
 
     public Reservation(
-            Long sensorId,
+            Sensor sensor,
             Long userId,
             LocalDateTime startTime,
             LocalDateTime endTime,
             BigDecimal cost,
             String paymentMethod
     ) {
-        this.sensorId = sensorId;
+        this.sensor = sensor;
         this.userId = userId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -52,12 +53,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public Long getSensor() {
-        return sensorId;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setSensor(Long sensorId) {
-        this.sensorId = sensorId;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 
     public Long getUserId() {

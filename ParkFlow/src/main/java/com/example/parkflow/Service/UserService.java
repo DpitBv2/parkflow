@@ -5,6 +5,7 @@ import com.example.parkflow.Domain.Reservation;
 import com.example.parkflow.Domain.User;
 import com.example.parkflow.Utils.ResponseException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -32,4 +33,8 @@ public interface UserService {
     String getUserRoleByEmail(String email) throws ResponseException;
 
     List<Reservation> getUserReservations(Long userId, int page);
+
+    int getUserReservationsCount(Long userId);
+
+    BigDecimal getUserReservationsCost(Long userId);
 }

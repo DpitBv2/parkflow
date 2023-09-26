@@ -38,6 +38,21 @@ public class SensorServiceImpl implements SensorService {
         this.reservationRepository = reservationRepository;
         this.hubRepository = hubRepository;
     }
+
+    @Override
+    public boolean isSensorOwnedByUser(Long sensorId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            User user = (User) principal;
+            Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+            if (sensorOptional.isPresent()) {
+                Sensor sensor = sensorOptional.get();
+                return sensor.getOwner().equals(user);
+            }
+        }
+        return false;
+    }
     private void authorizeCustomerOrAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -88,15 +103,18 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor update(double latitude, double longitude, Address address, Long id) {
         authorizeCustomerOrAdmin();
-        return sensorRepository.findById(id)
-                .map(sensor -> {
-                    sensor.setLatitude(latitude);
-                    sensor.setLongitude(longitude);
-                    sensor.setAddress(address);
-                    sensor.setUpdatedAtTimestamp(LocalDateTime.now());
-                    return sensorRepository.save(sensor);
-                })
-                .orElse(null);
+        if(isSensorOwnedByUser(id) == true) {
+            return sensorRepository.findById(id)
+                    .map(sensor -> {
+                        sensor.setLatitude(latitude);
+                        sensor.setLongitude(longitude);
+                        sensor.setAddress(address);
+                        sensor.setUpdatedAtTimestamp(LocalDateTime.now());
+                        return sensorRepository.save(sensor);
+                    })
+                    .orElse(null);
+        }
+        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -107,7 +125,10 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public void delete(Long id) {
         authorizeCustomerOrAdmin();
-        sensorRepository.deleteById(id);
+        if(isSensorOwnedByUser(id) == true) {
+            sensorRepository.deleteById(id);
+        }
+        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -215,6 +236,7 @@ public class SensorServiceImpl implements SensorService {
             }
             if (sensor.isLifted()) {
                 sensor.setLifted(false);
+                sensor.setUpdatedAtTimestamp(LocalDateTime.now());
                 sensorRepository.save(sensor);
                 return sensor;
             }

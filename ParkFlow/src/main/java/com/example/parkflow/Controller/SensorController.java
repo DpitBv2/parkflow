@@ -36,11 +36,21 @@ public class SensorController {
      * @return status {@code 201 (CREATED)} and body {@link Sensor}
      */
     @PostMapping
-    public ResponseEntity<Sensor> createSensor(@RequestBody SensorDTO sensorDTO) {
-        Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
+    public ResponseEntity<Sensor> createSensor(
+            @RequestBody SensorDTO sensorDTO,
+            Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        String userEmail = user.getEmail();
+        if (userService.getUserRoleByEmail(userEmail).equals("ADMIN")) {
+            Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
+            if (createdSensor != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-
     /**
      * {@code GET /api/v1/sensors/{id}} : Get sensor by id
      * @param id : sensor id

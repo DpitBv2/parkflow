@@ -32,6 +32,21 @@ public class HubServiceImpl implements HubService {
         this.sensorRepository = sensorRepository;
         this.userRepository = userRepository;
     }
+    @Override
+    public boolean isHubOwnedByUser(Long hubId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            User user = (User) principal;
+            Optional<Hub> hubOptional = hubRepository.findById(hubId);
+            if (hubOptional.isPresent()) {
+                Hub hub = hubOptional.get();
+                return hub.getOwner().equals(user);
+            }
+        }
+        return false;
+    }
+
     private void authorizeCustomerOrAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -84,20 +99,25 @@ public class HubServiceImpl implements HubService {
     @Override
     public Hub update(Long hubId, double latitude, double longitude) {
         authorizeCustomerOrAdmin();
-        Optional<Hub> hubOptional = hubRepository.findById(hubId);
-        if (hubOptional.isPresent()) {
-            Hub hub = hubOptional.get();
-            hub.setLatitude(latitude);
-            hub.setLongitude(longitude);
-            return hubRepository.save(hub);
+        if(isHubOwnedByUser(hubId) == true) {
+            Optional<Hub> hubOptional = hubRepository.findById(hubId);
+            if (hubOptional.isPresent()) {
+                Hub hub = hubOptional.get();
+                hub.setLatitude(latitude);
+                hub.setLongitude(longitude);
+                return hubRepository.save(hub);
+            }
+            return null;
         }
-        return null;
+        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
-
     @Override
     public void delete(Long hubId) {
         authorizeCustomerOrAdmin();
-        hubRepository.deleteById(hubId);
+        if(isHubOwnedByUser(hubId) == true) {
+            hubRepository.deleteById(hubId);
+        }
+        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.example.parkflow.Domain.Hub;
 import java.util.List;
 
 public interface HubService {
+    boolean isHubOwnedByUser(Long hubId);
     Hub create(double latitude, double longitude);
-
     List<Hub> getAllWithSensors();
 
     List<Hub> getAll(int page);

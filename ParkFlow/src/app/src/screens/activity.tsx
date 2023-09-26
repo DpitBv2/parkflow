@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, View, ViewToken } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
@@ -9,18 +9,21 @@ import Text from "../components/text";
 import { AuthContext } from "../context/authContext";
 import { ReservationContext } from "../context/reservationContext";
 import { theme } from "../util/theme";
+import Loading from "./loading";
 
 const Activity = ({ navigation }: { navigation: any }) => {
     const viewableItems = useSharedValue<ViewToken[]>([]);
 
-    const [reservations, setReservations] = useState<any[]>([]);
+    const [reservations, setReservations] = useState<any[] | null>(null);
     const [page, setPage] = useState<number>(0);
     const [uses, setUses] = useState<number>(0);
     const [time, setTime] = useState<number>(0);
     const [money, setMoney] = useState<number>(0);
 
-    const { getAll } = useContext(ReservationContext);
+    const { getAll, getCount, getCost } = useContext(ReservationContext);
     const { userToken } = useContext(AuthContext);
+
+    const viewableRef = useRef(viewableItems);
 
     useEffect(() => {
         const getActivity = async () => {
@@ -32,14 +35,26 @@ const Activity = ({ navigation }: { navigation: any }) => {
                         return item;
                     });
 
-                    console.log(response);
-                    setReservations([...reservations, ...response]);
+                    if (reservations === null) setReservations(response);
+                    else setReservations([...reservations, ...response]);
 
-                    setUses();
                     setTime(1);
-                    setMoney(
-                        reservations.reduce((acc, item) => acc + item.cost, 0)
-                    );
+
+                    getCount(userToken)
+                        .then((response: any) => {
+                            setUses(response);
+                        })
+                        .catch((error: any) => {
+                            console.log(error);
+                        });
+
+                    getCost(userToken)
+                        .then((response: any) => {
+                            setMoney(response);
+                        })
+                        .catch((error: any) => {
+                            console.log(error);
+                        });
                 })
                 .catch((error: any) => {
                     console.log(error);
@@ -48,6 +63,13 @@ const Activity = ({ navigation }: { navigation: any }) => {
 
         getActivity();
     }, []);
+
+    if (
+        reservations === null ||
+        (reservations !== null && uses === 0) ||
+        (reservations !== null && money === 0)
+    )
+        return <Loading />;
 
     return (
         <Background>
@@ -72,7 +94,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                             }}>
                             <Text fontSize={15}>You used ParkFlow </Text>
                             <Text fontSize={15} bold>
-                                {reservations.length}
+                                {uses}
                             </Text>
                             <Text fontSize={15}> times.</Text>
                         </View>
@@ -118,7 +140,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                         </View>
                     </View>
                 </View>
-                {reservations.length === 0 && (
+                {reservations?.length === 0 && (
                     <View style={{ marginTop: 150 }}>
                         <Text bold fontSize={18} center>
                             No actvity yet.{"\n"}Reserve a parking spot!
@@ -129,14 +151,14 @@ const Activity = ({ navigation }: { navigation: any }) => {
                     data={reservations}
                     contentContainerStyle={{ paddingVertical: 0 }}
                     onViewableItemsChanged={({ viewableItems: vItems }) => {
-                        viewableItems.value = vItems;
+                        viewableRef.current.value = vItems;
                     }}
                     style={{ marginTop: 15 }}
                     renderItem={({ item }) => {
                         return (
                             <ActivityItem
                                 item={item}
-                                viewableItems={viewableItems}
+                                viewableItems={viewableRef.current}
                             />
                         );
                     }}
@@ -172,3 +194,6 @@ const styles = StyleSheet.create({
 });
 
 export default Activity;
+function getCount(userToken: any, page: number) {
+    throw new Error("Function not implemented.");
+}

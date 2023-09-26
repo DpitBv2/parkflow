@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, ViewToken } from "react-native";
+import { Image, StyleSheet, View, ViewToken } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 import Animated, {
@@ -36,9 +36,10 @@ const ActivityItem = ({
 
     const rStyle = useAnimatedStyle(() => {
         const visible = Boolean(
-            viewableItems.value
-                .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.id === item.id)
+            true
+            // viewableItems.value
+            //     .filter((item) => item.isViewable)
+            //     .find((viewableItem) => viewableItem.item.id === item.id)
         );
 
         return {
@@ -58,8 +59,15 @@ const ActivityItem = ({
                     coordinate={{
                         latitude: item.sensor.latitude,
                         longitude: item.sensor.longitude,
-                    }}
-                />
+                    }}>
+                    <Image
+                        source={require("../../assets/images/pin.png")}
+                        style={{
+                            height: 50,
+                            width: 47,
+                        }}
+                    />
+                </Marker>
             </>
         );
     };
@@ -104,8 +112,8 @@ const ActivityItem = ({
                             String(item.endTime.getMinutes()).padStart(2, "0")}
                     </Text>
                 </View>
-                <Text bold fontSize={18}>
-                    LEI {item.cost}
+                <Text bold fontSize={18} style={{ marginLeft: "auto" }}>
+                    LEI {item.cost.toFixed(2)}
                 </Text>
             </TouchableOpacity>
             <Modal
@@ -132,22 +140,22 @@ const ActivityItem = ({
                             ", " +
                             item.sensor.address.country}
                     </Text>
-                    <Text overflow>{item.street}</Text>
+                    <Text overflow>{item.sensor.address.street}</Text>
                     <MapView
-                        showsUserLocation={false}
-                        followsUserLocation={false}
-                        showsMyLocationButton={false}
-                        rotateEnabled={false}
-                        moveOnMarkerPress={false}
-                        pitchEnabled={false}
-                        scrollEnabled={false}
-                        zoomEnabled={false}
-                        mapType="standard"
+                        // showsUserLocation={false}
+                        // followsUserLocation={false}
+                        // showsMyLocationButton={false}
+                        // rotateEnabled={false}
+                        // moveOnMarkerPress={false}
+                        // pitchEnabled={false}
+                        // scrollEnabled={false}
+                        // zoomEnabled={false}
+                        // mapType="standard"
                         initialRegion={{
-                            latitude: item.sensor.address.latitude,
-                            longitude: item.sensor.address.longitude,
-                            latitudeDelta: MapDeltaInitial / 2,
-                            longitudeDelta: MapDeltaInitial / 2,
+                            latitude: item.sensor.latitude,
+                            longitude: item.sensor.longitude,
+                            latitudeDelta: MapDeltaInitial / 4,
+                            longitudeDelta: MapDeltaInitial / 4,
                         }}
                         style={styles.map}>
                         {marker()}
@@ -232,7 +240,7 @@ const ActivityItem = ({
                                     marginLeft: "auto",
                                 }}>
                                 <Text bold fontSize={18}>
-                                    LEI {item.cost}
+                                    LEI {item.cost.toFixed(2)}
                                 </Text>
                             </View>
                         </View>
@@ -251,7 +259,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginBottom: 15,
         flexDirection: "row",
-        paddingHorizontal: 10,
+        paddingLeft: 10,
+        paddingRight: 20,
         paddingVertical: 5,
         alignItems: "center",
     },

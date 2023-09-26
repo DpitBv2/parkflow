@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "reservations")
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,5 +100,18 @@ public class Reservation {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", sensor=" + sensor +
+                ", userId=" + userId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", cost=" + cost +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                '}';
     }
 }

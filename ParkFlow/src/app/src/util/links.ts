@@ -6,3 +6,5 @@ export const GetSensorByIdURL = "/api/v1/sensors/";
 export const ReserveSensorURL = "/api/v1/sensors/reserve";
 export const ParkSensorURL = "/api/v1/sensors/lower";
 export const GetAllReservations = "/api/v1/user/reservations";
+export const GetReservationsCount = "/api/v1/user/reservations/count";
+export const GetReservationsCost = "/api/v1/user/reservations/cost";

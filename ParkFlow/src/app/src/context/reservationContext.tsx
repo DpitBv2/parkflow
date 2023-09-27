@@ -1,6 +1,10 @@
 import { createContext, useState } from "react";
 import api from "../util/api";
-import { GetAllReservations } from "../util/links";
+import {
+    GetAllReservations,
+    GetReservationsCost,
+    GetReservationsCount,
+} from "../util/links";
 
 export const ReservationContext = createContext<any>(null);
 
@@ -27,9 +31,25 @@ export const ReservationProvider = ({ children }: { children: any }) => {
         });
     };
 
-    const getCount = (token: string, page: number) => {
+    const getCount = (token: string) => {
         return new Promise((resolve, reject) => {
-            api.get(GetAllReservations, {
+            api.get(GetReservationsCount, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    };
+
+    const getCost = (token: string) => {
+        return new Promise((resolve, reject) => {
+            api.get(GetReservationsCost, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -44,7 +64,7 @@ export const ReservationProvider = ({ children }: { children: any }) => {
     };
 
     return (
-        <ReservationContext.Provider value={{ getAll }}>
+        <ReservationContext.Provider value={{ getAll, getCount, getCost }}>
             {children}
         </ReservationContext.Provider>
     );

@@ -1,12 +1,16 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.HubDTO;
+import com.example.parkflow.Domain.Authority;
 import com.example.parkflow.Domain.Hub;
+import com.example.parkflow.Domain.User;
 import com.example.parkflow.Service.Impl.HubServiceImpl;
+import com.example.parkflow.Service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +19,12 @@ import java.util.List;
 @RequestMapping("/api/v1/hubs")
 public class HubController {
     private final HubServiceImpl hubService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public HubController(HubServiceImpl hubService) {
+    public HubController(HubServiceImpl hubService, UserServiceImpl userService) {
         this.hubService = hubService;
+        this.userService = userService;
     }
 
     /**
@@ -73,9 +79,10 @@ public class HubController {
      * @param hubDTO : the dto containing sensor information
      * @return status {@code 200 (OK)} and body {@link Hub}
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<HubDTO> updateHub(@PathVariable Long id, @RequestBody HubDTO hubDTO) {
-        Hub hub = hubService.update(id, hubDTO.getLatitude(), hubDTO.getLongitude());
+    @PutMapping
+    public ResponseEntity<HubDTO> updateHub(@RequestParam Long id, @RequestBody HubDTO hubDTO, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        Hub hub = hubService.update(id, hubDTO.getLatitude(), hubDTO.getLongitude() ,user.getId());
         if (hub != null) {
             HubDTO updatedHubDTO = new HubDTO(hub);
             return ResponseEntity.ok(updatedHubDTO);
@@ -89,9 +96,10 @@ public class HubController {
      * @param id : hub id
      * @return status {@code 204 (NO CONTENT)}
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHub(@PathVariable Long id) {
-        hubService.delete(id);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteHub(@RequestParam Long id, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        hubService.delete(id, user.getId());
         return ResponseEntity.noContent().build();
     }
 

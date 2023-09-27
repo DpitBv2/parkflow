@@ -3,6 +3,7 @@ package com.example.parkflow.Service.Impl;
 import com.example.parkflow.Domain.*;
 import com.example.parkflow.Repository.AuthorityRepository;
 import com.example.parkflow.Repository.ReservationRepository;
+import com.example.parkflow.Repository.SensorRepository;
 import com.example.parkflow.Repository.UserRepository;
 import com.example.parkflow.Security.PasswordEncoder;
 import com.example.parkflow.Service.UserService;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final SensorRepository sensorRepository;
     private final PasswordEncoder passwordEncoder;
     private Authority userAuthority;
     private ReservationRepository reservationRepository;
@@ -30,11 +32,13 @@ public class UserServiceImpl implements UserService {
             UserRepository userRepository,
             AuthorityRepository authorityRepository,
             PasswordEncoder passwordEncoder,
-            ReservationRepository reservationRepository
+            ReservationRepository reservationRepository,
+            SensorRepository sensorRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.reservationRepository = reservationRepository;
+        this.sensorRepository = sensorRepository;
 
         authorityRepository.findByAuthority("user")
                 .ifPresent(authority -> userAuthority = authority);
@@ -193,5 +197,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
         return user.getOwnedHubs().size();
+    }
+
+    @Override
+    public Sensor getUserReservedSensor(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        Sensor sensor = sensorRepository.findById(user.getReservedSensorId())
+                .orElseThrow(() -> new ResponseException("Sensor not found.", HttpStatus.NOT_FOUND));
+        return sensor;
     }
 }

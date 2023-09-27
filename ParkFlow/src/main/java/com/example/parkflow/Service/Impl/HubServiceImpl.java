@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.example.parkflow.Utils.Constants.PAGE_SIZE;
@@ -97,9 +98,10 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public Hub update(Long hubId, double latitude, double longitude) {
+    public Hub update(Long hubId, double latitude, double longitude, Long userId) {
         authorizeCustomerOrAdmin();
-        if(isHubOwnedByUser(hubId) == true) {
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if(isHubOwnedByUser(hubId) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
             Optional<Hub> hubOptional = hubRepository.findById(hubId);
             if (hubOptional.isPresent()) {
                 Hub hub = hubOptional.get();
@@ -112,9 +114,10 @@ public class HubServiceImpl implements HubService {
         throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
     @Override
-    public void delete(Long hubId) {
+    public void delete(Long hubId, Long userId) {
         authorizeCustomerOrAdmin();
-        if(isHubOwnedByUser(hubId) == true) {
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if(isHubOwnedByUser(hubId) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
             hubRepository.deleteById(hubId);
         }
         throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
@@ -130,7 +133,13 @@ public class HubServiceImpl implements HubService {
         System.out.println("sensorOptional: " + sensorOptional);
 
         if (hubOptional.isPresent() && sensorOptional.isPresent()) {
+            if (!isHubOwnedByUser(hubId)) {
+                throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
+            }
             Hub hub = hubOptional.get();
+            if (hub.getLatitude() == 0 && hub.getLongitude() == 0)
+                return null;
+
             Sensor sensor = sensorOptional.get();
             hub.addSensor(sensor);
             hubRepository.save(hub);

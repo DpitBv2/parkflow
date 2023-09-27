@@ -15,9 +15,9 @@ public interface HubService {
 
     Hub getById(Long hubId);
 
-    Hub update(Long hubId, double latitude, double longitude);
+    Hub update(Long hubId, double latitude, double longitude, Long userId);
 
-    void delete(Long hubId);
+    void delete(Long hubId, Long userId);
 
     Hub addSensorToHub(Long hubId, Long sensorId);
 }

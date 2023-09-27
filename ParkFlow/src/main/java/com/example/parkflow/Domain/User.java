@@ -49,6 +49,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDate createdAt = LocalDate.now();
 
+    private Long reservedSensorId;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Authority> authorities = new HashSet<>();
 
@@ -238,6 +240,14 @@ public class User implements UserDetails {
 
     public void setOwnedSensors(Set<Sensor> ownedSensors) {
         this.ownedSensors = ownedSensors;
+    }
+
+    public Long getReservedSensorId() {
+        return reservedSensorId;
+    }
+
+    public void setReservedSensorId(Long reservedSensorId) {
+        this.reservedSensorId = reservedSensorId;
     }
 
     @Override

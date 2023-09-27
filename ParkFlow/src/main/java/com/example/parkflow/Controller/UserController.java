@@ -240,4 +240,14 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/reservedSensor")
+    public ResponseEntity<?> getUserReservedSensor(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserReservedSensor(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

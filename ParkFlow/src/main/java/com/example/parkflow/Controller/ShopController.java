@@ -1,24 +1,21 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Domain.User;
-import com.example.parkflow.Service.ShopService;
+import com.example.parkflow.Service.Impl.ShopServiceImpl;
 import com.example.parkflow.Service.UserService;
-import com.example.parkflow.Utils.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/shop")
 public class ShopController {
-    private final ShopService shopService;
+    private final ShopServiceImpl shopService;
     private final UserService userService;
 
     @Autowired
-    public ShopController(ShopService shopService, UserService userService) {
+    public ShopController(ShopServiceImpl shopService, UserService userService) {
         this.shopService = shopService;
         this.userService = userService;
     }

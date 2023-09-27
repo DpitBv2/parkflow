@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import java.time.LocalDateTime;
@@ -43,15 +44,19 @@ public class SensorServiceImpl implements SensorService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         User user = userRepository.findByEmail(principal.toString()).orElse(null);
-        if (user != null) {
-            Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
-            if (sensorOptional.isPresent()) {
-                Sensor sensor = sensorOptional.get();
-                System.out.println(sensor.getOwner());
-                return sensor.getOwner().equals(user);
+        try {
+            if (user != null) {
+                Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+                if (sensorOptional.isPresent()) {
+                    Sensor sensor = sensorOptional.get();
+                    System.out.println(sensor.getOwner());
+                    return sensor.getOwner().equals(user);
+                }
             }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
     private void authorizeCustomerOrAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -81,10 +86,11 @@ public class SensorServiceImpl implements SensorService {
             throw new ResponseException("Sensor not found.", HttpStatus.NOT_FOUND);
         }
     }
+
     @Override
-    public Sensor create(double latitude, double longitude, Address address) {
+    public Sensor create(double latitude, double longitude, Address address, Boolean isPrivate) {
         authorizeCustomerOrAdmin();
-        var sensor = new Sensor(latitude, longitude, address);
+        var sensor = new Sensor(latitude, longitude, address, isPrivate);
         return sensorRepository.save(sensor);
     }
 
@@ -101,10 +107,10 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor update(double latitude, double longitude, Address address, Long id) {
+    public Sensor update(double latitude, double longitude, Address address, Long id, Long userId) {
         authorizeCustomerOrAdmin();
-        System.out.println(id);
-        if(isSensorOwnedByUser(id)) {
+        var userRole = userRepository.findById(userId).orElse(null).getAuthorities().stream().findFirst().orElse(null);
+        if(isSensorOwnedByUser(id) || userRole.getAuthority().equals("ADMIN")) {
             return sensorRepository.findById(id)
                     .map(sensor -> {
                         sensor.setLatitude(latitude);
@@ -124,9 +130,10 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, Long userId) {
         authorizeCustomerOrAdmin();
-        if(isSensorOwnedByUser(id) == true) {
+        var userRole = userRepository.findById(userId).orElse(null).getAuthorities().stream().findFirst().orElse(null);
+        if(isSensorOwnedByUser(id) || userRole.getAuthority().equals("ADMIN")) {
             sensorRepository.deleteById(id);
         } else
             throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
@@ -135,7 +142,8 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public List<Sensor> getClosest(double myLatitude, double myLongitude, int number) {
         List<Sensor> sensorList = sensorRepository.findAll();
-        sensorList.removeIf(sensor -> !sensor.isAvailable());
+        sensorList.removeIf(Sensor::getIsPrivate);
+        sensorList.removeIf(sensor -> sensor.getAddress() == null);
         sensorList.sort(Comparator.comparingDouble(sensor ->
                 calculateDistance(sensor.getLatitude(), sensor.getLongitude(), myLatitude, myLongitude)));
         return sensorList.subList(0, Math.min(number, sensorList.size()));
@@ -155,15 +163,28 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor reserveSensor(Long sensorId, Long userId) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
-        if (sensorOptional.isPresent()) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (sensorOptional.isPresent() && userOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
-            if (!sensor.isAvailable()) {
+            User user = userOptional.get();
+
+            if (!sensor.isAvailable() || user.getReservedSensorId() != null) {
                 return null;
             }
+
+            System.out.println("Sensor is private: " + sensor.getIsPrivate() + " and user is owner: " + isSensorOwnedByUser(sensorId));
+            if (sensor.getIsPrivate() && !isSensorOwnedByUser(sensorId)) {
+                return null;
+            }
+
             sensor.setReservationStartTimestamp(LocalDateTime.now());
             sensor.setReservedByUserId(userId);
             sensor.setAvailable(false);
             sensorRepository.save(sensor);
+
+            user.setReservedSensorId(sensorId);
+            userRepository.save(user);
+
             return sensor;
         }
         return null;
@@ -172,8 +193,11 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Reservation endReservation(Long sensorId, Long userId, String paymentMethod) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
-        if (sensorOptional.isPresent()) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (sensorOptional.isPresent() && userOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
+            User user = userOptional.get();
+
             if (sensor.isAvailable()) {
                 return null;
             }
@@ -195,6 +219,9 @@ public class SensorServiceImpl implements SensorService {
             sensor.setLifted(true);
             sensorRepository.save(sensor);
 
+            user.setReservedSensorId(null);
+            userRepository.save(user);
+
             return reservation;
         }
         return null;
@@ -212,12 +239,12 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public boolean updateSensorAvailability(Long sensorId, Boolean available) {
+    public boolean updateSensorPirvateState(Long sensorId, Boolean available) {
         authorizeCustomerOrAdmin();
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent() && isSensorOwnedByUser(sensorId)) {
             Sensor sensor = sensorOptional.get();
-            sensor.setAvailable(available);
+            sensor.setIsPrivate(available);
             sensorRepository.save(sensor);
             return true;
         } else {

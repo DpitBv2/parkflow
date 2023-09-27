@@ -16,9 +16,9 @@ const Activity = ({ navigation }: { navigation: any }) => {
 
     const [reservations, setReservations] = useState<any[] | null>(null);
     const [page, setPage] = useState<number>(0);
-    const [uses, setUses] = useState<number>(0);
-    const [time, setTime] = useState<number>(0);
-    const [money, setMoney] = useState<number>(0);
+    const [uses, setUses] = useState<number | null>(null);
+    const [time, setTime] = useState<number | null>(null);
+    const [money, setMoney] = useState<number | null>(null);
 
     const { getAll, getCount, getCost } = useContext(ReservationContext);
     const { userToken } = useContext(AuthContext);
@@ -66,8 +66,8 @@ const Activity = ({ navigation }: { navigation: any }) => {
 
     if (
         reservations === null ||
-        (reservations !== null && uses === 0) ||
-        (reservations !== null && money === 0)
+        (reservations !== null && uses === null) ||
+        (reservations !== null && money === null)
     )
         return <Loading />;
 
@@ -135,7 +135,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                                 Spent
                             </Text>
                             <Text fontSize={15} bold>
-                                {" LEI " + money.toFixed(2)}
+                                {" LEI " + money?.toFixed(2)}
                             </Text>
                         </View>
                     </View>

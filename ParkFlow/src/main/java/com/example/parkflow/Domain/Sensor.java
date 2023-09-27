@@ -1,6 +1,7 @@
 package com.example.parkflow.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -29,6 +30,7 @@ public class Sensor {
     private Long reservedByUserId;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User owner;
     @ManyToOne
     @JsonBackReference

@@ -39,15 +39,15 @@ public class SensorServiceImpl implements SensorService {
         this.hubRepository = hubRepository;
     }
 
-    @Override
     public boolean isSensorOwnedByUser(Long sensorId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
-        if (principal instanceof User) {
-            User user = (User) principal;
+        User user = userRepository.findByEmail(principal.toString()).orElse(null);
+        if (user != null) {
             Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
             if (sensorOptional.isPresent()) {
                 Sensor sensor = sensorOptional.get();
+                System.out.println(sensor.getOwner());
                 return sensor.getOwner().equals(user);
             }
         }
@@ -103,7 +103,8 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor update(double latitude, double longitude, Address address, Long id) {
         authorizeCustomerOrAdmin();
-        if(isSensorOwnedByUser(id) == true) {
+        System.out.println(id);
+        if(isSensorOwnedByUser(id)) {
             return sensorRepository.findById(id)
                     .map(sensor -> {
                         sensor.setLatitude(latitude);
@@ -127,13 +128,14 @@ public class SensorServiceImpl implements SensorService {
         authorizeCustomerOrAdmin();
         if(isSensorOwnedByUser(id) == true) {
             sensorRepository.deleteById(id);
-        }
-        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
+        } else
+            throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
 
     @Override
     public List<Sensor> getClosest(double myLatitude, double myLongitude, int number) {
         List<Sensor> sensorList = sensorRepository.findAll();
+        sensorList.removeIf(sensor -> !sensor.isAvailable());
         sensorList.sort(Comparator.comparingDouble(sensor ->
                 calculateDistance(sensor.getLatitude(), sensor.getLongitude(), myLatitude, myLongitude)));
         return sensorList.subList(0, Math.min(number, sensorList.size()));
@@ -213,7 +215,7 @@ public class SensorServiceImpl implements SensorService {
     public boolean updateSensorAvailability(Long sensorId, Boolean available) {
         authorizeCustomerOrAdmin();
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
-        if (sensorOptional.isPresent()) {
+        if (sensorOptional.isPresent() && isSensorOwnedByUser(sensorId)) {
             Sensor sensor = sensorOptional.get();
             sensor.setAvailable(available);
             sensorRepository.save(sensor);

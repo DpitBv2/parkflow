@@ -36,8 +36,8 @@ public class HubServiceImpl implements HubService {
     public boolean isHubOwnedByUser(Long hubId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
-        if (principal instanceof User) {
-            User user = (User) principal;
+        User user = userRepository.findByEmail(principal.toString()).orElse(null);
+        if (user != null) {
             Optional<Hub> hubOptional = hubRepository.findById(hubId);
             if (hubOptional.isPresent()) {
                 Hub hub = hubOptional.get();

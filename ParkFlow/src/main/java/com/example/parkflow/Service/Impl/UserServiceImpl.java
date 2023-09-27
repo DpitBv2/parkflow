@@ -1,8 +1,6 @@
 package com.example.parkflow.Service.Impl;
 
-import com.example.parkflow.Domain.Authority;
-import com.example.parkflow.Domain.Reservation;
-import com.example.parkflow.Domain.User;
+import com.example.parkflow.Domain.*;
 import com.example.parkflow.Repository.AuthorityRepository;
 import com.example.parkflow.Repository.ReservationRepository;
 import com.example.parkflow.Repository.UserRepository;
@@ -167,5 +165,33 @@ public class UserServiceImpl implements UserService {
             cost = cost.add(reservation.getCost());
         }
         return cost;
+    }
+
+    @Override
+    public Set<Sensor> getUserSensors(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        return user.getOwnedSensors();
+    }
+
+    @Override
+    public Set<Hub> getUserHubs(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        return user.getOwnedHubs();
+    }
+
+    @Override
+    public int getUserSensorsCount(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        return user.getOwnedSensors().size();
+    }
+
+    @Override
+    public int getUserHubsCount(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        return user.getOwnedHubs().size();
     }
 }

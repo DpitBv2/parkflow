@@ -1,6 +1,7 @@
 package com.example.parkflow.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -25,10 +26,11 @@ public class Sensor {
     private LocalDateTime reservationStartTimestamp;
     private BigDecimal reservationPricePerHour;
     private Boolean lifted;
-
     private Long reservedByUserId;
+    private Boolean isPrivate;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User owner;
     @ManyToOne
     @JsonBackReference
@@ -38,7 +40,7 @@ public class Sensor {
 
     }
 
-    public Sensor(Double latitude, Double longitude, Address address) {
+    public Sensor(Double latitude, Double longitude, Address address, Boolean isPrivate) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
@@ -47,6 +49,7 @@ public class Sensor {
         this.available = true;
         this.reservationPricePerHour = BigDecimal.valueOf(5);
         this.lifted = true;
+        this.isPrivate = isPrivate;
     }
 
     public Long getId() {
@@ -133,10 +136,16 @@ public class Sensor {
     public void setReservationStartTimestamp(LocalDateTime reservationStartTimestamp) {
         this.reservationStartTimestamp = reservationStartTimestamp;
     }
-    public boolean isLifted() {
+    public Boolean isLifted() {
         return lifted;
     }
-    public void setLifted(boolean lifted) {
+    public void setLifted(Boolean lifted) {
         this.lifted = lifted;
+    }
+    public Boolean getIsPrivate() {
+        return isPrivate;
+    }
+    public void setIsPrivate(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 }

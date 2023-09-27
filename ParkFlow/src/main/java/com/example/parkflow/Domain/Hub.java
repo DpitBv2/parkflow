@@ -1,5 +1,6 @@
 package com.example.parkflow.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -19,6 +20,7 @@ public class Hub {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User owner;
 
     @OneToMany(mappedBy = "hub", cascade = CascadeType.ALL)

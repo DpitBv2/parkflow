@@ -1,8 +1,6 @@
 package com.example.parkflow.Service;
 
-import com.example.parkflow.Domain.Authority;
-import com.example.parkflow.Domain.Reservation;
-import com.example.parkflow.Domain.User;
+import com.example.parkflow.Domain.*;
 import com.example.parkflow.Utils.ResponseException;
 
 import java.math.BigDecimal;
@@ -37,4 +35,14 @@ public interface UserService {
     int getUserReservationsCount(Long userId);
 
     BigDecimal getUserReservationsCost(Long userId);
+
+    Set<Sensor> getUserSensors(Long userId);
+
+    Set<Hub> getUserHubs(Long userId);
+
+    int getUserSensorsCount(Long userId);
+
+    int getUserHubsCount(Long userId);
+
+    Sensor getUserReservedSensor(Long userId);
 }

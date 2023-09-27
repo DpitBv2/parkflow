@@ -36,11 +36,21 @@ public class SensorController {
      * @return status {@code 201 (CREATED)} and body {@link Sensor}
      */
     @PostMapping
-    public ResponseEntity<Sensor> createSensor(@RequestBody SensorDTO sensorDTO) {
-        Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
+    public ResponseEntity<Sensor> createSensor(
+            @RequestBody SensorDTO sensorDTO,
+            Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        String userEmail = user.getEmail();
+        if (userService.getUserRoleByEmail(userEmail).equals("ADMIN")) {
+            Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), false);
+            if (createdSensor != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-
     /**
      * {@code GET /api/v1/sensors/{id}} : Get sensor by id
      * @param id : sensor id
@@ -83,8 +93,9 @@ public class SensorController {
      * @return status {@code 200 (OK)} and body {@link Sensor}
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO) {
-        Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id);
+    public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id, user.getId());
         if (updatedSensor != null) return ResponseEntity.ok(updatedSensor);
         else return ResponseEntity.notFound().build();
     }
@@ -95,8 +106,9 @@ public class SensorController {
      * @return status {@code 204 (NO_CONTENT)}
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSensor(@PathVariable Long id) {
-        sensorService.delete(id);
+    public ResponseEntity<Void> deleteSensor(@PathVariable Long id, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        sensorService.delete(id, user.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -201,17 +213,17 @@ public class SensorController {
     }
 
     /**
-     * {@code PUT /api/v1/sensors/{id}/availability} : Update sensor availability
+     * {@code PUT /api/v1/sensors/{id}/private} : Update sensor availability
      * @param id : sensor id
-     * @param available : availability
+     * @param privateState : private state
      * @return
      */
-    @PutMapping("/{id}/availability")
+    @PutMapping("/{id}/private")
     public ResponseEntity<Void> updateSensorAvailability(
             @PathVariable Long id,
-            @RequestParam Boolean available
+            @RequestParam Boolean privateState
     ) {
-        boolean updated = sensorService.updateSensorAvailability(id, available);
+        boolean updated = sensorService.updateSensorPirvateState(id, privateState);
         if (updated) {
             return ResponseEntity.ok().build();
         } else {

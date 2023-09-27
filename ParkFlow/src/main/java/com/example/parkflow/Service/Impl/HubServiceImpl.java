@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.example.parkflow.Utils.Constants.PAGE_SIZE;
@@ -32,6 +33,21 @@ public class HubServiceImpl implements HubService {
         this.sensorRepository = sensorRepository;
         this.userRepository = userRepository;
     }
+    @Override
+    public boolean isHubOwnedByUser(Long hubId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        User user = userRepository.findByEmail(principal.toString()).orElse(null);
+        if (user != null) {
+            Optional<Hub> hubOptional = hubRepository.findById(hubId);
+            if (hubOptional.isPresent()) {
+                Hub hub = hubOptional.get();
+                return hub.getOwner().equals(user);
+            }
+        }
+        return false;
+    }
+
     private void authorizeCustomerOrAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -82,22 +98,29 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public Hub update(Long hubId, double latitude, double longitude) {
+    public Hub update(Long hubId, double latitude, double longitude, Long userId) {
         authorizeCustomerOrAdmin();
-        Optional<Hub> hubOptional = hubRepository.findById(hubId);
-        if (hubOptional.isPresent()) {
-            Hub hub = hubOptional.get();
-            hub.setLatitude(latitude);
-            hub.setLongitude(longitude);
-            return hubRepository.save(hub);
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if(isHubOwnedByUser(hubId) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
+            Optional<Hub> hubOptional = hubRepository.findById(hubId);
+            if (hubOptional.isPresent()) {
+                Hub hub = hubOptional.get();
+                hub.setLatitude(latitude);
+                hub.setLongitude(longitude);
+                return hubRepository.save(hub);
+            }
+            return null;
         }
-        return null;
+        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
-
     @Override
-    public void delete(Long hubId) {
+    public void delete(Long hubId, Long userId) {
         authorizeCustomerOrAdmin();
-        hubRepository.deleteById(hubId);
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if(isHubOwnedByUser(hubId) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
+            hubRepository.deleteById(hubId);
+        }
+        throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -110,7 +133,13 @@ public class HubServiceImpl implements HubService {
         System.out.println("sensorOptional: " + sensorOptional);
 
         if (hubOptional.isPresent() && sensorOptional.isPresent()) {
+            if (!isHubOwnedByUser(hubId)) {
+                throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
+            }
             Hub hub = hubOptional.get();
+            if (hub.getLatitude() == 0 && hub.getLongitude() == 0)
+                return null;
+
             Sensor sensor = sensorOptional.get();
             hub.addSensor(sensor);
             hubRepository.save(hub);

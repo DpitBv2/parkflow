@@ -200,4 +200,54 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/sensors")
+    public ResponseEntity<?> getUserSensors(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserSensors(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/sensors/count")
+    public ResponseEntity<?> getUserSensorsCount(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserSensorsCount(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/hubs")
+    public ResponseEntity<?> getUserHubs(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserHubs(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/hubs/count")
+    public ResponseEntity<?> getUserHubsCount(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserHubsCount(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/reservedSensor")
+    public ResponseEntity<?> getUserReservedSensor(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserReservedSensor(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

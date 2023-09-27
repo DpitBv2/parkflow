@@ -1,5 +1,6 @@
 package com.example.parkflow.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +49,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDate createdAt = LocalDate.now();
 
+    private Long reservedSensorId;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Authority> authorities = new HashSet<>();
 
@@ -60,9 +63,11 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
     private Set<Hub> ownedHubs = new HashSet<>();
 
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
     private Set<Sensor> ownedSensors = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -219,6 +224,30 @@ public class User implements UserDetails {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Hub> getOwnedHubs() {
+        return ownedHubs;
+    }
+
+    public void setOwnedHubs(Set<Hub> ownedHubs) {
+        this.ownedHubs = ownedHubs;
+    }
+
+    public Set<Sensor> getOwnedSensors() {
+        return ownedSensors;
+    }
+
+    public void setOwnedSensors(Set<Sensor> ownedSensors) {
+        this.ownedSensors = ownedSensors;
+    }
+
+    public Long getReservedSensorId() {
+        return reservedSensorId;
+    }
+
+    public void setReservedSensorId(Long reservedSensorId) {
+        this.reservedSensorId = reservedSensorId;
     }
 
     @Override

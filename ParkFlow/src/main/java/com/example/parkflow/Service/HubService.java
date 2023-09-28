@@ -1,7 +1,9 @@
 package com.example.parkflow.Service;
 
 import com.example.parkflow.Domain.Hub;
+import com.example.parkflow.Domain.Sensor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HubService {
@@ -20,4 +22,6 @@ public interface HubService {
     void delete(Long hubId, Long userId);
 
     Hub addSensorToHub(Long hubId, Long sensorId);
+
+    List<Sensor> getSensorsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp);
 }

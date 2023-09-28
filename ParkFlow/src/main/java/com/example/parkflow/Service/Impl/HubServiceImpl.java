@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,14 +39,19 @@ public class HubServiceImpl implements HubService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         User user = userRepository.findByEmail(principal.toString()).orElse(null);
-        if (user != null) {
-            Optional<Hub> hubOptional = hubRepository.findById(hubId);
-            if (hubOptional.isPresent()) {
-                Hub hub = hubOptional.get();
-                return hub.getOwner().equals(user);
+        try {
+            if (user != null) {
+                Optional<Hub> hubOptional = hubRepository.findById(hubId);
+                if (hubOptional.isPresent()) {
+                    Hub hub = hubOptional.get();
+                    System.out.println(hub.getOwner());
+                    return hub.getOwner().equals(user);
+                }
             }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
     private void authorizeCustomerOrAdmin() {
@@ -147,5 +153,10 @@ public class HubServiceImpl implements HubService {
             return hub;
         }
         return null;
+    }
+    @Override
+    public List<Sensor> getSensorsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
+        List<Sensor> updatedSensors = sensorRepository.findByUpdatedAtTimestampAfterAndHub(timestamp, hub);
+        return updatedSensors;
     }
 }

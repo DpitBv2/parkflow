@@ -43,11 +43,12 @@ public class HubController {
     @PostMapping
     public ResponseEntity<Hub> createHub(
             @RequestBody HubDTO hubDTO,
+            @RequestParam String token,
             Authentication authentication) {
         User user = userService.get((String) authentication.getPrincipal());
         String userEmail = user.getEmail();
         if (userService.getUserRoleByEmail(userEmail).equals("ADMIN")) {
-            Hub createdHub = hubService.create(hubDTO.getLatitude(), hubDTO.getLongitude());
+            Hub createdHub = hubService.create(hubDTO.getLatitude(), hubDTO.getLongitude(), token);
             if (createdHub != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdHub);
             } else {
@@ -138,14 +139,14 @@ public class HubController {
         }
     }
     @GetMapping("/{hubId}/updated-sensors")
-    public ResponseEntity<List<Sensor>> getUpdatedSensorsForHub(@PathVariable Long hubId) {
+    public ResponseEntity<List<Long>> getUpdatedSensorIdsForHub(@PathVariable Long hubId) {
         Hub hub = hubService.getById(hubId);
         if (hub == null) {
             return ResponseEntity.notFound().build();
         }
-        List<Sensor> updatedSensors = hubService.getSensorsUpdatedSinceForHub(hub, lastRetrievalTimestamp);
+        List<Long> updatedSensorIds = hubService.getSensorIdsUpdatedSinceForHub(hub, lastRetrievalTimestamp);
         lastRetrievalTimestamp = LocalDateTime.now();
-        return ResponseEntity.ok(updatedSensors);
+        return ResponseEntity.ok(updatedSensorIds);
     }
     /**
      * Get all sensors for a specific hub.

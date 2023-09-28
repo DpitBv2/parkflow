@@ -71,11 +71,12 @@ public class HubServiceImpl implements HubService {
         throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
     }
     @Override
-    public Hub create(double latitude, double longitude) {
+    public Hub create(double latitude, double longitude, String token) {
         authorizeCustomerOrAdmin();
         Hub hub = new Hub();
         hub.setLatitude(latitude);
         hub.setLongitude(longitude);
+        hub.setToken(token);
         return hubRepository.save(hub);
     }
     @Transactional
@@ -155,8 +156,13 @@ public class HubServiceImpl implements HubService {
         return null;
     }
     @Override
-    public List<Sensor> getSensorsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
-        List<Sensor> updatedSensors = sensorRepository.findByUpdatedAtTimestampAfterAndHub(timestamp, hub);
-        return updatedSensors;
+    public boolean isValidHubToken(String hubToken) {
+        return hubRepository.existsByToken(hubToken);
+    }
+
+    @Override
+    public List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
+        List<Long> updatedSensorIds = sensorRepository.findSensorIdsUpdatedSinceForHub(hub.getId(), timestamp);
+        return updatedSensorIds;
     }
 }

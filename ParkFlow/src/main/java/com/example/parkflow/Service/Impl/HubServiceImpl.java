@@ -156,13 +156,12 @@ public class HubServiceImpl implements HubService {
         return null;
     }
     @Override
-    public boolean isValidHubToken(String hubToken) {
-        return hubRepository.existsByToken(hubToken);
-    }
-
-    @Override
     public List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
         List<Long> updatedSensorIds = sensorRepository.findSensorIdsUpdatedSinceForHub(hub.getId(), timestamp);
         return updatedSensorIds;
+    }
+    @Override
+    public boolean isValidHubToken(String hubToken) {
+        return hubRepository.existsByToken(hubToken);
     }
 }

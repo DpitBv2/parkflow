@@ -5,6 +5,8 @@ import com.example.parkflow.Service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthenticationFilter implements Filter {
     private final UserService userService;
     private final HubService hubService;

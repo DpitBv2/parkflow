@@ -24,8 +24,6 @@ public interface HubService {
 
     Hub addSensorToHub(Long hubId, Long sensorId);
 
-    List<Sensor> getSensorsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp);
-
     boolean isValidHubToken(String hubToken);
 
     List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime lastRetrievalTimestamp);

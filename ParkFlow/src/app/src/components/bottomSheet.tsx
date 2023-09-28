@@ -21,11 +21,11 @@ export type BottomSheetRefProps = {
 
 const { height: WindowHeight } = Dimensions.get("window");
 const MaxTranslateY = -WindowHeight + 200;
-const MinTranslateY = 50;
+const MinTranslateY = 100;
 
 const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
     ({ children, midTranslateY = -150 }, ref) => {
-        const translateY = useSharedValue(10);
+        const translateY = useSharedValue(100);
 
         const state = useSharedValue<"closed" | "mid" | "open">("closed");
 

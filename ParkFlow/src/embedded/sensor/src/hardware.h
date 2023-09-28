@@ -102,10 +102,12 @@ namespace Hardware
     public:
         LoRaTransceiver()
         {
+            LoRa.setPins(10, 9, 2);
             if (!LoRa.begin(433E6))
             {
                 Serial.println("Starting LoRa failed!");
             }
+            LoRa.setSyncWord(0xF1);
         }
 
         void sendData(String data)

@@ -34,7 +34,7 @@ void setup()
 
   rgb->light(255, 0, 0);
 
-  Serial.println("Working");
+  Serial.println("Done");
 }
 
 double getAverage()
@@ -44,47 +44,59 @@ double getAverage()
 
 void loop()
 {
-  // String data = loRa->recieveData();
-  // if (data != "")
-  // {
-  //   Serial.println(data);
+  String data = loRa->recieveData();
+  if (data != "")
+  {
+    Serial.println(data);
 
-  //   if (data == "CLOSE")
-  //   {
-  //     if (getAverage() < CLOSE_DISTANCE)
-  //       loRa->sendData("REJECT");
-  //     else
-  //     {
-  //       loRa->sendData("ACCEPT");
+    if (data == "CLOSE")
+    {
+      delay(500);
+      if (getAverage() < CLOSE_DISTANCE)
+      {
+        loRa->sendData("REJECT");
+        Serial.println("REJECT");
 
-  //       servo->write(90);
-  //       inverseSensvo->write(90);
+        while (getAverage() < CLOSE_DISTANCE)
+        {
+          Serial.println("Waiting");
+          delay(100);
+        }
 
-  //       rgb->light(255, 0, 0);
-  //     }
-  //   }
-  //   else if (data == "OPEN")
-  //   {
-  //     loRa->sendData("ACCEPT");
+        delay(500);
 
-  //     servo->write(0);
-  //     inverseSensvo->write(0);
+        loRa->sendData("ACCEPT");
 
-  //     rgb->light(0, 255, 0);
-  //   }
-  // }
+        servo->write(90);
+        inverseSensvo->write(90);
 
-  delay(60000);
-  rgb->light(0, 255, 0);
-  servo->write(0);
-  inverseSensvo->write(0);
+        rgb->light(255, 0, 0);
 
-  // delay(10000);
+        Serial.println("ACCEPT");
+      }
+      else
+      {
+        loRa->sendData("ACCEPT");
 
-  // servo->write(120);
-  // inverseSensvo->write(120);
+        servo->write(90);
+        inverseSensvo->write(90);
 
-  // delay(10000);
+        rgb->light(255, 0, 0);
 
-  // delay(1000);
+        Serial.println("ACCEPT");
+      }
+    }
+    else if (data == "OPEN")
+    {
+      delay(500);
+      loRa->sendData("ACCEPT");
+
+      servo->write(0);
+      inverseSensvo->write(0);
+
+      rgb->light(0, 255, 0);
+
+      Serial.println("ACCEPT");
+    }
+  }
 }

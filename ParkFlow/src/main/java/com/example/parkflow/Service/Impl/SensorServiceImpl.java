@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import java.time.LocalDateTime;
@@ -116,7 +115,6 @@ public class SensorServiceImpl implements SensorService {
                         sensor.setLatitude(latitude);
                         sensor.setLongitude(longitude);
                         sensor.setAddress(address);
-                        sensor.setUpdatedAtTimestamp(LocalDateTime.now());
                         return sensorRepository.save(sensor);
                     })
                     .orElse(null);
@@ -197,14 +195,12 @@ public class SensorServiceImpl implements SensorService {
         if (sensorOptional.isPresent() && userOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
             User user = userOptional.get();
-
             if (sensor.isAvailable()) {
                 return null;
             }
             if (!sensor.getReservedByUserId().equals(userId)) {
                 return null;
             }
-
             long reservationHours = sensor.getReservationStartTimestamp().until(LocalDateTime.now(), java.time.temporal.ChronoUnit.HOURS);
             BigDecimal reservationCost = calculateReservationCost(sensorId, reservationHours + 1);
             LocalDateTime reservationStartTime = sensor.getReservationStartTimestamp();
@@ -213,15 +209,14 @@ public class SensorServiceImpl implements SensorService {
             Reservation reservation = new Reservation(sensor, userId, reservationStartTime, reservationEndTime, reservationCost, paymentMethod);
             System.out.println(reservation.toString());
             reservationRepository.save(reservation);
-
             System.out.println("3123131231312");
 
             sensor.setReservationStartTimestamp(null);
             sensor.setReservedByUserId(null);
             sensor.setAvailable(true);
             sensor.setLifted(true);
+            sensor.setUpdatedAtTimestamp(LocalDateTime.now());
             sensorRepository.save(sensor);
-
             user.setReservedSensorId(null);
             userRepository.save(user);
 
@@ -254,25 +249,24 @@ public class SensorServiceImpl implements SensorService {
             return false;
         }
     }
-
     @Override
-    public Sensor lowerSensor(Long sensorId, Long userId) {
+    public boolean lowerSensor(Long sensorId, Long userId) {
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
         if (sensorOptional.isPresent()) {
             Sensor sensor = sensorOptional.get();
             if (sensor.isAvailable()) {
-                return null;
+                return false;
             }
             if (!sensor.getReservedByUserId().equals(userId)) {
-                return null;
+                return false;
             }
             if (sensor.isLifted()) {
                 sensor.setLifted(false);
                 sensor.setUpdatedAtTimestamp(LocalDateTime.now());
                 sensorRepository.save(sensor);
-                return sensor;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 }

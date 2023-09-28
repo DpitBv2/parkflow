@@ -130,17 +130,24 @@ public class HubController {
      * @return status {@code 200 (OK)} and body {@link Hub}
      */
     @PutMapping("/sensor")
-    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId) {
-        Hub updatedHub = hubService.addSensorToHub(hubId, sensorId);
+    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        Hub updatedHub = hubService.addSensorToHub(hubId, sensorId, user.getId());
         if (updatedHub != null) {
             return ResponseEntity.ok(updatedHub);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/{hubId}/updated-sensors")
-    public ResponseEntity<List<Long>> getUpdatedSensorIdsForHub(@PathVariable Long hubId) {
-        Hub hub = hubService.getById(hubId);
+
+    /**
+     * Get all updated sensors for a specific hub since last retrieval.
+     * @param token: Hub token
+     * @return status {@code 200 (OK)} and body List of SensorDTO
+     */
+    @GetMapping("/updatedSensors")
+    public ResponseEntity<List<Long>> getUpdatedSensorIdsForHub(@RequestParam String token) {
+        Hub hub = hubService.getHubByToken(token);
         if (hub == null) {
             return ResponseEntity.notFound().build();
         }
@@ -148,14 +155,14 @@ public class HubController {
         lastRetrievalTimestamp = LocalDateTime.now();
         return ResponseEntity.ok(updatedSensorIds);
     }
+
     /**
      * Get all sensors for a specific hub.
-     *
      * @param hubId: Hub ID
      * @return status {@code 200 (OK)} and body List of SensorDTO
      */
-    @GetMapping("/{hubId}/sensors")
-    public ResponseEntity<List<SensorDTO>> getSensorsForHub(@PathVariable Long hubId) {
+    @GetMapping("/sensors")
+    public ResponseEntity<List<SensorDTO>> getSensorsForHub(@RequestParam Long hubId) {
         Hub hub = hubService.getById(hubId);
         if (hub != null) {
             List<Sensor> sensors = hub.getSensors();

@@ -131,16 +131,13 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public Hub addSensorToHub(Long hubId, Long sensorId) {
+    public Hub addSensorToHub(Long hubId, Long sensorId, Long userId) {
         authorizeCustomerOrAdmin();
         Optional<Hub> hubOptional = hubRepository.findById(hubId);
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
-
-        System.out.println("hubOptional: " + hubOptional);
-        System.out.println("sensorOptional: " + sensorOptional);
-
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
         if (hubOptional.isPresent() && sensorOptional.isPresent()) {
-            if (!isHubOwnedByUser(hubId)) {
+            if (!isHubOwnedByUser(hubId) && !Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
                 throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
             }
             Hub hub = hubOptional.get();
@@ -163,5 +160,16 @@ public class HubServiceImpl implements HubService {
     @Override
     public boolean isValidHubToken(String hubToken) {
         return hubRepository.existsByToken(hubToken);
+    }
+
+    @Override
+    public Hub getHubByToken(String token) {
+        List<Hub> hubs = hubRepository.findAll();
+        for (Hub hub : hubs) {
+            if (hub.getToken().equals(token)) {
+                return hub;
+            }
+        }
+        return null;
     }
 }

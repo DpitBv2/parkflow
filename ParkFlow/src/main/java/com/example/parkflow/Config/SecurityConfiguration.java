@@ -28,7 +28,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         "/api/v1/user/register",
                                         "/api/v1/auth/login",
-                                        "/api/v1/public/**"
+                                        "/api/v1/public/**",
+                                        "/api/v1/hubs/updatedSensors"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )

@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,14 +39,19 @@ public class HubServiceImpl implements HubService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         User user = userRepository.findByEmail(principal.toString()).orElse(null);
-        if (user != null) {
-            Optional<Hub> hubOptional = hubRepository.findById(hubId);
-            if (hubOptional.isPresent()) {
-                Hub hub = hubOptional.get();
-                return hub.getOwner().equals(user);
+        try {
+            if (user != null) {
+                Optional<Hub> hubOptional = hubRepository.findById(hubId);
+                if (hubOptional.isPresent()) {
+                    Hub hub = hubOptional.get();
+                    System.out.println(hub.getOwner());
+                    return hub.getOwner().equals(user);
+                }
             }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
     private void authorizeCustomerOrAdmin() {
@@ -124,16 +130,14 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public Hub addSensorToHub(Long hubId, Long sensorId) {
+    public Hub addSensorToHub(Long hubId, Long sensorId, Long userId) {
         authorizeCustomerOrAdmin();
         Optional<Hub> hubOptional = hubRepository.findById(hubId);
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
 
-        System.out.println("hubOptional: " + hubOptional);
-        System.out.println("sensorOptional: " + sensorOptional);
-
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
         if (hubOptional.isPresent() && sensorOptional.isPresent()) {
-            if (!isHubOwnedByUser(hubId)) {
+            if (!isHubOwnedByUser(hubId) && !Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
                 throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
             }
             Hub hub = hubOptional.get();
@@ -145,6 +149,50 @@ public class HubServiceImpl implements HubService {
             hubRepository.save(hub);
             sensorRepository.save(sensor);
             return hub;
+        }
+        return null;
+    }
+    @Override
+    public List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
+        List<Long> updatedSensorIds = sensorRepository.findSensorIdsUpdatedSinceForHub(hub.getId(), timestamp);
+        return updatedSensorIds;
+    }
+    @Override
+    public boolean isValidHubToken(String hubToken) {
+        return hubRepository.existsByToken(hubToken);
+    }
+
+    @Override
+    public Hub getHubByToken(String token) {
+        List<Hub> hubs = hubRepository.findAll();
+        for (Hub hub : hubs) {
+            if (hub.getToken().equals(token)) {
+                return hub;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Hub setHubToken(Long hubId, String token, Long userId) {
+        authorizeCustomerOrAdmin();
+        Optional<Hub> hubOptional = hubRepository.findById(hubId);
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if (hubOptional.isPresent()) {
+            if (!isHubOwnedByUser(hubId) && !Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
+                throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
+            }
+            Hub hub = hubOptional.get();
+
+            List<Hub> hubs = hubRepository.findAll();
+            for (Hub h : hubs) {
+                if (Objects.equals(h.getToken(), token)) {
+                    throw new ResponseException("Token already in use.", HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            hub.setToken(token);
+            return hubRepository.save(hub);
         }
         return null;
     }

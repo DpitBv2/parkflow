@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/shop")
 public class ShopController {
@@ -28,7 +30,9 @@ public class ShopController {
         User user = userService.get((String) authentication.getPrincipal());
         String userEmail = user.getEmail();
         userService.changeUserRoleByEmail(userEmail, "CUSTOMER");
+
         int totalBought = shopService.purchaseHubsAndSensors(userEmail, numberOfHubs, numberOfSensors);
+
         return ResponseEntity.ok("Purchase successful. Total hubs and sensors bought: " + totalBought);
     }
 }

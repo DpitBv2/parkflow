@@ -15,6 +15,7 @@ public class Hub {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String token;
     private double latitude;
     private double longitude;
 
@@ -35,6 +36,14 @@ public class Hub {
     }
     public Long getId() {
         return id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public void setId(Long hubId) {

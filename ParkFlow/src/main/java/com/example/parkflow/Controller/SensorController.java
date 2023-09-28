@@ -185,9 +185,9 @@ public class SensorController {
     ) {
         try {
             User user = userService.get((String) authentication.getPrincipal());
-            Sensor sensor = sensorService.lowerSensor(sensorId, user.getId());
-            if (sensor != null) {
-                return ResponseEntity.ok(sensor);
+            boolean lowered = sensorService.lowerSensor(sensorId, user.getId());
+            if (lowered) {
+                return ResponseEntity.ok("Sensor successfully lowered.");
             } else {
                 return ResponseEntity.badRequest().body("Failed to lower the sensor.");
             }

@@ -1,11 +1,14 @@
 package com.example.parkflow.Controller;
 
 import com.example.parkflow.Controller.DTO.HubDTO;
+import com.example.parkflow.Controller.DTO.SensorDTO;
 import com.example.parkflow.Domain.Authority;
 import com.example.parkflow.Domain.Hub;
+import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Domain.User;
 import com.example.parkflow.Service.Impl.HubServiceImpl;
 import com.example.parkflow.Service.Impl.UserServiceImpl;
+import com.example.parkflow.Service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +16,23 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/hubs")
 public class HubController {
     private final HubServiceImpl hubService;
     private final UserServiceImpl userService;
+    private LocalDateTime lastRetrievalTimestamp = LocalDateTime.now();
+    private SensorService sensorService;
 
     @Autowired
-    public HubController(HubServiceImpl hubService, UserServiceImpl userService) {
+    public HubController(HubServiceImpl hubService, UserServiceImpl userService, SensorService sensorService) {
         this.hubService = hubService;
         this.userService = userService;
+        this.sensorService = sensorService;
     }
 
     /**
@@ -33,9 +41,20 @@ public class HubController {
      * @return status {@code 201 (CREATED)} and body {@link Hub}
      */
     @PostMapping
-    public ResponseEntity<Hub> createHub(@RequestBody HubDTO hubDTO) {
-        Hub createdHub = hubService.create(hubDTO.getLatitude(), hubDTO.getLongitude());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdHub);
+    public ResponseEntity<Hub> createHub(
+            @RequestBody HubDTO hubDTO,
+            Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        String userEmail = user.getEmail();
+        if (userService.getUserRoleByEmail(userEmail).equals("ADMIN")) {
+            Hub createdHub = hubService.create(hubDTO.getLatitude(), hubDTO.getLongitude());
+            if (createdHub != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(createdHub);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     /**
@@ -110,8 +129,55 @@ public class HubController {
      * @return status {@code 200 (OK)} and body {@link Hub}
      */
     @PutMapping("/sensor")
-    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId) {
-        Hub updatedHub = hubService.addSensorToHub(hubId, sensorId);
+    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        Hub updatedHub = hubService.addSensorToHub(hubId, sensorId, user.getId());
+        if (updatedHub != null) {
+            return ResponseEntity.ok(updatedHub);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Get all updated sensors for a specific hub since last retrieval.
+     * @param token: Hub token
+     * @return status {@code 200 (OK)} and body List of SensorDTO
+     */
+    @GetMapping("/updatedSensors")
+    public ResponseEntity<List<Long>> getUpdatedSensorIdsForHub(@RequestParam String token) {
+        Hub hub = hubService.getHubByToken(token);
+        if (hub == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Long> updatedSensorIds = hubService.getSensorIdsUpdatedSinceForHub(hub, lastRetrievalTimestamp);
+        lastRetrievalTimestamp = LocalDateTime.now();
+        return ResponseEntity.ok(updatedSensorIds);
+    }
+
+    /**
+     * Get all sensors for a specific hub.
+     * @param hubId: Hub ID
+     * @return status {@code 200 (OK)} and body List of SensorDTO
+     */
+    @GetMapping("/sensors")
+    public ResponseEntity<List<SensorDTO>> getSensorsForHub(@RequestParam Long hubId) {
+        Hub hub = hubService.getById(hubId);
+        if (hub != null) {
+            List<Sensor> sensors = hub.getSensors();
+            List<SensorDTO> sensorDTOs = sensors.stream()
+                    .map(SensorDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(sensorDTOs);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/token")
+    public ResponseEntity<Hub> updateHubToken(@RequestParam Long hubId, @RequestParam String token, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        Hub updatedHub = hubService.setHubToken(hubId, token, user.getId());
         if (updatedHub != null) {
             return ResponseEntity.ok(updatedHub);
         } else {

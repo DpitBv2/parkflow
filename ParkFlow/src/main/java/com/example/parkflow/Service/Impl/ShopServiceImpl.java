@@ -14,6 +14,8 @@ import com.example.parkflow.Utils.ResponseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShopServiceImpl implements ShopService {
 
@@ -39,10 +41,8 @@ public class ShopServiceImpl implements ShopService {
             HubDTO hubDTO = new HubDTO();
             hubDTO.setLatitude(0.0); // Set latitude as needed
             hubDTO.setLongitude(0.0); // Set longitude as needed
-
             double latitude = hubDTO.getLatitude();
             double longitude = hubDTO.getLongitude();
-
             Hub createdHub = hubService.create(latitude, longitude);
             user.addHub(createdHub);
             if (createdHub != null) {

@@ -12,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, Long> {
-    @Query("SELECT s.id FROM Sensor s WHERE s.hub.id = :hubId AND s.updatedAtTimestamp > :timestamp")
+    @Query("SELECT s.id, s.lifted FROM Sensor s WHERE s.hub.id = :hubId AND s.updatedAtTimestamp > :timestamp")
     List<Long> findSensorIdsUpdatedSinceForHub(@Param("hubId") Long hubId, @Param("timestamp") LocalDateTime timestamp);
 }

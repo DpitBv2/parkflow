@@ -43,12 +43,11 @@ public class HubController {
     @PostMapping
     public ResponseEntity<Hub> createHub(
             @RequestBody HubDTO hubDTO,
-            @RequestParam String token,
             Authentication authentication) {
         User user = userService.get((String) authentication.getPrincipal());
         String userEmail = user.getEmail();
         if (userService.getUserRoleByEmail(userEmail).equals("ADMIN")) {
-            Hub createdHub = hubService.create(hubDTO.getLatitude(), hubDTO.getLongitude(), token);
+            Hub createdHub = hubService.create(hubDTO.getLatitude(), hubDTO.getLongitude());
             if (createdHub != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdHub);
             } else {
@@ -170,6 +169,17 @@ public class HubController {
                     .map(SensorDTO::new)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(sensorDTOs);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/token")
+    public ResponseEntity<Hub> updateHubToken(@RequestParam Long hubId, @RequestParam String token, Authentication authentication) {
+        User user = userService.get((String) authentication.getPrincipal());
+        Hub updatedHub = hubService.setHubToken(hubId, token, user.getId());
+        if (updatedHub != null) {
+            return ResponseEntity.ok(updatedHub);
         } else {
             return ResponseEntity.notFound().build();
         }

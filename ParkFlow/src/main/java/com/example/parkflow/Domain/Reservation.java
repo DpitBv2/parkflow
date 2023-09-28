@@ -13,7 +13,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "sensorId", referencedColumnName = "id")
     private Sensor sensor;
     private Long userId;

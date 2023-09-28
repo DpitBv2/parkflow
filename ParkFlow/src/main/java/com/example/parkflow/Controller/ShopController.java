@@ -25,19 +25,13 @@ public class ShopController {
     public ResponseEntity<String> purchaseItems(
             @RequestParam int numberOfHubs,
             @RequestParam int numberOfSensors,
-            @RequestParam(required = false) List<String> hubTokens, // Optional list of hub tokens
             Authentication authentication
     ) {
         User user = userService.get((String) authentication.getPrincipal());
         String userEmail = user.getEmail();
         userService.changeUserRoleByEmail(userEmail, "CUSTOMER");
 
-        if (numberOfHubs > 0 && (hubTokens == null || hubTokens.size() != numberOfHubs)) {
-            // If numberOfHubs is not 0, require hubTokens for each hub
-            return ResponseEntity.badRequest().body("Hub tokens are required for each hub being purchased.");
-        }
-
-        int totalBought = shopService.purchaseHubsAndSensors(userEmail, numberOfHubs, numberOfSensors, hubTokens);
+        int totalBought = shopService.purchaseHubsAndSensors(userEmail, numberOfHubs, numberOfSensors);
 
         return ResponseEntity.ok("Purchase successful. Total hubs and sensors bought: " + totalBought);
     }

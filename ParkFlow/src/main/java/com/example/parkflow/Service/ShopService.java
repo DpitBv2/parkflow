@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ShopService {
 
-    int purchaseHubsAndSensors(String userEmail, int numberOfHubs, int numberOfSensors, List<String> hubTokens);
+    int purchaseHubsAndSensors(String userEmail, int numberOfHubs, int numberOfSensors);
 }

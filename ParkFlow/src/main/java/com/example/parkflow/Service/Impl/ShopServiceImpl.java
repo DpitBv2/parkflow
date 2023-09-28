@@ -30,7 +30,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public int purchaseHubsAndSensors(String userEmail, int numberOfHubs, int numberOfSensors, List<String> hubTokens) {
+    public int purchaseHubsAndSensors(String userEmail, int numberOfHubs, int numberOfSensors) {
         User user = userRepository.findByEmail(userEmail).orElse(null);
         if (user == null) {
             throw new ResponseException("User not found.", HttpStatus.NOT_FOUND);
@@ -38,13 +38,12 @@ public class ShopServiceImpl implements ShopService {
         int totalBought = 0;
 
         for (int i = 0; i < numberOfHubs; i++) {
-            String hubToken = hubTokens.get(i);
             HubDTO hubDTO = new HubDTO();
             hubDTO.setLatitude(0.0); // Set latitude as needed
             hubDTO.setLongitude(0.0); // Set longitude as needed
             double latitude = hubDTO.getLatitude();
             double longitude = hubDTO.getLongitude();
-            Hub createdHub = hubService.create(latitude, longitude, hubToken);
+            Hub createdHub = hubService.create(latitude, longitude);
             user.addHub(createdHub);
             if (createdHub != null) {
                 totalBought++;

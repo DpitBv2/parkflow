@@ -9,7 +9,7 @@ import java.util.List;
 public interface HubService {
     boolean isHubOwnedByUser(Long hubId);
 
-    Hub create(double latitude, double longitude, String token);
+    Hub create(double latitude, double longitude);
 
     List<Hub> getAllWithSensors();
 
@@ -30,4 +30,6 @@ public interface HubService {
     List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime lastRetrievalTimestamp);
 
     Hub getHubByToken(String token);
+
+    Hub setHubToken(Long hubId, String token, Long userId);
 }

@@ -71,12 +71,11 @@ public class HubServiceImpl implements HubService {
         throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
     }
     @Override
-    public Hub create(double latitude, double longitude, String token) {
+    public Hub create(double latitude, double longitude) {
         authorizeCustomerOrAdmin();
         Hub hub = new Hub();
         hub.setLatitude(latitude);
         hub.setLongitude(longitude);
-        hub.setToken(token);
         return hubRepository.save(hub);
     }
     @Transactional
@@ -135,6 +134,7 @@ public class HubServiceImpl implements HubService {
         authorizeCustomerOrAdmin();
         Optional<Hub> hubOptional = hubRepository.findById(hubId);
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+
         var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
         if (hubOptional.isPresent() && sensorOptional.isPresent()) {
             if (!isHubOwnedByUser(hubId) && !Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
@@ -169,6 +169,30 @@ public class HubServiceImpl implements HubService {
             if (hub.getToken().equals(token)) {
                 return hub;
             }
+        }
+        return null;
+    }
+
+    @Override
+    public Hub setHubToken(Long hubId, String token, Long userId) {
+        authorizeCustomerOrAdmin();
+        Optional<Hub> hubOptional = hubRepository.findById(hubId);
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if (hubOptional.isPresent()) {
+            if (!isHubOwnedByUser(hubId) && !Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
+                throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
+            }
+            Hub hub = hubOptional.get();
+
+            List<Hub> hubs = hubRepository.findAll();
+            for (Hub h : hubs) {
+                if (Objects.equals(h.getToken(), token)) {
+                    throw new ResponseException("Token already in use.", HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            hub.setToken(token);
+            return hubRepository.save(hub);
         }
         return null;
     }

@@ -250,4 +250,44 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/notSetUpSensors")
+    public ResponseEntity<?> getUserNotSetUpSensors(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserSensorsNotSetUpIDs(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/notSetUpHubs")
+    public ResponseEntity<?> getUserNotSetUpHubs(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserHubsNotSetUpIDs(user.getId()));
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/notSetUpSensors/count")
+    public ResponseEntity<?> getUserNotSetUpSensorsCount(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserSensorsNotSetUpIDs(user.getId()).size());
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/notSetUpHubs/count")
+    public ResponseEntity<?> getUserNotSetUpHubsCount(Authentication authentication) {
+        try {
+            User user = userService.get((String) authentication.getPrincipal());
+            return ResponseEntity.ok(userService.getUserHubsNotSetUpIDs(user.getId()).size());
+        } catch (ResponseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

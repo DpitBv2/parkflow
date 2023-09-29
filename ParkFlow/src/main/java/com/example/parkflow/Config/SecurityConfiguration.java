@@ -29,7 +29,8 @@ public class SecurityConfiguration {
                                         "/api/v1/user/register",
                                         "/api/v1/auth/login",
                                         "/api/v1/public/**",
-                                        "/api/v1/hubs/updatedSensors"
+                                        "/api/v1/hubs/updatedSensors",
+                                        "/api/v1/hubs/sensorToken"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )

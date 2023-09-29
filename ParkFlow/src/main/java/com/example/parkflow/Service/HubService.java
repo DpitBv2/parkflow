@@ -23,7 +23,7 @@ public interface HubService {
 
     void delete(Long hubId, Long userId);
 
-    Hub addSensorToHub(Long hubId, Long sensorId, Long userId);
+    Hub addSensorToHub(Long hubId, Long sensorId);
 
     boolean isValidHubToken(String hubToken);
 
@@ -32,4 +32,6 @@ public interface HubService {
     Hub getHubByToken(String token);
 
     Hub setHubToken(Long hubId, String token, Long userId);
+
+    Hub addSensorToHubByToken(String token, Long sensorId);
 }

@@ -129,11 +129,20 @@ public class HubController {
      * @return status {@code 200 (OK)} and body {@link Hub}
      */
     @PutMapping("/sensor")
-    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId, Authentication authentication) {
-        User user = userService.get((String) authentication.getPrincipal());
-        Hub updatedHub = hubService.addSensorToHub(hubId, sensorId, user.getId());
+    public ResponseEntity<Hub> addSensorToHub(@RequestParam Long hubId, @RequestParam Long sensorId) {
+        Hub updatedHub = hubService.addSensorToHub(hubId, sensorId);
         if (updatedHub != null) {
             return ResponseEntity.ok(updatedHub);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/sensorToken")
+    public ResponseEntity<?> addSensorToHub(@RequestParam String token, @RequestParam Long sensorId) {
+        Hub updatedHub = hubService.addSensorToHubByToken(token, sensorId);
+        if (updatedHub != null) {
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -174,6 +183,11 @@ public class HubController {
         }
     }
 
+    /**
+     * Set hub token
+     * @param hubId: Hub ID
+     * @return status {@code 200 (OK)} and body {@link Hub}
+     */
     @PutMapping("/token")
     public ResponseEntity<Hub> updateHubToken(@RequestParam Long hubId, @RequestParam String token, Authentication authentication) {
         User user = userService.get((String) authentication.getPrincipal());

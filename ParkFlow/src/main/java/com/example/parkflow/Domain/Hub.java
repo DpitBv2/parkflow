@@ -89,4 +89,16 @@ public class Hub {
         sensors.remove(sensor);
         sensor.setHub(null);
     }
+
+    @Override
+    public String toString() {
+        return "Hub{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", owner=" + owner +
+                ", sensors=" + sensors +
+                '}';
+    }
 }

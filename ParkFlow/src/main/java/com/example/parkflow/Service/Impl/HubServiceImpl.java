@@ -70,6 +70,24 @@ public class HubServiceImpl implements HubService {
         }
         throw new ResponseException("Access denied. You must have CUSTOMER or ADMIN role.", HttpStatus.FORBIDDEN);
     }
+
+    private void authorizeAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            System.out.println("Principal: " + principal);
+            if (principal != null) {
+                User user = userRepository.findByEmail(principal.toString()).orElse(null);
+                System.out.println("User: " + user.getUsername() + " has authorities: " + user.getAuthorities());
+                if (user.getAuthorities().stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("ADMIN"))) {
+                    return;
+                }
+            }
+        }
+        throw new ResponseException("Access denied. You must have ADMIN role.", HttpStatus.FORBIDDEN);
+    }
+
     @Override
     public Hub create(double latitude, double longitude) {
         authorizeCustomerOrAdmin();
@@ -130,19 +148,19 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public Hub addSensorToHub(Long hubId, Long sensorId, Long userId) {
-        authorizeCustomerOrAdmin();
+    public Hub addSensorToHub(Long hubId, Long sensorId) {
+        authorizeAdmin();
         Optional<Hub> hubOptional = hubRepository.findById(hubId);
         Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
 
-        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
         if (hubOptional.isPresent() && sensorOptional.isPresent()) {
-            if (!isHubOwnedByUser(hubId) && !Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
-                throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);
-            }
             Hub hub = hubOptional.get();
             if (hub.getLatitude() == 0 && hub.getLongitude() == 0)
                 return null;
+
+            if (hub.getSensors().contains(sensorOptional.get())) {
+                throw new ResponseException("Sensor already added to hub.", HttpStatus.BAD_REQUEST);
+            }
 
             Sensor sensor = sensorOptional.get();
             hub.addSensor(sensor);
@@ -152,6 +170,7 @@ public class HubServiceImpl implements HubService {
         }
         return null;
     }
+
     @Override
     public List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
         List<Long> updatedSensorIds = sensorRepository.findSensorIdsUpdatedSinceForHub(hub.getId(), timestamp);
@@ -166,7 +185,7 @@ public class HubServiceImpl implements HubService {
     public Hub getHubByToken(String token) {
         List<Hub> hubs = hubRepository.findAll();
         for (Hub hub : hubs) {
-            if (hub.getToken().equals(token)) {
+            if (Objects.equals(hub.getToken(), token)) {
                 return hub;
             }
         }
@@ -194,6 +213,29 @@ public class HubServiceImpl implements HubService {
             hub.setToken(token);
             return hubRepository.save(hub);
         }
+        return null;
+    }
+
+    @Override
+    public Hub addSensorToHubByToken(String token, Long sensorId) {
+        Optional<Sensor> sensorOptional = sensorRepository.findById(sensorId);
+        Hub hub = getHubByToken(token);
+
+        if (sensorOptional.isPresent()) {
+            if (hub.getLatitude() == 0 && hub.getLongitude() == 0)
+                return null;
+
+            if (hub.getSensors().contains(sensorOptional.get())) {
+                throw new ResponseException("Sensor already added to hub.", HttpStatus.BAD_REQUEST);
+            }
+
+            Sensor sensor = sensorOptional.get();
+            hub.addSensor(sensor);
+            hubRepository.save(hub);
+            sensorRepository.save(sensor);
+            return hub;
+        }
+
         return null;
     }
 }

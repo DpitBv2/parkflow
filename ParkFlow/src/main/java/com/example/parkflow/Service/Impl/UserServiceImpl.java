@@ -207,4 +207,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResponseException("Sensor not found.", HttpStatus.NOT_FOUND));
         return sensor;
     }
+
+    @Override
+    public Set<Long> getUserSensorsNotSetUpIDs(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        Set<Sensor> userSensors = user.getOwnedSensors();
+        userSensors.removeIf(sensor -> sensor.getAddress() != null);
+        return userSensors.stream().map(Sensor::getId).collect(java.util.stream.Collectors.toSet());
+    }
+
+    @Override
+    public Set<Long> getUserHubsNotSetUpIDs(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
+        Set<Hub> userHubs = user.getOwnedHubs();
+        userHubs.removeIf(hub -> hub.getLatitude() != 0 && hub.getLongitude() != 0);
+        return userHubs.stream().map(Hub::getId).collect(java.util.stream.Collectors.toSet());
+    }
 }

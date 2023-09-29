@@ -45,4 +45,8 @@ public interface UserService {
     int getUserHubsCount(Long userId);
 
     Sensor getUserReservedSensor(Long userId);
+
+    Set<Long> getUserSensorsNotSetUpIDs(Long userId);
+
+    Set<Long> getUserHubsNotSetUpIDs(Long userId);
 }

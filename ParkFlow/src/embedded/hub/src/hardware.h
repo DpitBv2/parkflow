@@ -9,13 +9,19 @@
 #include "const.h"
 #include <LoRa.h>
 #include <SPI.h>
+#include "data.h"
 
 namespace Hardware
 {
+    std::list<data::Sensor> sensors;
+
     namespace Config
     {
         constexpr int ScreenWidth = 128;
         constexpr int ScreenHeight = 64;
+
+        constexpr int StartChannel = F1;
+        constexpr int EndChannel = F8;
     }
 
     class RGB
@@ -171,6 +177,26 @@ namespace Hardware
                 return data;
             }
             return "";
+        }
+
+        void pingChannels()
+        {
+            for (int i = Config::StartChannel; i <= Config::EndChannel; i++)
+            {
+                LoRa.setSyncWord(i);
+                sendData("Ping");
+                delay(100);
+
+                if (recieveData() == "Pong")
+                {
+                    Serial.println("Pong" + String(i));
+                    data::sensors.add(data::Sensor{0, isRaised, i});
+                }
+                else
+                    Serial.println("No Pong");
+
+                delay(500);
+            }
         }
     };
 }

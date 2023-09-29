@@ -55,13 +55,11 @@ namespace IOT
         {
         }
 
-        bool getData(String data)
+        DynamicJsonDocument getData(String data)
         {
             DynamicJsonDocument doc(1024);
             deserializeJson(doc, data);
-            if (doc.size() == 0)
-                return false;
-            return true;
+            return doc;
         }
     };
 }

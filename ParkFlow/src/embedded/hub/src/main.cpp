@@ -1,5 +1,6 @@
 #include "hardware.h"
 #include "client.h"
+#include "data.h"
 
 std::unique_ptr<Hardware::RGB> rgb;
 std::unique_ptr<Hardware::Screen> screen;
@@ -27,58 +28,31 @@ void setup()
 
     rgb->light(0, 0, 255);
     screen->clear();
-}
 
-void display()
-{
+    while (data::sensors.length() == 0)
+    {
+        pingChannels();
+        screen->clear();
+        screen->moveCursor(0, 10);
+        screen->writeText("ParkFlow - HUB");
+        screen->moveCursor(0, 25);
+        screen->writeText("Searching for");
+        screen->moveCursor(0, 40);
+        screen->writeText("devices");
+        delay(500);
+    }
+
     screen->clear();
-    screen->moveCursor(0, 5);
-    screen->writeText("ParkFlow - HUB");
     screen->moveCursor(0, 20);
-    screen->writeText("Connections: 0");
+    screen->writeText("ParkFlow - HUB");
     screen->moveCursor(0, 35);
-    screen->writeText("Searching for");
-    screen->moveCursor(0, 45);
-    screen->writeText("devices");
+    screen->writeText("Connections:" + String(data::sensors.length()));
     delay(500);
 }
 
 void loop()
 {
     String data = client->getRequest();
-    if (client->getData(data) && data != "")
-    {
-        if (isOpen)
-        {
-            lora->sendData("CLOSE");
-
-            String data = "";
-            while (data == "")
-                data = lora->recieveData();
-
-            isOpen = false;
-            Serial.println(data);
-
-            if (data == "ACCEPT")
-                rgb->light(0, 255, 0);
-            else if (data == "REJECT")
-                rgb->light(255, 0, 0);
-        }
-        else
-        {
-            lora->sendData("OPEN");
-
-            String data = "";
-            while (data == "")
-                data = lora->recieveData();
-
-            isOpen = true;
-            Serial.println(data);
-
-            if (data == "ACCEPT")
-                rgb->light(0, 255, 0);
-        }
-    }
 
     delay(5000);
 }

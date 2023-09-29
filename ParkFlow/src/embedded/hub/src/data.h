@@ -1,47 +1,71 @@
 #ifndef _DATA_H_
 #define _DATA_H_
 
-namespace data {
-    struct ParkData {
+namespace data
+{
+    struct Sensor
+    {
         int id;
-        int status;
-        int time;
+        bool isRaised;
+        int channel;
 
-        static String serialize(ParkData data) {
-            return String(data.id) + "," + String(data.status) + "," + String(data.time);
+        Sensor(int id, bool isRaised, int channel)
+        {
+            this->id = id;
+            this->isRaised = isRaised;
+            this->channel = channel;
         }
 
-        static ParkData deserialize(String data) {
-            ParkData parkData;
-            int index = 0;
-            int lastIndex = 0;
-            while(index != -1) {
-                index = data.indexOf(',', lastIndex);
-                if(index == -1) {
-                    parkData.time = data.substring(lastIndex).toInt();
-                    break;
-                }
+        bool open(std::unique_ptr<hardware::LoRaTransceiver> lora)
+        {
+            lora->sendData("OPEN");
 
-                String value = data.substring(lastIndex, index);
-                switch(index) {
-                    case 0:
-                        parkData.id = value.toInt();
-                        break;
-                    case 1:
-                        parkData.status = value.toInt();
-                        break;
-                }
+            String data = "";
+            while (data == "")
+                data = lora->recieveData();
 
-                lastIndex = index + 1;
-            }
+            isLifted = false;
+            Serial.println(data);
 
-            return parkData;
+            if (data == "ACCEPT")
+                return true;
+
+            return false;
+        }
+
+        bool close(std::unique_ptr<hardware::LoRaTransceiver> lora)
+        {
+            lora->sendData("CLOSE");
+
+            String data = "";
+            while (data == "")
+                data = lora->recieveData();
+
+            isLifted = true;
+            Serial.println(data);
+
+            if (data == "ACCEPT")
+                return true;
+            else if (data == "REJECT")
+                return false;
         }
     }
 
-    struct HubData {
-        
-    };
+    std::list<data::Sensor>
+        sensors;
+
+    Sensor findSensorById(int id)
+    {
+        for (auto sensor : sensors)
+        {
+            if (sensor.id == id)
+            {
+                return sensor;
+            }
+        }
+
+        return nullptr;
+    }
 }
 
 #endif

@@ -1,5 +1,6 @@
 package com.example.parkflow.Service.Impl;
 
+import com.example.parkflow.Controller.DTO.DataDTO;
 import com.example.parkflow.Domain.Hub;
 import com.example.parkflow.Domain.Sensor;
 import com.example.parkflow.Domain.User;
@@ -16,9 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static com.example.parkflow.Utils.Constants.PAGE_SIZE;
 
@@ -172,9 +171,13 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
-        List<Long> updatedSensorIds = sensorRepository.findSensorIdsUpdatedSinceForHub(hub.getId(), timestamp);
-        return updatedSensorIds;
+    public List<DataDTO> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime timestamp) {
+        List<Long> sensorIds = sensorRepository.findSensorIdsUpdatedSinceForHub(hub.getId(), timestamp);
+        List<DataDTO> sensors = new ArrayList<>();
+        for (Long sensorId : sensorIds) {
+            sensors.add(new DataDTO(sensorId, sensorRepository.findById(sensorId).orElse(null).isLifted()));
+        }
+        return sensors;
     }
     @Override
     public boolean isValidHubToken(String hubToken) {

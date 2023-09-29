@@ -1,5 +1,6 @@
 package com.example.parkflow.Controller;
 
+import com.example.parkflow.Controller.DTO.DataDTO;
 import com.example.parkflow.Controller.DTO.HubDTO;
 import com.example.parkflow.Controller.DTO.SensorDTO;
 import com.example.parkflow.Domain.Authority;
@@ -9,6 +10,7 @@ import com.example.parkflow.Domain.User;
 import com.example.parkflow.Service.Impl.HubServiceImpl;
 import com.example.parkflow.Service.Impl.UserServiceImpl;
 import com.example.parkflow.Service.SensorService;
+import com.example.parkflow.Utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -154,12 +157,12 @@ public class HubController {
      * @return status {@code 200 (OK)} and body List of SensorDTO
      */
     @GetMapping("/updatedSensors")
-    public ResponseEntity<List<Long>> getUpdatedSensorIdsForHub(@RequestParam String token) {
+    public ResponseEntity<List<DataDTO>> getUpdatedSensorIdsForHub(@RequestParam String token) {
         Hub hub = hubService.getHubByToken(token);
         if (hub == null) {
             return ResponseEntity.notFound().build();
         }
-        List<Long> updatedSensorIds = hubService.getSensorIdsUpdatedSinceForHub(hub, lastRetrievalTimestamp);
+        var updatedSensorIds = hubService.getSensorIdsUpdatedSinceForHub(hub, lastRetrievalTimestamp);
         lastRetrievalTimestamp = LocalDateTime.now();
         return ResponseEntity.ok(updatedSensorIds);
     }

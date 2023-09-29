@@ -1,10 +1,11 @@
 package com.example.parkflow.Service;
 
+import com.example.parkflow.Controller.DTO.DataDTO;
 import com.example.parkflow.Domain.Hub;
-import com.example.parkflow.Domain.Sensor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface HubService {
     boolean isHubOwnedByUser(Long hubId);
@@ -27,7 +28,7 @@ public interface HubService {
 
     boolean isValidHubToken(String hubToken);
 
-    List<Long> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime lastRetrievalTimestamp);
+    List<DataDTO> getSensorIdsUpdatedSinceForHub(Hub hub, LocalDateTime lastRetrievalTimestamp);
 
     Hub getHubByToken(String token);
 

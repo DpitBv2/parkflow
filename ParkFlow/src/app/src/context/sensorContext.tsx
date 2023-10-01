@@ -2,7 +2,9 @@ import { createContext, useState } from "react";
 import api from "../util/api";
 import {
     GetClosestSensorsURL,
+    GetReservedSensorURL,
     GetSensorByIdURL,
+    ParkSensorURL,
     ReserveSensorURL,
 } from "../util/links";
 
@@ -56,7 +58,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
 
     const reserve = (token: string, id: number) => {
         return new Promise((resolve, reject) => {
-            api.post(ReserveSensorURL, {
+            api.post(ReserveSensorURL, null, {
                 params: {
                     sensorId: id,
                 },
@@ -79,7 +81,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
         paymentMethod: string
     ) => {
         return new Promise((resolve, reject) => {
-            api.put(ReserveSensorURL, {
+            api.put(ReserveSensorURL, null, {
                 params: {
                     sensorId: id,
                     paymentMethod,
@@ -99,7 +101,26 @@ export const SensorProvider = ({ children }: { children: any }) => {
 
     const park = (token: string, id: number) => {
         return new Promise((resolve, reject) => {
-            api.put(ReserveSensorURL + id, {
+            api.put(ParkSensorURL, null, {
+                params: {
+                    sensorId: id,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    };
+
+    const getReserved = (token: string) => {
+        return new Promise((resolve, reject) => {
+            api.get(GetReservedSensorURL, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -115,7 +136,14 @@ export const SensorProvider = ({ children }: { children: any }) => {
 
     return (
         <SensorContext.Provider
-            value={{ getClosest, getByID, reserve, endReservation, park }}>
+            value={{
+                getClosest,
+                getByID,
+                reserve,
+                endReservation,
+                park,
+                getReserved,
+            }}>
             {children}
         </SensorContext.Provider>
     );

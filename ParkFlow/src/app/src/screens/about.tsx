@@ -22,7 +22,7 @@ const About = ({ navigation }: { navigation: any }) => {
                 <MenuButton navigation={navigation} />
             </View>
             <Image
-                source={require("../../assets/images/onboarding/drive.png")}
+                source={require("../../assets/images/about/dpit.png")}
                 style={styles.image}
             />
             <ScrollView
@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
         top: 0,
         height: 250,
         borderWidth: 2,
-        borderColor: "red",
+        resizeMode: "contain",
+        opacity: 1,
     },
 });
 

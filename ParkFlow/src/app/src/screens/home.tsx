@@ -39,15 +39,16 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-    const onPressOpen = useCallback((higher: boolean = false) => {
-        bottomSheetRef.current?.scrollTo(higher ? -190 : -150);
+    const onPressOpen = useCallback((height: number) => {
+        bottomSheetRef.current?.scrollTo(height);
     }, []);
     const onPressClose = useCallback(() => {
         bottomSheetRef.current?.scrollTo(50);
     }, []);
 
     const { userToken } = useContext(AuthContext);
-    const { getClosest, reserve, park } = useContext(SensorContext);
+    const { getClosest, reserve, park, endReservation, getReserved } =
+        useContext(SensorContext);
 
     const [distance, setDistance] = useState<number>(0);
     const [visible, setVisible] = useState<boolean>(false);
@@ -55,12 +56,10 @@ const Home = ({ navigation }: { navigation: any }) => {
     // TODO: make initial region change based on user location
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setSeconds((prevSeconds) => prevSeconds + 1);
-        }, 1000);
-        // console.log("lol");
-
-        return () => clearInterval(interval);
+        // const interval = setInterval(() => {
+        //     setSeconds((prevSeconds) => prevSeconds + 1);
+        // }, 1000);
+        // return () => clearInterval(interval);
     }, [parked]);
 
     useEffect(() => {
@@ -90,6 +89,28 @@ const Home = ({ navigation }: { navigation: any }) => {
                 .catch((error: any) => {
                     console.log(error);
                 });
+
+            await getReserved(userToken)
+                .then((res: any) => {
+                    if (res !== null) {
+                        setReserved(true);
+                        if (!res.lifted) setParked(true);
+                        setCurrentSensor(res);
+                        setSeconds(
+                            Math.floor(
+                                -(
+                                    new Date(
+                                        res.reservationStartTimestamp
+                                    ).getTime() - Date.now()
+                                ) / 1000
+                            )
+                        );
+                        onPressOpen(-190);
+                    }
+                })
+                .catch((error: any) => {
+                    // console.log(error);
+                });
         };
 
         getLocation();
@@ -111,7 +132,9 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 longitude: sensor.longitude,
                             }}
                             onPress={() => {
-                                setCurrentSensor(sensor);
+                                if (currentSensor === null)
+                                    setCurrentSensor(sensor);
+                                else onPressOpen(reserved ? -190 : -150);
                             }}>
                             <Image
                                 key={key}
@@ -165,7 +188,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 },
                                 1000
                             );
-                            onPressOpen(parked);
+                            onPressOpen(reserved ? -190 : -150);
                         }}
                     />
                 )}
@@ -178,6 +201,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                     style={{
                         marginVertical: 10,
                     }}
+                    onPress={onPressClose}
                 />
 
                 <SearchBar
@@ -298,7 +322,20 @@ const Home = ({ navigation }: { navigation: any }) => {
                                         }}>
                                         <Text fontSize={18}>Duration: </Text>
                                         <Text fontSize={18} bold>
-                                            {seconds}
+                                            {Math.floor(
+                                                seconds / 60
+                                            ).toLocaleString("en-US", {
+                                                minimumIntegerDigits: 2,
+                                                useGrouping: false,
+                                            }) +
+                                                ":" +
+                                                (seconds % 60).toLocaleString(
+                                                    "en-US",
+                                                    {
+                                                        minimumIntegerDigits: 2,
+                                                        useGrouping: false,
+                                                    }
+                                                )}
                                         </Text>
                                     </View>
                                 </View>
@@ -321,7 +358,16 @@ const Home = ({ navigation }: { navigation: any }) => {
                                                 theme().colors.succes
                                             }
                                             onPress={() => {
-                                                setParked(true);
+                                                park(
+                                                    userToken,
+                                                    currentSensor.id
+                                                )
+                                                    .then((res: any) => {
+                                                        setParked(true);
+                                                    })
+                                                    .catch((error: any) => {
+                                                        console.log(error);
+                                                    });
                                             }}
                                             width={"50%"}
                                             style={{ marginRight: 10 }}
@@ -332,9 +378,20 @@ const Home = ({ navigation }: { navigation: any }) => {
                                                 theme().colors.danger
                                             }
                                             onPress={() => {
-                                                setReserved(false);
-                                                onPressOpen();
-                                                setSeconds(0);
+                                                endReservation(
+                                                    userToken,
+                                                    currentSensor.id,
+                                                    "9917"
+                                                )
+                                                    .then((res: any) => {
+                                                        setReserved(false);
+                                                        setParked(false);
+                                                        onPressOpen(-150);
+                                                        setSeconds(0);
+                                                    })
+                                                    .catch((error: any) => {
+                                                        console.log(error);
+                                                    });
                                             }}
                                             width={"50%"}
                                         />
@@ -344,10 +401,20 @@ const Home = ({ navigation }: { navigation: any }) => {
                                         text={"Cancel"}
                                         backgroundColor={theme().colors.danger}
                                         onPress={() => {
-                                            setReserved(false);
-                                            setParked(false);
-                                            onPressOpen();
-                                            setSeconds(0);
+                                            endReservation(
+                                                userToken,
+                                                currentSensor.id,
+                                                "9917"
+                                            )
+                                                .then((res: any) => {
+                                                    setReserved(false);
+                                                    setParked(false);
+                                                    onPressOpen(-150);
+                                                    setSeconds(0);
+                                                })
+                                                .catch((error: any) => {
+                                                    console.log(error);
+                                                });
                                         }}
                                         width={"100%"}
                                     />
@@ -376,11 +443,10 @@ const Home = ({ navigation }: { navigation: any }) => {
                             setVisible(false);
                             reserve(userToken, currentSensor.id)
                                 .then((res: any) => {
-                                    setCurrentSensor(res);
-                                    console.log(res);
                                     setReserved(true);
+                                    setCurrentSensor(res);
                                     setSeconds(0);
-                                    onPressOpen(true);
+                                    onPressOpen(-190);
                                 })
                                 .catch((error: any) => {
                                     console.log(error);
@@ -394,21 +460,17 @@ const Home = ({ navigation }: { navigation: any }) => {
                         text="Park"
                         onPress={() => {
                             setVisible(false);
-                            setReserved(true);
-                            setParked(true);
-                            onPressOpen(true);
-                            setSeconds(0);
-
                             if (!reserved)
                                 reserve(userToken, currentSensor.id)
                                     .then((res: any) => {
-                                        setCurrentSensor(res);
-                                        console.log(res);
                                         setReserved(true);
+                                        setCurrentSensor(res);
+                                        setSeconds(0);
+                                        onPressOpen(-190);
 
                                         park(userToken, currentSensor.id)
                                             .then((res: any) => {
-                                                console.log(res);
+                                                setParked(true);
                                             })
                                             .catch((error: any) => {
                                                 console.log(error);
@@ -420,7 +482,9 @@ const Home = ({ navigation }: { navigation: any }) => {
                             else
                                 park(userToken, currentSensor.id)
                                     .then((res: any) => {
-                                        console.log(res);
+                                        setSeconds(0);
+                                        setParked(true);
+                                        onPressOpen(-190);
                                     })
                                     .catch((error: any) => {
                                         console.log(error);

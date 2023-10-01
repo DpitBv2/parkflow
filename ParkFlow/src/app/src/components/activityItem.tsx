@@ -84,7 +84,7 @@ const ActivityItem = ({
                     <Text fontSize={15} overflow>
                         {item.sensor.address.street}
                     </Text>
-                    <Text fontSize={12}>
+                    <Text fontSize={12} overflow>
                         {item.startTime.getDate() +
                             " " +
                             item.startTime.toLocaleString("default", {
@@ -266,8 +266,9 @@ const styles = StyleSheet.create({
     textContainer: {
         width: "56%",
         justifyContent: "center",
-        marginRight: 8,
+        marginRight: 5,
         marginLeft: -2,
+        flex: 1,
     },
     map: {
         height: 120,

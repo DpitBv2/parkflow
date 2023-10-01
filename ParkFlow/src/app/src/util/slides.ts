@@ -3,21 +3,21 @@ export default [
         id: 1,
         title: "Search",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et aliquet tortor, fringilla dolor. Cras pharetra commodo. id nulla a enim efficitur elementum quis ut",
+            "Discover available parking spots near you with real-time updates. Say goodbye to endless circling in search of a spot!",
         image: require("../../assets/images/onboarding/search.png"),
     },
     {
         id: 2,
         title: "Drive",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et aliquet tortor, fringilla dolor. Cras pharetra commodo. id nulla a enim efficitur elementum quis ut",
+            "Navigate to your destination hassle-free. Our app ensures you reach your spot quickly and efficiently.",
         image: require("../../assets/images/onboarding/drive.png"),
     },
     {
         id: 3,
         title: "Park",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et aliquet tortor, fringilla dolor. Cras pharetra commodo. id nulla a enim efficitur elementum quis ut",
+            "Reserve your parking spot in advance for a worry-free experience. No more last-minute hunting for a space.",
         image: require("../../assets/images/onboarding/park.png"),
     },
 ];

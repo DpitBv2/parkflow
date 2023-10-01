@@ -3,6 +3,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./src/context/authContext";
 import { ReservationProvider } from "./src/context/reservationContext";
 import { SensorProvider } from "./src/context/sensorContext";
+import { ShopProvider } from "./src/context/shopContext";
 import AppNavigation from "./src/navigation/appNavigation";
 import { theme } from "./src/util/theme";
 
@@ -26,7 +27,9 @@ const App = () => {
                 <SensorProvider>
                     <AuthProvider>
                         <ReservationProvider>
-                            <AppNavigation />
+                            <ShopProvider>
+                                <AppNavigation />
+                            </ShopProvider>
                         </ReservationProvider>
                     </AuthProvider>
                 </SensorProvider>

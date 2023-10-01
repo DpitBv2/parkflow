@@ -5,15 +5,18 @@ import { theme } from "../util/theme";
 const MenuButton = ({
     navigation,
     style,
+    onPress,
 }: {
     navigation: any;
     style?: any;
+    onPress?: any;
 }) => {
     return (
         <TouchableOpacity
             activeOpacity={ActiveOpacity}
             onPress={() => {
                 navigation.openDrawer(), Keyboard.dismiss();
+                if (onPress) onPress();
             }}
             style={[styles.menu, style]}>
             <View>

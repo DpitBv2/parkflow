@@ -10,6 +10,7 @@ interface ButtonProps {
     backgroundColor?: string;
     color?: string;
     style?: object;
+    disabled?: boolean;
     onPress?: () => void;
 }
 
@@ -20,10 +21,12 @@ const Button = ({
     color,
     style,
     text,
+    disabled = false,
     onPress,
 }: ButtonProps) => {
     return (
         <TouchableOpacity
+            disabled={disabled}
             activeOpacity={ActiveOpacity}
             style={[
                 {

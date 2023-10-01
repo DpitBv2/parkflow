@@ -5,11 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cda5ccd7-45f5-4cb6-9b46-0e76365d5da9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/DataDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/HubController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/HubController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/HubService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/HubService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/HubServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/HubServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/assets/images/onboarding/park.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/assets/images/onboarding/park.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/activityItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/activityItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/menuButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/menuButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/context/activityContext.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/context/sensorContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/context/sensorContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/about.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/about.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/shop.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/shop.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/links.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/slides.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/slides.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +73,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;8a3617ebdcbe3ec0193c580c11ed3184&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -89,6 +102,9 @@
       <workItem from="1695931139364" duration="5503000" />
       <workItem from="1695967505920" duration="3400000" />
       <workItem from="1695976326453" duration="2135000" />
+      <workItem from="1696184196076" duration="627000" />
+      <workItem from="1696187156838" duration="725000" />
+      <workItem from="1696191459490" duration="3172000" />
     </task>
     <servers />
   </component>

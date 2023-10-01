@@ -47,7 +47,7 @@ public class Sensor {
         this.createdAtTimestamp = LocalDateTime.now();
         this.updatedAtTimestamp = LocalDateTime.now();
         this.available = true;
-        this.reservationPricePerHour = BigDecimal.valueOf(5);
+        this.reservationPricePerHour = BigDecimal.valueOf(1.5);
         this.lifted = true;
         this.isPrivate = isPrivate;
     }

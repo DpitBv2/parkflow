@@ -1,17 +1,12 @@
-import { View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
+import Background from "../components/background";
 import { theme } from "../util/theme";
 
 const Loading = () => {
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignContent: "center",
-            }}>
+        <Background>
             <ActivityIndicator size="large" color={theme().colors.primary} />
-        </View>
+        </Background>
     );
 };
 

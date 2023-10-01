@@ -12,7 +12,7 @@ const AboutItem = ({ name, description, image }: AboutItemProps) => {
     return (
         <View style={styles.container}>
             <Image source={image} style={styles.image} />
-            <Text fontSize={20} bold center style={{ marginTop: 10 }}>
+            <Text fontSize={18} bold center style={{ marginTop: 10 }}>
                 {name}
             </Text>
             <Text fontSize={15} bold center color={theme().colors.primary}>

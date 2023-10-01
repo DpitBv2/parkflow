@@ -36,10 +36,9 @@ const ActivityItem = ({
 
     const rStyle = useAnimatedStyle(() => {
         const visible = Boolean(
-            true
-            // viewableItems.value
-            //     .filter((item) => item.isViewable)
-            //     .find((viewableItem) => viewableItem.item.id === item.id)
+            viewableItems.value
+                .filter((item) => item.isViewable)
+                .find((viewableItem) => viewableItem.item.id === item.id)
         );
 
         return {
@@ -254,7 +253,7 @@ const ActivityItem = ({
 const styles = StyleSheet.create({
     container: {
         width: "88%",
-        backgroundColor: theme().colors.background,
+        backgroundColor: theme().colors.white,
         borderRadius: 20,
         alignSelf: "center",
         marginBottom: 15,
@@ -268,7 +267,7 @@ const styles = StyleSheet.create({
         width: "56%",
         justifyContent: "center",
         marginRight: 8,
-        marginLeft: -5,
+        marginLeft: -2,
     },
     map: {
         height: 120,

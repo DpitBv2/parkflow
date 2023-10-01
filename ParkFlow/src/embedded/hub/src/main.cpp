@@ -20,7 +20,7 @@ void setup()
     rgb->light(255, 0, 0);
 
     lora = std::unique_ptr<Hardware::LoRaTransceiver>(new Hardware::LoRaTransceiver());
-    gsm = std::unique_ptr<Hardware::GSM>(new Hardware::GSM());
+    // gsm = std::unique_ptr<Hardware::GSM>(new Hardware::GSM());
     client = std::unique_ptr<IOT::Client>(new IOT::Client());
 
     delay(2000);
@@ -46,15 +46,20 @@ void display()
 void loop()
 {
     String data = client->getRequest();
-    if (client->getData(data) && data != "")
+    if (data != "")
     {
-        if (isOpen)
+        int response = client->getData(data);
+        if (response == 1)
         {
             lora->sendData("CLOSE");
 
             String data = "";
             while (data == "")
+            {
                 data = lora->recieveData();
+                // lora->sendData("CLOSE");
+                // delay(2000);
+            }
 
             isOpen = false;
             Serial.println(data);
@@ -64,13 +69,16 @@ void loop()
             else if (data == "REJECT")
                 rgb->light(255, 0, 0);
         }
-        else
+        else if (response == 0)
         {
             lora->sendData("OPEN");
 
             String data = "";
-            while (data == "")
+            while (data == "") {
                 data = lora->recieveData();
+                // lora->sendData("OPEN");
+                // delay(500);
+            }
 
             isOpen = true;
             Serial.println(data);

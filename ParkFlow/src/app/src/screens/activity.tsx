@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     overView: {
         marginTop: 110,
         width: "88%",
-        backgroundColor: theme().colors.background,
+        backgroundColor: theme().colors.white,
         borderRadius: 20,
         alignSelf: "center",
         paddingHorizontal: 20,

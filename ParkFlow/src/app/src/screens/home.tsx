@@ -374,18 +374,17 @@ const Home = ({ navigation }: { navigation: any }) => {
                         text="Reserve"
                         onPress={() => {
                             setVisible(false);
-                            // reserve(userToken, currentSensor.id)
-                            //     .then((res: any) => {
-                            //         setCurrentSensor(res);
-                            //         console.log(res);
-                            //         setReserved(true);
-                            //     })
-                            //     .catch((error: any) => {
-                            //         console.log(error);
-                            //     });
-                            setSeconds(0);
-                            setReserved(true);
-                            onPressOpen(true);
+                            reserve(userToken, currentSensor.id)
+                                .then((res: any) => {
+                                    setCurrentSensor(res);
+                                    console.log(res);
+                                    setReserved(true);
+                                    setSeconds(0);
+                                    onPressOpen(true);
+                                })
+                                .catch((error: any) => {
+                                    console.log(error);
+                                });
                         }}
                         style={{ marginTop: 30 }}
                         width={125}
@@ -400,31 +399,32 @@ const Home = ({ navigation }: { navigation: any }) => {
                             onPressOpen(true);
                             setSeconds(0);
 
-                            // reserve(userToken, currentSensor.id)
-                            //     .then((res: any) => {
-                            //         setCurrentSensor(res);
-                            //         console.log(res);
-                            //         setReserved(true);
+                            if (!reserved)
+                                reserve(userToken, currentSensor.id)
+                                    .then((res: any) => {
+                                        setCurrentSensor(res);
+                                        console.log(res);
+                                        setReserved(true);
 
-                            //         park(userToken, currentSensor.id)
-                            //             .then((res: any) => {
-                            //                 console.log(res);
-                            //             })
-                            //             .catch((error: any) => {
-                            //                 console.log(error);
-                            //             });
-                            //     })
-                            //     .catch((error: any) => {
-                            //         console.log(error);
-                            //     });
-                            // else
-                            // park(userToken, currentSensor.id)
-                            //     .then((res: any) => {
-                            //         console.log(res);
-                            //     })
-                            //     .catch((error: any) => {
-                            //         console.log(error);
-                            //     });
+                                        park(userToken, currentSensor.id)
+                                            .then((res: any) => {
+                                                console.log(res);
+                                            })
+                                            .catch((error: any) => {
+                                                console.log(error);
+                                            });
+                                    })
+                                    .catch((error: any) => {
+                                        console.log(error);
+                                    });
+                            else
+                                park(userToken, currentSensor.id)
+                                    .then((res: any) => {
+                                        console.log(res);
+                                    })
+                                    .catch((error: any) => {
+                                        console.log(error);
+                                    });
                         }}
                         style={{ marginTop: 30, marginLeft: 10 }}
                         width={125}
@@ -435,6 +435,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         </View>
     );
 };
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

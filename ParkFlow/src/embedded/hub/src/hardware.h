@@ -145,6 +145,7 @@ namespace Hardware
             if (!LoRa.begin(433E6))
             {
                 Serial.println("Starting LoRa failed!");
+                ESP.restart();
             }
             LoRa.setSyncWord(0xF1);
         }

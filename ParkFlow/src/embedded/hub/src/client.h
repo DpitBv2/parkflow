@@ -11,7 +11,7 @@ namespace IOT
     {
         constexpr char *SSID = "Bitdefender BOX";
         constexpr char *Password = "LittleVulture67";
-        constexpr char *UpdateURL = "http://172.24.1.144:8080/api/v1/hubs/updatedSensors";
+        constexpr char *UpdateURL = "http://172.24.1.239:8080/api/v1/hubs/updatedSensors";
         constexpr char *Token = "parkflow";
     }
 
@@ -55,13 +55,18 @@ namespace IOT
         {
         }
 
-        bool getData(String data)
+        int getData(String data)
         {
+            Serial.println(data);
             DynamicJsonDocument doc(1024);
             deserializeJson(doc, data);
-            if (doc.size() == 0)
-                return false;
-            return true;
+            JsonObject obj = doc[0].as<JsonObject>();
+            if (obj["isLifted"] == true)
+                return 1;
+            else if (obj["isLifted"] == false)
+                return 0;
+            else
+                return -1;
         }
     };
 }

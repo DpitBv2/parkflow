@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import java.time.LocalDateTime;
@@ -29,14 +30,12 @@ public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
-    private final HubRepository hubRepository;
 
     @Autowired
     public SensorServiceImpl(SensorRepository sensorRepository, UserRepository userRepository, ReservationRepository reservationRepository, HubRepository hubRepository) {
         this.sensorRepository = sensorRepository;
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
-        this.hubRepository = hubRepository;
     }
 
     public boolean isSensorOwnedByUser(Long sensorId) {
@@ -64,6 +63,7 @@ public class SensorServiceImpl implements SensorService {
             System.out.println("Principal: " + principal);
             if (principal != null) {
                 User user = userRepository.findByEmail(principal.toString()).orElse(null);
+                assert user != null;
                 System.out.println("User: " + user.getUsername() + " has authorities: " + user.getAuthorities());
                 if (user.getAuthorities().stream()
                         .anyMatch(authority -> authority.getAuthority().equals("CUSTOMER") || authority.getAuthority().equals("ADMIN"))) {
@@ -130,8 +130,8 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public void delete(Long id, Long userId) {
         authorizeCustomerOrAdmin();
-        var userRole = userRepository.findById(userId).orElse(null).getAuthorities().stream().findFirst().orElse(null);
-        if(isSensorOwnedByUser(id) || userRole.getAuthority().equals("ADMIN")) {
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if(isSensorOwnedByUser(id) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
             sensorRepository.deleteById(id);
         } else
             throw new ResponseException("Access denied. You do not own this sensor.", HttpStatus.FORBIDDEN);

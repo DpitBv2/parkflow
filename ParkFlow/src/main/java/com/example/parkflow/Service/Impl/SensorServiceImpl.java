@@ -87,9 +87,9 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor create(double latitude, double longitude, Address address, Boolean isPrivate) {
+    public Sensor create(double latitude, double longitude, Address address, Boolean isPrivate, String name) {
         authorizeCustomerOrAdmin();
-        var sensor = new Sensor(latitude, longitude, address, isPrivate);
+        var sensor = new Sensor(latitude, longitude, address, isPrivate, name);
         return sensorRepository.save(sensor);
     }
 
@@ -106,15 +106,16 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor update(double latitude, double longitude, Address address, Long id, Long userId) {
+    public Sensor update(double latitude, double longitude, Address address, Long id, Long userId, String name) {
         authorizeCustomerOrAdmin();
-        var userRole = userRepository.findById(userId).orElse(null).getAuthorities().stream().findFirst().orElse(null);
-        if(isSensorOwnedByUser(id) || userRole.getAuthority().equals("ADMIN")) {
+        var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
+        if(isSensorOwnedByUser(id) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
             return sensorRepository.findById(id)
                     .map(sensor -> {
                         sensor.setLatitude(latitude);
                         sensor.setLongitude(longitude);
                         sensor.setAddress(address);
+                        sensor.setName(name);
                         return sensorRepository.save(sensor);
                     })
                     .orElse(null);

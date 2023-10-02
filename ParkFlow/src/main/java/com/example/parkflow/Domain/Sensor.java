@@ -28,6 +28,7 @@ public class Sensor {
     private Boolean lifted;
     private Long reservedByUserId;
     private Boolean isPrivate;
+    private String name;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
@@ -40,7 +41,7 @@ public class Sensor {
 
     }
 
-    public Sensor(Double latitude, Double longitude, Address address, Boolean isPrivate) {
+    public Sensor(Double latitude, Double longitude, Address address, Boolean isPrivate, String name) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
@@ -50,6 +51,7 @@ public class Sensor {
         this.reservationPricePerHour = BigDecimal.valueOf(1.5);
         this.lifted = true;
         this.isPrivate = isPrivate;
+        this.name = name;
     }
 
     public Long getId() {
@@ -147,5 +149,11 @@ public class Sensor {
     }
     public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

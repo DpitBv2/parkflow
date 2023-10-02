@@ -42,7 +42,7 @@ public class SensorController {
         User user = userService.get((String) authentication.getPrincipal());
         String userEmail = user.getEmail();
         if (userService.getUserRoleByEmail(userEmail).equals("ADMIN")) {
-            Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), false);
+            Sensor createdSensor = sensorService.create(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), false, sensorDTO.getName());
             if (createdSensor != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdSensor);
             } else {
@@ -95,7 +95,7 @@ public class SensorController {
     @PutMapping("/{id}")
     public ResponseEntity<Sensor> updateSensor(@PathVariable Long id, @RequestBody SensorDTO sensorDTO, Authentication authentication) {
         User user = userService.get((String) authentication.getPrincipal());
-        Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id, user.getId());
+        Sensor updatedSensor = sensorService.update(sensorDTO.getLatitude(), sensorDTO.getLongitude(), sensorDTO.getAddress(), id, user.getId(), sensorDTO.getName());
         if (updatedSensor != null) return ResponseEntity.ok(updatedSensor);
         else return ResponseEntity.notFound().build();
     }

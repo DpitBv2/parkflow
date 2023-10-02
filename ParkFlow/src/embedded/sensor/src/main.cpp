@@ -98,5 +98,9 @@ void loop()
 
       Serial.println("ACCEPT");
     }
+    else if (data == "PING")
+    {
+      loRa->sendData("PONG");
+    }
   }
 }

@@ -8,7 +8,19 @@ std::unique_ptr<Hardware::LoRaTransceiver> lora;
 
 std::unique_ptr<IOT::Client> client;
 
-bool isOpen = false;
+void display(int connections)
+{
+    screen->clear();
+    screen->moveCursor(0, 5);
+    screen->writeText("ParkFlow - HUB");
+    screen->moveCursor(0, 20);
+    screen->writeText("Connections: " + String(connections));
+    screen->moveCursor(0, 35);
+    screen->writeText("Searching for");
+    screen->moveCursor(0, 45);
+    screen->writeText("devices");
+    delay(500);
+}
 
 void setup()
 {
@@ -26,21 +38,18 @@ void setup()
     delay(2000);
 
     rgb->light(0, 0, 255);
-    screen->clear();
-}
 
-void display()
-{
-    screen->clear();
-    screen->moveCursor(0, 5);
-    screen->writeText("ParkFlow - HUB");
-    screen->moveCursor(0, 20);
-    screen->writeText("Connections: 0");
-    screen->moveCursor(0, 35);
-    screen->writeText("Searching for");
-    screen->moveCursor(0, 45);
-    screen->writeText("devices");
-    delay(500);
+    display(0);
+
+    lora->sendData("PING");
+    String data = "";
+    while (data != "PONG")
+        data = lora->recieveData();
+
+    rgb->light(0, 255, 0);
+    display(1);
+
+    delay(1000);
 }
 
 void loop()
@@ -55,13 +64,8 @@ void loop()
 
             String data = "";
             while (data == "")
-            {
                 data = lora->recieveData();
-                // lora->sendData("CLOSE");
-                // delay(2000);
-            }
 
-            isOpen = false;
             Serial.println(data);
 
             if (data == "ACCEPT")
@@ -74,13 +78,9 @@ void loop()
             lora->sendData("OPEN");
 
             String data = "";
-            while (data == "") {
+            while (data == "")
                 data = lora->recieveData();
-                // lora->sendData("OPEN");
-                // delay(500);
-            }
 
-            isOpen = true;
             Serial.println(data);
 
             if (data == "ACCEPT")

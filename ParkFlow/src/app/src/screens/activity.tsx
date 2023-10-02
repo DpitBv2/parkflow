@@ -64,6 +64,37 @@ const Activity = ({ navigation }: { navigation: any }) => {
         getActivity();
     }, []);
 
+    const loadMore = async () => {
+        if (uses === null) return;
+
+        const maxPage = Math.ceil(uses / 10);
+
+        if (page >= maxPage) return;
+
+        setPage(page + 1);
+
+        await getAll(userToken, page)
+            .then((response: any) => {
+                response = response.map((item: any) => {
+                    item.startTime = new Date(item.startTime);
+                    item.endTime = new Date(item.endTime);
+                    return item;
+                });
+
+                if (reservations === null) setReservations(response);
+                else setReservations([...reservations, ...response]);
+            })
+            .catch((error: any) => {
+                console.log(error);
+            });
+    };
+
+    const onViewableItemsChanged = (viewableItems: any) => {
+        viewableRef.current.value = viewableItems;
+    };
+
+    const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
+
     if (
         reservations === null ||
         (reservations !== null && uses === null) ||
@@ -153,7 +184,13 @@ const Activity = ({ navigation }: { navigation: any }) => {
                     onViewableItemsChanged={({ viewableItems: vItems }) => {
                         viewableRef.current.value = vItems;
                     }}
+                    //@ts-ignore
+                    // viewabilityConfigCallbackPairs={
+                    //     viewabilityConfigCallbackPairs.current
+                    // }
                     style={{ marginTop: 15 }}
+                    onEndReached={loadMore}
+                    // keyExtractor={(_, index) => `list_item${index}`}
                     renderItem={({ item }) => {
                         return (
                             <ActivityItem
@@ -194,6 +231,3 @@ const styles = StyleSheet.create({
 });
 
 export default Activity;
-function getCount(userToken: any, page: number) {
-    throw new Error("Function not implemented.");
-}

@@ -109,7 +109,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                     }
                 })
                 .catch((error: any) => {
-                    // console.log(error);
+                    console.log(error);
                 });
         };
 

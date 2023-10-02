@@ -1,6 +1,5 @@
 #include "hardware.h"
 #include <Arduino.h>
-// #include <memory>
 
 Hardware::RGB *rgb;
 
@@ -24,7 +23,7 @@ void setup()
 
   rgb->light(255, 255, 0);
 
-  servo = new Hardware::ServoControl(6, true);
+  servo = new Hardware::ServoControl(6);
   inverseSensvo = new Hardware::ServoControl(3);
 
   ultrasonicSensor = new Hardware::UltrasonicSensor(7, 8);
@@ -34,7 +33,7 @@ void setup()
 
   rgb->light(255, 0, 0);
 
-  Serial.println("Done");
+  Serial.println("Working");
 }
 
 double getAverage()
@@ -51,52 +50,33 @@ void loop()
 
     if (data == "CLOSE")
     {
-      delay(500);
       if (getAverage() < CLOSE_DISTANCE)
       {
         loRa->sendData("REJECT");
-        Serial.println("REJECT");
 
-        while (getAverage() < CLOSE_DISTANCE)
-        {
-          Serial.println("Waiting");
-          delay(100);
-        }
-
-        delay(500);
-
-        loRa->sendData("ACCEPT");
-
-        servo->write(90);
-        inverseSensvo->write(90);
+        servo->write(180);
+        inverseSensvo->write(180);
 
         rgb->light(255, 0, 0);
-
-        Serial.println("ACCEPT");
       }
       else
       {
         loRa->sendData("ACCEPT");
 
-        servo->write(90);
-        inverseSensvo->write(90);
+        servo->write(180);
+        inverseSensvo->write(180);
 
         rgb->light(255, 0, 0);
-
-        Serial.println("ACCEPT");
       }
     }
     else if (data == "OPEN")
     {
-      delay(500);
       loRa->sendData("ACCEPT");
 
-      servo->write(0);
-      inverseSensvo->write(0);
+      servo->write(90);
+      inverseSensvo->write(90);
 
       rgb->light(0, 255, 0);
-
-      Serial.println("ACCEPT");
     }
     else if (data == "PING")
     {

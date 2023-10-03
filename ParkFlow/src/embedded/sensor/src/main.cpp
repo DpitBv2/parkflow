@@ -15,19 +15,19 @@ const int CLOSE_DISTANCE = 20;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   Serial.println("Initialzing");
 
-  rgb = new Hardware::RGB(A2, A1, A3);
+  rgb = new Hardware::RGB(32, 33, 27);
 
-  rgb->light(255, 255, 0);
+  rgb->light(0, 0, 255);
 
-  servo = new Hardware::ServoControl(6);
-  inverseSensvo = new Hardware::ServoControl(3);
+  servo = new Hardware::ServoControl(25);
+  inverseSensvo = new Hardware::ServoControl(26);
 
-  ultrasonicSensor = new Hardware::UltrasonicSensor(7, 8);
-  ultrasonicSensor2 = new Hardware::UltrasonicSensor(5, 4);
+  // ultrasonicSensor = new Hardware::UltrasonicSensor(7, 8);
+  // ultrasonicSensor2 = new Hardware::UltrasonicSensor(5, 4);
 
   loRa = new Hardware::LoRaTransceiver;
 
@@ -36,10 +36,10 @@ void setup()
   Serial.println("Working");
 }
 
-double getAverage()
-{
-  return (ultrasonicSensor->read() + ultrasonicSensor2->read()) / 2;
-}
+// double getAverage()
+// {
+//   return (ultrasonicSensor->read() + ultrasonicSensor2->read()) / 2;
+// }
 
 void loop()
 {
@@ -50,24 +50,24 @@ void loop()
 
     if (data == "CLOSE")
     {
-      if (getAverage() < CLOSE_DISTANCE)
-      {
-        loRa->sendData("REJECT");
+      // if (getAverage() < CLOSE_DISTANCE)
+      // {
+      //   loRa->sendData("REJECT");
 
-        servo->write(180);
-        inverseSensvo->write(180);
+      //   servo->write(180);
+      //   inverseSensvo->write(180);
 
-        rgb->light(255, 0, 0);
-      }
-      else
-      {
-        loRa->sendData("ACCEPT");
+      //   rgb->light(255, 0, 0);
+      // }
+      // else
+      // {
+      loRa->sendData("ACCEPT");
 
-        servo->write(180);
-        inverseSensvo->write(180);
+      servo->write(180);
+      inverseSensvo->write(180);
 
-        rgb->light(255, 0, 0);
-      }
+      rgb->light(255, 0, 0);
+      // }
     }
     else if (data == "OPEN")
     {

@@ -26,6 +26,8 @@ void setup()
 {
     Serial.begin(115200);
 
+    Serial.println("Initialzing");
+
     rgb = std::unique_ptr<Hardware::RGB>(new Hardware::RGB(27, 26, 25));
     screen = std::unique_ptr<Hardware::Screen>(new Hardware::Screen());
 
@@ -50,6 +52,8 @@ void setup()
     display(1);
 
     delay(1000);
+
+    Serial.println("Working");
 }
 
 void loop()

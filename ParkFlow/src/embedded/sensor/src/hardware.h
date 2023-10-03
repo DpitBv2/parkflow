@@ -2,7 +2,7 @@
 #define _HARDWARE_H_
 
 #include <HardwareSerial.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 #include <Arduino.h>
 #include <SPI.h>
 #include <LoRa.h>
@@ -102,8 +102,8 @@ namespace Hardware
     public:
         LoRaTransceiver()
         {
-            LoRa.setPins(10, 9, 2);
-            if (!LoRa.begin(433E6))
+            LoRa.setPins(5, 14, 2);
+            while (!LoRa.begin(433E6))
             {
                 Serial.println("Starting LoRa failed!");
             }

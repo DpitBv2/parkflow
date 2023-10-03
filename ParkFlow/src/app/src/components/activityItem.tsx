@@ -36,6 +36,7 @@ const ActivityItem = ({
 
     const rStyle = useAnimatedStyle(() => {
         const visible = Boolean(
+            // true
             viewableItems.value
                 .filter((item) => item.isViewable)
                 .find((viewableItem) => viewableItem.item.id === item.id)

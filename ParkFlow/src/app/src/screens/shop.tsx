@@ -67,12 +67,12 @@ const Shop = ({ navigation }: { navigation: any }) => {
                     />
                     <View style={styles.text}>
                         <View>
-                            <Text fontSize={19} bold>
+                            <Text fontSize={18} bold>
                                 ParkFlow Spot
                             </Text>
                             <View style={{ flexDirection: "row" }}>
-                                <Text fontSize={17}>Price: </Text>
-                                <Text bold fontSize={17}>
+                                <Text fontSize={16}>Price: </Text>
+                                <Text bold fontSize={16}>
                                     LEI 599.00
                                 </Text>
                             </View>
@@ -101,12 +101,12 @@ const Shop = ({ navigation }: { navigation: any }) => {
                     />
                     <View style={styles.text}>
                         <View>
-                            <Text fontSize={19} bold>
+                            <Text fontSize={18} bold>
                                 ParkFlow HUB
                             </Text>
                             <View style={{ flexDirection: "row" }}>
-                                <Text fontSize={17}>Price: </Text>
-                                <Text bold fontSize={17}>
+                                <Text fontSize={16}>Price: </Text>
+                                <Text bold fontSize={16}>
                                     LEI 299.00
                                 </Text>
                             </View>
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     },
     text: {
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 12,
         flexDirection: "row",
         width: "100%",
         alignItems: "center",

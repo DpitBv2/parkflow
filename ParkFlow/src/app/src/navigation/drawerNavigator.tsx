@@ -102,7 +102,7 @@ const DrawerNavigator = ({ navigation }: { navigation: any }) => {
                     ),
                 }}
             />
-            {(userRole === "CUSTOMER" || userRole === "ADMIN") && (
+            {userRole === "ADMIN" && (
                 <Drawer.Screen
                     name="My Spots"
                     component={Spots}

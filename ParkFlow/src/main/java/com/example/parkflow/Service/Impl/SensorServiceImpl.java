@@ -209,9 +209,9 @@ public class SensorServiceImpl implements SensorService {
             LocalDateTime reservationEndTime = LocalDateTime.now();
 
             Reservation reservation = new Reservation(sensor, userId, reservationStartTime, reservationEndTime, reservationCost, paymentMethod);
-            System.out.println(reservation.toString());
             reservationRepository.save(reservation);
-            System.out.println("3123131231312");
+
+            System.out.println(reservation);
 
             sensor.setReservationStartTimestamp(null);
             sensor.setReservedByUserId(null);

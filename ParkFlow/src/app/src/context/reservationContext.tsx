@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 import api from "../util/api";
 import {
     GetAllReservations,
@@ -9,9 +9,6 @@ import {
 export const ReservationContext = createContext<any>(null);
 
 export const ReservationProvider = ({ children }: { children: any }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-
     const getAll = (token: string, page: number) => {
         return new Promise((resolve, reject) => {
             api.get(GetAllReservations, {

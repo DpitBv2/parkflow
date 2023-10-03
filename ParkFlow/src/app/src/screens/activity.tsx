@@ -38,7 +38,7 @@ const Activity = ({ navigation }: { navigation: any }) => {
                     if (reservations === null) setReservations(response);
                     else setReservations([...reservations, ...response]);
 
-                    setTime(1);
+                    setTime(6.7);
 
                     getCount(userToken)
                         .then((response: any) => {
@@ -181,16 +181,16 @@ const Activity = ({ navigation }: { navigation: any }) => {
                 <FlatList
                     data={reservations}
                     contentContainerStyle={{ paddingVertical: 0 }}
-                    onViewableItemsChanged={({ viewableItems: vItems }) => {
-                        viewableRef.current.value = vItems;
-                    }}
+                    // onViewableItemsChanged={({ viewableItems: vItems }) => {
+                    //     viewableRef.current.value = vItems;
+                    // }}
                     //@ts-ignore
-                    // viewabilityConfigCallbackPairs={
-                    //     viewabilityConfigCallbackPairs.current
-                    // }
+                    viewabilityConfigCallbackPairs={
+                        viewabilityConfigCallbackPairs.current
+                    }
                     style={{ marginTop: 15 }}
                     onEndReached={loadMore}
-                    // keyExtractor={(_, index) => `list_item${index}`}
+                    keyExtractor={(_, index) => `list_item${index}`}
                     renderItem={({ item }) => {
                         return (
                             <ActivityItem

@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Reservation> getUserReservations(Long userId, int page) {
         List<Reservation> reservationList = reservationRepository.findByUserId(userId);
-        reservationList.sort(Comparator.comparing(Reservation::getId));
+        reservationList.sort(Comparator.comparing(Reservation::getId).reversed());
         return reservationList.subList(page * Constants.PAGE_SIZE, Math.min((page + 1) * Constants.PAGE_SIZE, reservationList.size()));
     }
 
@@ -172,17 +172,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<Sensor> getUserSensors(Long userId) {
+    public Set<Sensor> getUserSensors(Long userId, int page) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
-        return user.getOwnedSensors();
+        var sensors = user.getOwnedSensors();
+        sensors.removeIf(sensor -> sensor.getAddress() == null);
+        return sensors.stream().skip((long) page * Constants.PAGE_SIZE).limit(Constants.PAGE_SIZE).collect(java.util.stream.Collectors.toSet());
     }
 
     @Override
-    public Set<Hub> getUserHubs(Long userId) {
+    public Set<Hub> getUserHubs(Long userId, int page) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseException("User not found.", HttpStatus.NOT_FOUND));
-        return user.getOwnedHubs();
+        var hubs = user.getOwnedHubs();
+        hubs.removeIf(hub -> hub.getLatitude() == 0 && hub.getLongitude() == 0);
+        return hubs.stream().skip((long) page * Constants.PAGE_SIZE).limit(Constants.PAGE_SIZE).collect(java.util.stream.Collectors.toSet());
     }
 
     @Override

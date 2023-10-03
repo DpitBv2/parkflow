@@ -36,9 +36,9 @@ public interface UserService {
 
     BigDecimal getUserReservationsCost(Long userId);
 
-    Set<Sensor> getUserSensors(Long userId);
+    Set<Sensor> getUserSensors(Long userId, int page);
 
-    Set<Hub> getUserHubs(Long userId);
+    Set<Hub> getUserHubs(Long userId, int page);
 
     int getUserSensorsCount(Long userId);
 

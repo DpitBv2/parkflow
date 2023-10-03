@@ -1,31 +1,17 @@
 import { useState } from "react";
 import { Image, StyleSheet, View, ViewToken } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import MapView, { Marker } from "react-native-maps";
+import { Marker } from "react-native-maps";
 import Animated, {
     useAnimatedStyle,
     withTiming,
 } from "react-native-reanimated";
-import FAIcon from "react-native-vector-icons/FontAwesome5";
-import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ActiveOpacity, MapDeltaInitial, Weekdays } from "../util/constants";
+import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
 import { Logo } from "./logo";
-import Modal from "./modal";
 import Text from "./text";
 
-const formatDuration = (ms: number) => {
-    const seconds = Math.floor((ms / 1000) % 60);
-    const minutes = Math.floor((ms / (1000 * 60)) % 60);
-    const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
-    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-
-    if (days > 0) return `${days}d ${hours}h ${minutes}m`;
-
-    return `${hours}h ${minutes}m`;
-};
-
-const ActivityItem = ({
+const SpotItem = ({
     viewableItems,
     item,
 }: {
@@ -57,8 +43,8 @@ const ActivityItem = ({
             <>
                 <Marker
                     coordinate={{
-                        latitude: item.sensor.latitude,
-                        longitude: item.sensor.longitude,
+                        latitude: item.latitude,
+                        longitude: item.longitude,
                     }}>
                     <Image
                         source={require("../../assets/images/pin.png")}
@@ -72,6 +58,8 @@ const ActivityItem = ({
         );
     };
 
+    console.log(item);
+
     return (
         <Animated.View style={rStyle}>
             <TouchableOpacity
@@ -83,40 +71,11 @@ const ActivityItem = ({
                 <Logo style={{ marginLeft: -10, height: 40 }} />
                 <View style={styles.textContainer}>
                     <Text fontSize={15} overflow>
-                        {item.sensor.address.street}
-                    </Text>
-                    <Text fontSize={12} overflow>
-                        {item.startTime.getDate() +
-                            " " +
-                            item.startTime.toLocaleString("default", {
-                                month: "short",
-                            }) +
-                            ", " +
-                            String(item.startTime.getHours()).padStart(2, "0") +
-                            ":" +
-                            String(item.startTime.getMinutes()).padStart(
-                                2,
-                                "0"
-                            ) +
-                            " - " +
-                            (item.startTime.getDate() !== item.endTime.getDate()
-                                ? item.endTime.getDate() +
-                                  " " +
-                                  item.endTime.toLocaleString("default", {
-                                      month: "short",
-                                  }) +
-                                  ", "
-                                : "") +
-                            String(item.endTime.getHours()).padStart(2, "0") +
-                            ":" +
-                            String(item.endTime.getMinutes()).padStart(2, "0")}
+                        {item.address.street}
                     </Text>
                 </View>
-                <Text bold fontSize={18} style={{ marginLeft: "auto" }}>
-                    LEI {item.cost.toFixed(2)}
-                </Text>
             </TouchableOpacity>
-            <Modal
+            {/* <Modal
                 visible={isVisible}
                 setVisible={setIsVisible}
                 onClose={() => setIsVisible(false)}
@@ -195,15 +154,6 @@ const ActivityItem = ({
                             size={20}
                             color={theme().colors.primary}
                         />
-                        <View style={{ flexDirection: "row", marginLeft: 5 }}>
-                            <Text fontSize={16}>Duration: </Text>
-                            <Text fontSize={16} bold>
-                                {formatDuration(
-                                    item.endTime.getTime() -
-                                        item.startTime.getTime()
-                                )}
-                            </Text>
-                        </View>
                     </View>
                     <View style={{ marginTop: 15 }}>
                         <Text fontSize={18}>Payment</Text>
@@ -246,14 +196,13 @@ const ActivityItem = ({
                         </View>
                     </View>
                 </View>
-            </Modal>
+            </Modal> */}
         </Animated.View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        width: "88%",
         backgroundColor: theme().colors.white,
         borderRadius: 20,
         alignSelf: "center",
@@ -285,4 +234,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivityItem;
+export default SpotItem;

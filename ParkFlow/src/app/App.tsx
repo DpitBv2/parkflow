@@ -1,6 +1,7 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./src/context/authContext";
+import { PersonalProvider } from "./src/context/personalContext";
 import { ReservationProvider } from "./src/context/reservationContext";
 import { SensorProvider } from "./src/context/sensorContext";
 import { ShopProvider } from "./src/context/shopContext";
@@ -28,7 +29,9 @@ const App = () => {
                     <AuthProvider>
                         <ReservationProvider>
                             <ShopProvider>
-                                <AppNavigation />
+                                <PersonalProvider>
+                                    <AppNavigation />
+                                </PersonalProvider>
                             </ShopProvider>
                         </ReservationProvider>
                     </AuthProvider>

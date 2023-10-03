@@ -1,31 +1,15 @@
 import { useState } from "react";
-import { Image, StyleSheet, View, ViewToken } from "react-native";
+import { StyleSheet, ViewToken } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import MapView, { Marker } from "react-native-maps";
 import Animated, {
     useAnimatedStyle,
     withTiming,
 } from "react-native-reanimated";
-import FAIcon from "react-native-vector-icons/FontAwesome5";
-import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ActiveOpacity, MapDeltaInitial, Weekdays } from "../util/constants";
+import { ActiveOpacity } from "../util/constants";
 import { theme } from "../util/theme";
 import { Logo } from "./logo";
-import Modal from "./modal";
-import Text from "./text";
 
-const formatDuration = (ms: number) => {
-    const seconds = Math.floor((ms / 1000) % 60);
-    const minutes = Math.floor((ms / (1000 * 60)) % 60);
-    const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
-    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-
-    if (days > 0) return `${days}d ${hours}h ${minutes}m`;
-
-    return `${hours}h ${minutes}m`;
-};
-
-const ActivityItem = ({
+const HubItem = ({
     viewableItems,
     item,
 }: {
@@ -55,7 +39,7 @@ const ActivityItem = ({
     const marker = () => {
         return (
             <>
-                <Marker
+                {/* <Marker
                     coordinate={{
                         latitude: item.sensor.latitude,
                         longitude: item.sensor.longitude,
@@ -67,7 +51,7 @@ const ActivityItem = ({
                             width: 47,
                         }}
                     />
-                </Marker>
+                </Marker> */}
             </>
         );
     };
@@ -81,7 +65,7 @@ const ActivityItem = ({
                     setIsVisible(true);
                 }}>
                 <Logo style={{ marginLeft: -10, height: 40 }} />
-                <View style={styles.textContainer}>
+                {/* <View style={styles.textContainer}>
                     <Text fontSize={15} overflow>
                         {item.sensor.address.street}
                     </Text>
@@ -114,9 +98,9 @@ const ActivityItem = ({
                 </View>
                 <Text bold fontSize={18} style={{ marginLeft: "auto" }}>
                     LEI {item.cost.toFixed(2)}
-                </Text>
+                </Text> */}
             </TouchableOpacity>
-            <Modal
+            {/* <Modal
                 visible={isVisible}
                 setVisible={setIsVisible}
                 onClose={() => setIsVisible(false)}
@@ -195,15 +179,6 @@ const ActivityItem = ({
                             size={20}
                             color={theme().colors.primary}
                         />
-                        <View style={{ flexDirection: "row", marginLeft: 5 }}>
-                            <Text fontSize={16}>Duration: </Text>
-                            <Text fontSize={16} bold>
-                                {formatDuration(
-                                    item.endTime.getTime() -
-                                        item.startTime.getTime()
-                                )}
-                            </Text>
-                        </View>
                     </View>
                     <View style={{ marginTop: 15 }}>
                         <Text fontSize={18}>Payment</Text>
@@ -246,7 +221,7 @@ const ActivityItem = ({
                         </View>
                     </View>
                 </View>
-            </Modal>
+            </Modal> */}
         </Animated.View>
     );
 };
@@ -285,4 +260,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ActivityItem;
+export default HubItem;

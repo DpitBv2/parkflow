@@ -55,7 +55,7 @@ const Shop = ({ navigation }: { navigation: any }) => {
             <View style={{ height: "100%", width: "100%", top: 125 }}>
                 <View style={styles.shopItem}>
                     <Image
-                        source={require("../../assets/images/shop/sensor1.png")}
+                        source={require("../../assets/images/shop/sensor5.png")}
                         style={styles.image}
                     />
                     <IconButton
@@ -124,7 +124,7 @@ const Shop = ({ navigation }: { navigation: any }) => {
                 visible={cartVisible}
                 setVisible={setCartVisible}
                 onClose={() => setCartVisible(false)}
-                width={350}>
+                width={300}>
                 <Text
                     bold
                     fontSize={20}
@@ -266,7 +266,7 @@ const Shop = ({ navigation }: { navigation: any }) => {
                 visible={orderCompleteVisible}
                 setVisible={setOrderCompleteVisible}
                 onClose={() => setOrderCompleteVisible(false)}
-                width={300}>
+                width={260}>
                 <Text bold fontSize={18} style={{ paddingTop: 10 }} center>
                     Order Complete
                 </Text>
@@ -278,7 +278,7 @@ const Shop = ({ navigation }: { navigation: any }) => {
                 visible={orderFailedVisible}
                 setVisible={setOrderFailedVisible}
                 onClose={() => setOrderFailedVisible(false)}
-                width={300}>
+                width={260}>
                 <Text bold fontSize={18} style={{ paddingTop: 10 }} center>
                     Order Failed
                 </Text>

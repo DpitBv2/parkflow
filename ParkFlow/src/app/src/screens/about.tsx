@@ -62,12 +62,12 @@ const About = ({ navigation }: { navigation: any }) => {
                         <AboutItem
                             name={"Bleotu Alexandru"}
                             description={"Frontend Developer"}
-                            image={require("../../assets/images/default/profile.png")}
+                            image={require("../../assets/images/about/alexB.jpg")}
                         />
                         <AboutItem
                             name={"Burlacenco Ștefan"}
                             description={"Business Analyst"}
-                            image={require("../../assets/images/default/profile.png")}
+                            image={require("../../assets/images/about/stefanB.jpg")}
                         />
                     </View>
                     <View
@@ -77,12 +77,12 @@ const About = ({ navigation }: { navigation: any }) => {
                         <AboutItem
                             name={"Motoașcă Alexandru"}
                             description={"Backend Developer"}
-                            image={require("../../assets/images/default/profile.png")}
+                            image={require("../../assets/images/about/alexM.jpg")}
                         />
                         <AboutItem
                             name={"Istratie Ștefan"}
                             description={"Embedded Developer"}
-                            image={require("../../assets/images/default/profile.png")}
+                            image={require("../../assets/images/about/stefanI.jpg")}
                         />
                     </View>
                     <View
@@ -92,12 +92,12 @@ const About = ({ navigation }: { navigation: any }) => {
                         <AboutItem
                             name={"Stan Anemona"}
                             description={"Digital designer"}
-                            image={require("../../assets/images/default/profile.png")}
+                            image={require("../../assets/images/about/anne.jpg")}
                         />
                         <AboutItem
                             name={"Macri Tudor"}
                             description={"Tester"}
-                            image={require("../../assets/images/default/profile.png")}
+                            image={require("../../assets/images/about/tudor.jpg")}
                         />
                     </View>
                 </View>

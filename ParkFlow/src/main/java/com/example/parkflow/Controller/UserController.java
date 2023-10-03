@@ -202,10 +202,10 @@ public class UserController {
     }
 
     @GetMapping("/sensors")
-    public ResponseEntity<?> getUserSensors(Authentication authentication) {
+    public ResponseEntity<?> getUserSensors(Authentication authentication, @RequestParam(value = "page", defaultValue = "0") int page) {
         try {
             User user = userService.get((String) authentication.getPrincipal());
-            return ResponseEntity.ok(userService.getUserSensors(user.getId()));
+            return ResponseEntity.ok(userService.getUserSensors(user.getId(), page));
         } catch (ResponseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -222,10 +222,10 @@ public class UserController {
     }
 
     @GetMapping("/hubs")
-    public ResponseEntity<?> getUserHubs(Authentication authentication) {
+    public ResponseEntity<?> getUserHubs(Authentication authentication, @RequestParam(value = "page", defaultValue = "0") int page) {
         try {
             User user = userService.get((String) authentication.getPrincipal());
-            return ResponseEntity.ok(userService.getUserHubs(user.getId()));
+            return ResponseEntity.ok(userService.getUserHubs(user.getId(), page));
         } catch (ResponseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

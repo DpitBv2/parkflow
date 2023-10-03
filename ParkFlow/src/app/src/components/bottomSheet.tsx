@@ -61,9 +61,9 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
             .onEnd(() => {
                 // if (translateY.value > -WindowHeight / 10)
                 //     scrollTo(MinTranslateY);
-                if (translateY.value > -WindowHeight / 2)
-                    scrollTo(midTranslateY);
-                else scrollTo(MaxTranslateY);
+                // if (translateY.value > -WindowHeight / 2)
+                scrollTo(midTranslateY);
+                // else scrollTo(MaxTranslateY);
             });
 
         const rBottomSheetStyle = useAnimatedStyle(() => {

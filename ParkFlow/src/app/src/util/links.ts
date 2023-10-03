@@ -11,3 +11,12 @@ export const GetReservationsCost = "/api/v1/user/reservations/cost";
 export const ShopURL = "/api/v1/shop/purchase";
 export const GetReservedSensorURL = "/api/v1/user/reservedSensor";
 export const RoleURL = "/api/v1/user/role";
+export const GetPersonalSensors = "/api/v1/user/sensors";
+export const GetPersonalSensorsCount = "/api/v1/user/sensors/count";
+export const GetPersonalHubs = "/api/v1/user/hubs";
+export const GetPersonalHubsCount = "/api/v1/user/hubs/count";
+export const GetPersonalSensorsNotSetUp = "/api/v1/user/notSetUpSensors";
+export const GetPersonalSensorsNotSetUpCount =
+    "/api/v1/user/notSetUpSensors/count";
+export const GetPersonalHubsNotSetUp = "/api/v1/user/notSetUpHubs";
+export const GetPersonalHubsNotSetUpCount = "/api/v1/user/notSetUpHubs/count";

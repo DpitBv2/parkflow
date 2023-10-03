@@ -10,3 +10,4 @@ export const GetReservationsCount = "/api/v1/user/reservations/count";
 export const GetReservationsCost = "/api/v1/user/reservations/cost";
 export const ShopURL = "/api/v1/shop/purchase";
 export const GetReservedSensorURL = "/api/v1/user/reservedSensor";
+export const RoleURL = "/api/v1/user/role";

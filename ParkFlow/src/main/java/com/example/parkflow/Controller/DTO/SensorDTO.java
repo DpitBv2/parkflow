@@ -17,6 +17,7 @@ public class SensorDTO {
     private Address address;
     private Boolean available;
     private String name;
+    private Boolean isElectric;
 
     public SensorDTO(Sensor sensor) {
         this.id = sensor.getId();
@@ -25,5 +26,6 @@ public class SensorDTO {
         this.address = sensor.getAddress();
         this.available = sensor.isAvailable();
         this.name = sensor.getName();
+        this.isElectric = sensor.getIsElectric();
     }
 }

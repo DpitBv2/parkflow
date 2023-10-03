@@ -11,7 +11,7 @@ namespace IOT
     {
         constexpr char *SSID = "Bitdefender BOX";
         constexpr char *Password = "LittleVulture67";
-        constexpr char *UpdateURL = "http://172.24.1.239:8080/api/v1/hubs/updatedSensors";
+        constexpr char *UpdateURL = "http://172.24.1.144:8080/api/v1/hubs/updatedSensors";
         constexpr char *Token = "parkflow";
     }
 

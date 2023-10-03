@@ -10,7 +10,6 @@ export const ShopProvider = ({ children }: { children: any }) => {
         numberOfSensors: number,
         token: string
     ) => {
-        console.log(token);
         return new Promise((resolve, reject) => {
             api.post(ShopURL, null, {
                 params: {

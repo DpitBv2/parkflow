@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
 import api from "../util/api";
-import { LoginURL, RegisterURL, UserURL } from "../util/links";
+import { LoginURL, RegisterURL, RoleURL, UserURL } from "../util/links";
 
 export const AuthContext = createContext<any>(null);
 
@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [userToken, setUserToken] = useState<string | null>(null);
     const [userInfo, setUserInfo] = useState<any>(null);
+    const [userRole, setUserRole] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const login = (email: string, password: string) => {
@@ -126,15 +127,36 @@ export const AuthProvider = ({ children }: { children: any }) => {
             setIsLoading(true);
             let userInfo = await AsyncStorage.getItem("userInfo");
             const userToken = await AsyncStorage.getItem("userToken");
+            const userRole = await AsyncStorage.getItem("userRole");
             userInfo = JSON.parse(userInfo === null ? "{}" : userInfo);
             if (userInfo !== null) {
                 setUserInfo(userInfo);
                 setUserToken(userToken);
+                setUserRole(userRole);
             }
             setIsLoading(false);
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const getRole = () => {
+        return new Promise((resolve, reject) => {
+            api.get(RoleURL, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            })
+                .then((response) => {
+                    resolve(response.data);
+                    setUserRole(response.data);
+                    console.log(response.data);
+                    AsyncStorage.setItem("userRole", response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     };
 
     useEffect(() => {
@@ -148,9 +170,11 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 logout,
                 register,
                 update,
+                getRole,
                 isLoading,
                 userToken,
                 userInfo,
+                userRole,
             }}>
             {children}
         </AuthContext.Provider>

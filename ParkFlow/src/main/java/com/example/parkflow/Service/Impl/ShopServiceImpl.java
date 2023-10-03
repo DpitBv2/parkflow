@@ -51,16 +51,7 @@ public class ShopServiceImpl implements ShopService {
         }
 
         for (int i = 0; i < numberOfSensors; i++) {
-            SensorDTO sensorDTO = new SensorDTO();
-            sensorDTO.setLatitude(0.0); // Set latitude as needed
-            sensorDTO.setLongitude(0.0); // Set longitude as needed
-            sensorDTO.setAddress(null); // Set address as needed
-
-            double latitude = sensorDTO.getLatitude();
-            double longitude = sensorDTO.getLongitude();
-            Address address = sensorDTO.getAddress();
-
-            Sensor createdSensor = sensorService.create(latitude, longitude, address, true, null);
+            Sensor createdSensor = sensorService.create(0, 0, null, true, null, false);
             user.addSensor(createdSensor);
 
             if (createdSensor != null) {

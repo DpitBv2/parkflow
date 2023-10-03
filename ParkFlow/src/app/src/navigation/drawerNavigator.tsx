@@ -1,18 +1,23 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import CustomDrawer from "../components/customDrawer";
 import Text from "../components/text";
+import { AuthContext } from "../context/authContext";
 import About from "../screens/about";
 import Activity from "../screens/activity";
 import Home from "../screens/home";
 import Shop from "../screens/shop";
+import Spots from "../screens/spots";
 import { theme } from "../util/theme";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = ({ navigation }: { navigation: any }) => {
+    const { userRole } = useContext(AuthContext);
+
     return (
         <Drawer.Navigator
             initialRouteName="Home"
@@ -97,6 +102,40 @@ const DrawerNavigator = ({ navigation }: { navigation: any }) => {
                     ),
                 }}
             />
+            {(userRole === "CUSTOMER" || userRole === "ADMIN") && (
+                <Drawer.Screen
+                    name="My Spots"
+                    component={Spots}
+                    options={{
+                        drawerIcon: ({ focused }) => (
+                            <View style={styles.icon}>
+                                <FAIcon
+                                    name="parking"
+                                    color={
+                                        focused
+                                            ? theme().colors.primary
+                                            : theme().colors.grey
+                                    }
+                                    size={24}
+                                />
+                            </View>
+                        ),
+                        drawerLabel: ({ focused }) => (
+                            <View style={styles.text}>
+                                <Text
+                                    bold={focused}
+                                    color={
+                                        focused
+                                            ? theme().colors.primary
+                                            : theme().colors.dark
+                                    }>
+                                    My Spots
+                                </Text>
+                            </View>
+                        ),
+                    }}
+                />
+            )}
             <Drawer.Screen
                 name="Shop"
                 component={Shop}
@@ -161,38 +200,6 @@ const DrawerNavigator = ({ navigation }: { navigation: any }) => {
                     ),
                 }}
             />
-            {/* <Drawer.Screen
-                name="Settings"
-                component={AboutUs}
-                options={{
-                    drawerIcon: ({ focused }) => (
-                        <View style={styles.icon}>
-                            <IIcon
-                                name="settings-sharp"
-                                color={
-                                    focused
-                                        ? theme().colors.primary
-                                        : theme().colors.grey
-                                }
-                                size={27}
-                            />
-                        </View>
-                    ),
-                    drawerLabel: ({ focused }) => (
-                        <View style={styles.text}>
-                            <Text
-                                bold={focused}
-                                color={
-                                    focused
-                                        ? theme().colors.primary
-                                        : theme().colors.dark
-                                }>
-                                Settings
-                            </Text>
-                        </View>
-                    ),
-                }}
-            /> */}
         </Drawer.Navigator>
     );
 };

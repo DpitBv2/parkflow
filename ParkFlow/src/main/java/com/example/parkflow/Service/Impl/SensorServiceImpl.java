@@ -87,9 +87,9 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor create(double latitude, double longitude, Address address, Boolean isPrivate, String name) {
+    public Sensor create(double latitude, double longitude, Address address, Boolean isPrivate, String name, Boolean isElectric) {
         authorizeCustomerOrAdmin();
-        var sensor = new Sensor(latitude, longitude, address, isPrivate, name);
+        var sensor = new Sensor(latitude, longitude, address, isPrivate, name, isElectric);
         return sensorRepository.save(sensor);
     }
 
@@ -106,7 +106,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor update(double latitude, double longitude, Address address, Long id, Long userId, String name) {
+    public Sensor update(double latitude, double longitude, Address address, Long id, Long userId, String name, Boolean isElectric) {
         authorizeCustomerOrAdmin();
         var userRole = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getAuthorities().stream().findFirst().orElse(null);
         if(isSensorOwnedByUser(id) || Objects.requireNonNull(userRole).getAuthority().equals("ADMIN")) {
@@ -116,6 +116,7 @@ public class SensorServiceImpl implements SensorService {
                         sensor.setLongitude(longitude);
                         sensor.setAddress(address);
                         sensor.setName(name);
+                        sensor.setElectric(isElectric);
                         return sensorRepository.save(sensor);
                     })
                     .orElse(null);
@@ -141,7 +142,7 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public List<Sensor> getClosest(double myLatitude, double myLongitude, int number) {
         List<Sensor> sensorList = sensorRepository.findAll();
-        sensorList.removeIf(Sensor::getIsPrivate);
+//        sensorList.removeIf(Sensor::getIsPrivate);
         sensorList.removeIf(sensor -> sensor.getAddress() == null);
         sensorList.sort(Comparator.comparingDouble(sensor ->
                 calculateDistance(sensor.getLatitude(), sensor.getLongitude(), myLatitude, myLongitude)));

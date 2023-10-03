@@ -13,13 +13,13 @@ public interface SensorService {
 
     void updatePricePerHour(Long sensorId, BigDecimal pricePerHour);
 
-    Sensor create(double latitude, double longitude, Address address, Boolean isPrivate, String name);
+    Sensor create(double latitude, double longitude, Address address, Boolean isPrivate, String name, Boolean isElectric);
 
     Sensor getById(Long id);
 
     List<Sensor> getAll(int page);
 
-    Sensor update(double latitude, double longitude, Address address, Long id, Long userId, String name);
+    Sensor update(double latitude, double longitude, Address address, Long id, Long userId, String name, Boolean isElectric);
 
     Long getCount();
 

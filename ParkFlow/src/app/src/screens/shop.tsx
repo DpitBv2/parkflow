@@ -28,7 +28,7 @@ const Shop = ({ navigation }: { navigation: any }) => {
     const [orderFailedVisible, setOrderFailedVisible] = useState(false);
 
     const { purchase } = useContext(ShopContext);
-    const { userToken } = useContext(AuthContext);
+    const { userToken, getRole } = useContext(AuthContext);
 
     if (isLoading) return <Loading />;
 
@@ -214,6 +214,7 @@ const Shop = ({ navigation }: { navigation: any }) => {
                                 setIsLoading(false);
                                 setSensorsCounter(0);
                                 setHubsCounter(0);
+                                getRole();
                             })
                             .catch((err: any) => {
                                 console.log(err);

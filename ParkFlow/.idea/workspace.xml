@@ -5,11 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cda5ccd7-45f5-4cb6-9b46-0e76365d5da9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app/eas.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/context/authContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/context/authContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/context/shopContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/context/shopContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/shop.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/shop.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/util/links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/links.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/embedded/hub/src/client.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/embedded/hub/src/client.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/embedded/hub/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/embedded/hub/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/SensorDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/DTO/SensorDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/SensorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Domain/Sensor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/ShopServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/ShopServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/SensorService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +109,9 @@
       <workItem from="1696184196076" duration="627000" />
       <workItem from="1696187156838" duration="725000" />
       <workItem from="1696191459490" duration="3172000" />
-      <workItem from="1696223522874" duration="772000" />
+      <workItem from="1696223522874" duration="1337000" />
+      <workItem from="1696309951826" duration="1806000" />
+      <workItem from="1696329658546" duration="807000" />
     </task>
     <servers />
   </component>

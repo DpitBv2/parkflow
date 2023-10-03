@@ -69,9 +69,9 @@ void loop()
             Serial.println(data);
 
             if (data == "ACCEPT")
-                rgb->light(0, 255, 0);
+                rgb->light(0, 255, 255);
             else if (data == "REJECT")
-                rgb->light(255, 0, 0);
+                rgb->light(255, 255, 0);
         }
         else if (response == 0)
         {

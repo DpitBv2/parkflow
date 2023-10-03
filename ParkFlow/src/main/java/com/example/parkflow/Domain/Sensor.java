@@ -1,13 +1,10 @@
 package com.example.parkflow.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.UUID;
 
 @Entity
 @Table(name = "sensors")
@@ -29,6 +26,7 @@ public class Sensor {
     private Long reservedByUserId;
     private Boolean isPrivate;
     private String name;
+    private Boolean isElectric;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
@@ -41,7 +39,7 @@ public class Sensor {
 
     }
 
-    public Sensor(Double latitude, Double longitude, Address address, Boolean isPrivate, String name) {
+    public Sensor(Double latitude, Double longitude, Address address, Boolean isPrivate, String name, Boolean isElectric) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
@@ -52,6 +50,7 @@ public class Sensor {
         this.lifted = true;
         this.isPrivate = isPrivate;
         this.name = name;
+        this.isElectric = isElectric;
     }
 
     public Long getId() {
@@ -155,5 +154,17 @@ public class Sensor {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+    public Boolean getLifted() {
+        return lifted;
+    }
+    public Boolean getIsElectric() {
+        return isElectric;
+    }
+    public void setElectric(Boolean electric) {
+        isElectric = electric;
     }
 }

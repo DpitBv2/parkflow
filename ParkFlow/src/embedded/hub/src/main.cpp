@@ -6,20 +6,32 @@ std::unique_ptr<Hardware::Screen> screen;
 std::unique_ptr<Hardware::GSM> gsm;
 std::unique_ptr<Hardware::LoRaTransceiver> lora;
 
-std::unique_ptr<IOT::Client> client;
+// std::unique_ptr<IOT::Client> client;
 
-void display(int connections)
+void display()
 {
     screen->clear();
     screen->moveCursor(0, 5);
     screen->writeText("ParkFlow - HUB");
     screen->moveCursor(0, 20);
-    screen->writeText("Connections: " + String(connections));
+    screen->writeText("Connections: 0");
     screen->moveCursor(0, 35);
     screen->writeText("Searching for");
     screen->moveCursor(0, 45);
     screen->writeText("devices");
-    delay(500);
+}
+
+void display2()
+{
+    screen->clear();
+    screen->moveCursor(0, 5);
+    screen->writeText("ParkFlow - HUB");
+    screen->moveCursor(0, 20);
+    screen->writeText("Connections: 1");
+    screen->moveCursor(0, 35);
+    screen->writeText("Waiting for");
+    screen->moveCursor(0, 45);
+    screen->writeText("server respo`nse");
 }
 
 void setup()
@@ -35,21 +47,23 @@ void setup()
 
     lora = std::unique_ptr<Hardware::LoRaTransceiver>(new Hardware::LoRaTransceiver());
     // gsm = std::unique_ptr<Hardware::GSM>(new Hardware::GSM());
-    client = std::unique_ptr<IOT::Client>(new IOT::Client());
+    // client = std::unique_ptr<IOT::Client>(new IOT::Client());
 
     delay(2000);
 
     rgb->light(0, 0, 255);
 
-    display(0);
+    display();
 
-    lora->sendData("PING");
-    String data = "";
-    while (data != "PONG")
-        data = lora->recieveData();
+    delay(500);
+
+    // lora->sendData("PING");
+    // String data = "";
+    // while (data != "PONG")
+    //     data = lora->recieveData();
 
     rgb->light(0, 255, 0);
-    display(1);
+    display2();
 
     delay(1000);
 
@@ -58,39 +72,39 @@ void setup()
 
 void loop()
 {
-    String data = client->getRequest();
-    if (data != "")
-    {
-        int response = client->getData(data);
-        if (response == 1)
-        {
-            lora->sendData("CLOSE");
+    // String data = client->getRequest();
+    // if (data != "")
+    // {
+    //     int response = client->getData(data);
+    //     if (response == 1)
+    //     {
+    //         lora->sendData("CLOSE");
 
-            String data = "";
-            while (data == "")
-                data = lora->recieveData();
+    //         String data = "";
+    //         while (data == "")
+    //             data = lora->recieveData();
 
-            Serial.println(data);
+    //         Serial.println(data);
 
-            if (data == "ACCEPT")
-                rgb->light(0, 255, 255);
-            else if (data == "REJECT")
-                rgb->light(255, 255, 0);
-        }
-        else if (response == 0)
-        {
-            lora->sendData("OPEN");
+    //         if (data == "ACCEPT")
+    //             rgb->light(0, 255, 255);
+    //         else if (data == "REJECT")
+    //             rgb->light(255, 255, 0);
+    //     }
+    //     else if (response == 0)
+    //     {
+    //         lora->sendData("OPEN");
 
-            String data = "";
-            while (data == "")
-                data = lora->recieveData();
+    //         String data = "";
+    //         while (data == "")
+    //             data = lora->recieveData();
 
-            Serial.println(data);
+    //         Serial.println(data);
 
-            if (data == "ACCEPT")
-                rgb->light(0, 255, 0);
-        }
-    }
+    //         if (data == "ACCEPT")
+    //             rgb->light(0, 255, 0);
+    //     }
+    // }
 
-    delay(5000);
+    // delay(5000);
 }

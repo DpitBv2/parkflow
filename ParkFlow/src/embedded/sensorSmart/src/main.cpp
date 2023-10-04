@@ -34,24 +34,38 @@ void setup()
 void loop()
 {
   String data = client->getRequest();
-  if (data != "")
+  if (data != "" && data != "wifiError" && data != "linkError")
   {
     int response = client->getData(data);
     if (response == 1)
     {
-      servo->write(180);
-      inverseSensvo->write(180);
+      servo->write(70);
+      inverseSensvo->write(70);
 
       rgb->light(255, 0, 0);
     }
     else if (response == 0)
     {
-      servo->write(90);
-      inverseSensvo->write(90);
+      servo->write(0);
+      inverseSensvo->write(0);
 
       rgb->light(0, 255, 0);
     }
   }
+  else if (data == "wifiError")
+  {
+    servo->write(70);
+    inverseSensvo->write(70);
 
-  delay(5000);
+    rgb->light(255, 255, 0);
+  }
+  else if (data == "linkError")
+  {
+    servo->write(70);
+    inverseSensvo->write(70);
+
+    rgb->light(0, 255, 255);
+  }
+
+  delay(1000);
 }

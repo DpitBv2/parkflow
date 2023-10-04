@@ -6,22 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cda5ccd7-45f5-4cb6-9b46-0e76365d5da9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/assets/splash.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/assets/splash.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/components/activityItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/activityItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/context/reservationContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/context/reservationContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/navigation/drawerNavigator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/about.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/about.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/activity.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/activity.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/shop.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/shop.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/spots.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/spots.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/links.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/SensorServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,6 +93,8 @@
       <workItem from="1696223522874" duration="1337000" />
       <workItem from="1696309951826" duration="1806000" />
       <workItem from="1696329658546" duration="807000" />
+      <workItem from="1696450007614" duration="124000" />
+      <workItem from="1696450141599" duration="667000" />
     </task>
     <servers />
   </component>

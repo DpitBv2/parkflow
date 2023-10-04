@@ -12,6 +12,7 @@ import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { IconButton } from "react-native-paper";
 import FAIcon from "react-native-vector-icons/FontAwesome5";
+import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import MIcon from "react-native-vector-icons/MaterialIcons";
 import BottomSheet, { BottomSheetRefProps } from "../components/bottomSheet";
 import Button from "../components/button";
@@ -34,6 +35,7 @@ const Home = ({ navigation }: { navigation: any }) => {
     const [currentSensor, setCurrentSensor] = useState<any>(null);
     const [reserved, setReserved] = useState<boolean>(false);
     const [parked, setParked] = useState<boolean>(false);
+    const [reservedSensor, setReservedSensor] = useState<any>(null);
 
     const [seconds, setSeconds] = useState<number>(0);
 
@@ -55,12 +57,13 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     // TODO: make initial region change based on user location
 
-    useEffect(() => {
-        // const interval = setInterval(() => {
-        //     setSeconds((prevSeconds) => prevSeconds + 1);
-        // }, 1000);
-        // return () => clearInterval(interval);
-    }, [parked]);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         console.log("This will run every second!");
+    //         setSeconds((prevSeconds) => prevSeconds + 1);
+    //     }, 1000);
+    //     return () => clearInterval(interval);
+    // }, [reserved]);
 
     useEffect(() => {
         const getLocation = async () => {
@@ -105,6 +108,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 ) / 1000
                             )
                         );
+                        setReservedSensor(res);
                         onPressOpen(-190);
                     }
                 })
@@ -132,17 +136,42 @@ const Home = ({ navigation }: { navigation: any }) => {
                             onPress={() => {
                                 if (currentSensor === null)
                                     setCurrentSensor(sensor);
-                                else onPressOpen(reserved ? -190 : -150);
+                                else
+                                    onPressOpen(
+                                        reservedSensor?.id === currentSensor?.id
+                                            ? -190
+                                            : -150
+                                    );
                             }}>
                             {!sensor.available ? (
-                                <Image
-                                    key={key}
-                                    source={require("../../assets/images/pinRed.png")}
-                                    style={{
-                                        height: 50,
-                                        width: 47,
-                                    }}
-                                />
+                                sensor.id !== reservedSensor?.id ? (
+                                    <Image
+                                        key={key}
+                                        source={require("../../assets/images/pinRed.png")}
+                                        style={{
+                                            height: 50,
+                                            width: 47,
+                                        }}
+                                    />
+                                ) : sensor.isElectric ? (
+                                    <Image
+                                        key={key}
+                                        source={require("../../assets/images/pinGreen.png")}
+                                        style={{
+                                            height: 50,
+                                            width: 47,
+                                        }}
+                                    />
+                                ) : (
+                                    <Image
+                                        key={key}
+                                        source={require("../../assets/images/pin.png")}
+                                        style={{
+                                            height: 50,
+                                            width: 47,
+                                        }}
+                                    />
+                                )
                             ) : sensor.isElectric ? (
                                 <Image
                                     key={key}
@@ -189,7 +218,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                         destination={currentSensor}
                         strokeWidth={5}
                         strokeColor={
-                            reserved
+                            reservedSensor?.id === currentSensor.id && reserved
                                 ? theme().colors.succes
                                 : theme().colors.primary
                         }
@@ -206,7 +235,11 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 },
                                 1000
                             );
-                            onPressOpen(reserved ? -190 : -150);
+                            onPressOpen(
+                                reservedSensor?.id === currentSensor?.id
+                                    ? -190
+                                    : -150
+                            );
                         }}
                     />
                 )}
@@ -229,7 +262,8 @@ const Home = ({ navigation }: { navigation: any }) => {
                 />
 
                 <IconButton
-                    icon="crosshairs-gps"
+                    // icon="crosshairs-gps"
+                    icon="parking"
                     iconColor={theme().colors.primary}
                     size={30}
                     containerColor={theme().colors.white}
@@ -238,7 +272,13 @@ const Home = ({ navigation }: { navigation: any }) => {
                         marginHorizontal: 0,
                     }}
                     onPress={() => {
-                        mapRef.current?.animateToRegion(initialRegion, 1000);
+                        setCurrentSensor(sensors[0]);
+                        onPressOpen(
+                            reservedSensor?.id === currentSensor?.id
+                                ? -190
+                                : -150
+                        );
+                        // mapRef.current?.animateToRegion(initialRegion, 1000);
                     }}
                 />
             </View>
@@ -321,14 +361,14 @@ const Home = ({ navigation }: { navigation: any }) => {
                                     </Text>
                                 </View>
                             </View>
-                            {reserved && (
+                            {reservedSensor?.id === currentSensor?.id && (
                                 <View
                                     style={{
                                         flexDirection: "row",
                                         width: "100%",
                                         marginTop: 15,
                                     }}>
-                                    <MIcon
+                                    <MCIcon
                                         name="clock"
                                         size={20}
                                         color={theme().colors.primary}
@@ -361,7 +401,8 @@ const Home = ({ navigation }: { navigation: any }) => {
                             )}
                             <View style={styles.line} />
                             <View style={{ alignItems: "center" }}>
-                                {!reserved ? (
+                                {!reserved &&
+                                currentSensor.id !== reservedSensor?.id ? (
                                     <View
                                         style={{
                                             position: "relative",
@@ -408,7 +449,8 @@ const Home = ({ navigation }: { navigation: any }) => {
                                             </View>
                                         )}
                                     </View>
-                                ) : !parked ? (
+                                ) : !parked &&
+                                  currentSensor.id === reservedSensor?.id ? (
                                     <View style={{ flexDirection: "row" }}>
                                         <Button
                                             text={"Park"}
@@ -447,6 +489,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                                         onPressClose();
                                                         setSeconds(0);
                                                         setCurrentSensor(null);
+                                                        setReservedSensor(null);
                                                         getClosest(
                                                             userToken,
                                                             initialRegion.latitude,
@@ -476,7 +519,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                             width={"50%"}
                                         />
                                     </View>
-                                ) : (
+                                ) : currentSensor.id === reservedSensor?.id ? (
                                     <Button
                                         text={"Cancel"}
                                         backgroundColor={theme().colors.danger}
@@ -492,6 +535,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                                     onPressClose();
                                                     setSeconds(0);
                                                     setCurrentSensor(null);
+                                                    setReservedSensor(null);
                                                     getClosest(
                                                         userToken,
                                                         initialRegion.latitude,
@@ -510,6 +554,47 @@ const Home = ({ navigation }: { navigation: any }) => {
                                         }}
                                         width={"100%"}
                                     />
+                                ) : (
+                                    <View
+                                        style={{
+                                            position: "relative",
+                                            width: "100%",
+                                        }}>
+                                        <Button
+                                            disabled={!currentSensor.available}
+                                            backgroundColor={
+                                                theme().colors.grey
+                                            }
+                                            text={"Unavailable"}
+                                            onPress={() => {
+                                                setVisible(true);
+                                            }}
+                                            width={"100%"}
+                                        />
+                                        {currentSensor.isElectric && (
+                                            <View
+                                                style={{
+                                                    borderRadius: 50,
+                                                    backgroundColor:
+                                                        theme().colors.white,
+                                                    position: "absolute",
+                                                    top: 5,
+                                                    right: 5,
+                                                    height: 30,
+                                                    width: 30,
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}>
+                                                <MIcon
+                                                    name="electrical-services"
+                                                    size={25}
+                                                    color={
+                                                        theme().colors.succes
+                                                    }
+                                                />
+                                            </View>
+                                        )}
+                                    </View>
                                 )}
                             </View>
                         </View>
@@ -535,10 +620,17 @@ const Home = ({ navigation }: { navigation: any }) => {
                             setVisible(false);
                             reserve(userToken, currentSensor.id)
                                 .then((res: any) => {
-                                    setReserved(true);
-                                    setCurrentSensor(res);
-                                    setSeconds(0);
-                                    onPressOpen(-190);
+                                    getReserved(userToken)
+                                        .then((res: any) => {
+                                            setReservedSensor(res);
+                                            setReserved(true);
+                                            onPressOpen(-190);
+                                            setCurrentSensor(res);
+                                            setSeconds(0);
+                                        })
+                                        .catch((error: any) => {
+                                            console.log(error);
+                                        });
                                 })
                                 .catch((error: any) => {
                                     console.log(error);
@@ -555,10 +647,17 @@ const Home = ({ navigation }: { navigation: any }) => {
                             if (!reserved)
                                 reserve(userToken, currentSensor.id)
                                     .then((res: any) => {
-                                        setReserved(true);
-                                        setCurrentSensor(res);
-                                        setSeconds(0);
-                                        onPressOpen(-190);
+                                        getReserved(userToken)
+                                            .then((res: any) => {
+                                                setReservedSensor(res);
+                                                setReserved(true);
+                                                setCurrentSensor(res);
+                                                setSeconds(0);
+                                                onPressOpen(-190);
+                                            })
+                                            .catch((error: any) => {
+                                                console.log(error);
+                                            });
 
                                         park(userToken, currentSensor.id)
                                             .then((res: any) => {

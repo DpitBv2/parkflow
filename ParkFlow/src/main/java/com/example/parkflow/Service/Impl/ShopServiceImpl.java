@@ -48,7 +48,7 @@ public class ShopServiceImpl implements ShopService {
             if (createdHub != null) {
                 totalBought++;
             }
-        }
+        }   
 
         for (int i = 0; i < numberOfSensors; i++) {
             Sensor createdSensor = sensorService.create(0, 0, null, true, null, false);

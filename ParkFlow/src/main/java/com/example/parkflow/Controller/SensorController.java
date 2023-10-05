@@ -230,4 +230,17 @@ public class SensorController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}/electric")
+    public ResponseEntity<Void> updateSensorElectric(
+            @PathVariable Long id,
+            @RequestParam Boolean electric
+    ) {
+        boolean updated = sensorService.updateSensorElectric(id, electric);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

@@ -57,13 +57,13 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     // TODO: make initial region change based on user location
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         console.log("This will run every second!");
-    //         setSeconds((prevSeconds) => prevSeconds + 1);
-    //     }, 1000);
-    //     return () => clearInterval(interval);
-    // }, [reserved]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log("This will run every second!");
+            setSeconds((prevSeconds) => prevSeconds + 1);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [reserved]);
 
     useEffect(() => {
         const getLocation = async () => {

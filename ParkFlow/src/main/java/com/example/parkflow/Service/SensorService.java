@@ -34,4 +34,6 @@ public interface SensorService {
     boolean updateSensorPirvateState(Long sensorId, Boolean available);
 
     boolean lowerSensor(Long sensorId, Long userId);
+
+    boolean updateSensorElectric(Long id, boolean electric);
 }

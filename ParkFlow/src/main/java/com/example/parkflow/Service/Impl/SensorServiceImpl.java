@@ -271,4 +271,18 @@ public class SensorServiceImpl implements SensorService {
         }
         return false;
     }
+
+    @Override
+    public boolean updateSensorElectric(Long id, boolean electric) {
+        authorizeCustomerOrAdmin();
+        Optional<Sensor> sensorOptional = sensorRepository.findById(id);
+        if (sensorOptional.isPresent()) {
+            Sensor sensor = sensorOptional.get();
+            sensor.setElectric(electric);
+            sensorRepository.save(sensor);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

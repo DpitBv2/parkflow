@@ -1,34 +1,38 @@
+
 # ParkFlow
 
-Parkflow este o aplicație inovatoare dedicată reducerii traficului în orașe prin intermediul unor senzori de parcare inteligenti. Prin intermediul acestei aplicații, utilizatorii beneficiază de informații în timp real cu privire la locurile de parcare disponibile și pot planifica în mod eficient traseele pentru a ajunge rapid la destinație.
+Parkflow is an innovative application dedicated to reducing traffic in cities through the use of intelligent parking sensors. Through this application, users receive real-time information about available parking spaces and can efficiently plan their routes to reach their destination quickly.
 
-Cu ajutorul tehnologiei avansate a senzorilor de parcare, Parkflow monitorizează în mod constant locurile de parcare și transmite informații actualizate despre acestea către utilizatori. Prin intermediul hărții interactive, utilizatorii pot vizualiza instantaneu locurile libere de parcare în apropierea lor, eliminând astfel nevoia de a căuta în mod repetat un loc disponibil. 
+With the help of advanced parking sensor technology, Parkflow constantly monitors parking spaces and sends updated information about them to users. Through the interactive map, users can instantly view available parking spaces near them, eliminating the need to repeatedly search for an available spot.
 
-## Ce poate face?
-Va oferim un serviciu complet de gestionare a parcărilor, cu facilități moderne și ușor de utilizat. Prin intermediul aplicației noastre mobile, veți avea acces la următoarele funcționalități:
+## What it can do?
 
-- Rezervarea locurilor de parcare: Puteți rezerva un loc de parcare în avans, asigurându-vă că veți avea un spațiu disponibil în locația dorită. Acest lucru vă va economisi timp prețios și vă va oferi certitudinea că veți găsi locul de parcare dorit.
-- Harta interactivă: Veți putea vizualiza pe hartă locul exact în care puteți parca. Prin intermediul acestei funcții, veți putea identifica rapid și ușor locurile de parcare disponibile în zona dorită. Aceasta vă va permite să găsiți cel mai convenabil loc de parcare.
-- Plata parcării: Prin intermediul aplicației sau a platformei noastre, veți putea plăti parcarea într-un mod simplu și rapid. Nu va mai trebui să căutați monede sau să vă faceți griji cu privire la parcarea ilegală. Veți putea efectua plăți sigure și comode direct de pe telefonul dvs.
-- Monitorizarea timpului de parcare: Veți avea posibilitatea de a vizualiza cât timp mai aveți plătit pentru locul de parcare. Acest aspect vă va ajuta să vă gestionați mai eficient timpul și să evitați eventualele penalități pentru depășirea duratei de parcare.
 
-În concluzie, prin intermediul serviciului nostru, veți beneficia de o experiență mai ușoară și mai convenabilă în gestionarea parcărilor. Veți putea rezerva locuri în avans, găsi rapid locuri de parcare, plăti fără probleme și monitoriza timpul petrecut în parcarea aleasă.
+  
+We offer a comprehensive parking management service with modern and user-friendly features. Through our mobile application, you will have access to the following functionalities:
+-   Parking space reservation: You can reserve a parking space in advance, ensuring that you will have a spot available at your desired location. This will save you valuable time and provide you with the certainty that you will find the desired parking space.
+-   Interactive map: You will be able to view on the map the exact location where you can park. Through this feature, you can quickly and easily identify available parking spaces in the desired area. This will allow you to find the most convenient parking spot.
+-   Parking payment: Through our application or platform, you will be able to pay for parking in a simple and fast way. You will no longer need to search for coins or worry about illegal parking. You will be able to make secure and convenient payments directly from your phone.
+-   Parking time monitoring: You will have the ability to view how much time you have remaining for the parking space you've paid for. This aspect will help you manage your time more efficiently and avoid any penalties for exceeding the parking duration.
+
+In conclusion, through our service, you will experience an easier and more convenient parking management. You will be able to reserve spots in advance, quickly find parking spaces, make hassle-free payments, and monitor the time spent in your chosen parking spot.
 
 ## Software
-- React native(frontend)
-- Spring si Firebase (backend)
+
+- React native (frontend)
+- Spring si PostgreSQL (backend)
 
 ## Hardware
-Partea hardware a sistemului Parkflow este împărțită în două componente principale: senzori și hub-uri.
 
-Senzorii sunt dispozitive instalate pe fiecare loc de parcare, care monitorizează în timp real dacă locul este ocupat sau disponibil. Acești senzori sunt conectați la hub-uri prin intermediul protocolului de comunicații LoRa (Low-Power Wide-Area Network).
 
-Hub-urile reprezintă punctele centrale de conectare și comunicație în cadrul sistemului Parkflow. Ele colectează informațiile de la mai mulți senzori și facilitează comunicarea între aceștia și serverul central. Hub-urile sunt amplasate în diverse locații strategice și au multiple funcționalități.
+The hardware component of the Parkflow system is divided into two main parts: sensors and hubs.
 
-Iată câteva caracteristici cheie ale hub-urilor Parkflow:
+The sensors are devices installed on each parking space, which monitor in real-time whether the space is occupied or available. These sensors are connected to hubs through the LoRa (Low-Power Wide-Area Network) communication protocol.
 
-- Conectarea senzorilor: Hub-urile permit conectarea și gestionarea unui număr mare de senzori dintr-o zonă dată. Aceasta înseamnă că pot monitoriza simultan mai multe locuri de parcare, oferind informații actualizate despre disponibilitatea acestora.
+The hubs serve as central points of connection and communication within the Parkflow system. They collect information from multiple sensors and facilitate communication between them and the central server. The hubs are strategically placed in various locations and have multiple functionalities.
 
-- Comunicare cu serverul central: Hub-urile facilitează comunicarea bidirecțională între senzori și serverul central al sistemului Parkflow. Aceasta permite transferul de date în timp real, precum actualizări ale stării locurilor de parcare și informații despre plăți.
+Here are some key features of Parkflow hubs:
 
-- Opțiune de plată cu numerar: Hub-urile oferă utilizatorilor posibilitatea de a plăti parcare și cu numerar. Astfel, aceștia pot alege să efectueze plăți tradiționale, eliminând astfel necesitatea unui card de plată sau a unui dispozitiv electronic.
+-   Sensor connectivity: Hubs allow for the connection and management of a large number of sensors in a given area. This means they can simultaneously monitor multiple parking spaces, providing updated information about their availability.
+-   Communication with the central server: Hubs facilitate bidirectional communication between sensors and the central server of the Parkflow system. This enables the transfer of real-time data, such as updates on parking space availability and payment information.
+-   Cash payment option: Hubs offer users the option to pay for parking with cash. This allows them to choose traditional payment methods, eliminating the need for a payment card or electronic device.

@@ -18,7 +18,7 @@ export const SensorProvider = ({ children }: { children: any }) => {
         token: string,
         latitude: number,
         longitude: number,
-        number: number = 20
+        number: number = 10
     ) => {
         return new Promise((resolve, reject) => {
             api.get(GetClosestSensorsURL, {

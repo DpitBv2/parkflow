@@ -133,6 +133,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 latitude: sensor.latitude,
                                 longitude: sensor.longitude,
                             }}
+                            tracksViewChanges={false}
                             onPress={() => {
                                 if (currentSensor === null)
                                     setCurrentSensor(sensor);
@@ -216,6 +217,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                     <MapViewDirections
                         origin={initialRegion}
                         destination={currentSensor}
+                        optimizeWaypoints={true}
                         strokeWidth={5}
                         strokeColor={
                             reservedSensor?.id === currentSensor.id && reserved

@@ -102,7 +102,8 @@ public class UserServiceImpl implements UserService {
                         user.getFirstName().isEmpty() ||
                         user.getLastName().isEmpty())
             throw new ResponseException("Invalid data");
-        if (userRepository.existsByEmail(user.getEmail()) && !userRepository.findByEmail(user.getEmail()).get().getId().equals(user.getId()))
+        if (userRepository.existsByEmail(user.getEmail()) &&
+                !userRepository.findByEmail(user.getEmail()).get().getId().equals(user.getId()))
             throw new ResponseException("Email is already used.");
         userRepository.save(user);
     }

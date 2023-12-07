@@ -10,8 +10,8 @@ namespace IOT
     namespace Config
     {
         constexpr char *SSID = "Alex's Galaxy S22 Ultra";
-        constexpr char *Password = "alex26042006";
-        constexpr char *UpdateURL = "http://192.168.26.9:8080/api/v1/hubs/updatedSensors";
+        constexpr char *Password = "alex.26042006";
+        constexpr char *UpdateURL = "http://192.168.101.9:8080/api/v1/hubs/updatedSensors";
         constexpr char *Token = "parkflow";
     }
 

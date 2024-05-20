@@ -6,9 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="cda5ccd7-45f5-4cb6-9b46-0e76365d5da9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/components/modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/components/modal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/src/util/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/embedded/sensorSmart/src/client.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/embedded/sensorSmart/src/client.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/parkflow/Service/Impl/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,28 +48,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/alexb/Projects/farmcheck-remastered",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.editor",
-    "spring.configuration.checksum": "8a3617ebdcbe3ec0193c580c11ed3184",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/alexb/Projects/farmcheck-remastered&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;8a3617ebdcbe3ec0193c580c11ed3184&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ParkFlowApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -108,6 +111,14 @@
       <workItem from="1700130042441" duration="131000" />
       <workItem from="1700201006025" duration="24000" />
       <workItem from="1700475738836" duration="170000" />
+      <workItem from="1702553868822" duration="4017000" />
+      <workItem from="1702632453798" duration="5000" />
+      <workItem from="1708600785782" duration="817000" />
+      <workItem from="1709193899271" duration="689000" />
+      <workItem from="1711533783668" duration="13000" />
+      <workItem from="1711533994311" duration="599000" />
+      <workItem from="1715855843167" duration="496000" />
+      <workItem from="1716182894580" duration="1570000" />
     </task>
     <servers />
   </component>

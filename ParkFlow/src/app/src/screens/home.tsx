@@ -30,6 +30,7 @@ const Home = ({ navigation }: { navigation: any }) => {
     const [initialRegion, setInitialRegion] = useState<any>(null);
     const [currentRegion, setCurrentRegion] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [showMarkers, setShowMarkers] = useState<boolean>(true);
 
     const [sensors, setSensors] = useState<any>(null);
     const [currentSensor, setCurrentSensor] = useState<any>(null);
@@ -59,7 +60,6 @@ const Home = ({ navigation }: { navigation: any }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log("This will run every second!");
             setSeconds((prevSeconds) => prevSeconds + 1);
         }, 1000);
         return () => clearInterval(interval);
@@ -88,6 +88,7 @@ const Home = ({ navigation }: { navigation: any }) => {
             await getClosest(userToken, initial.latitude, initial.longitude)
                 .then((res: any) => {
                     setSensors(res);
+                    setShowMarkers(true);
                 })
                 .catch((error: any) => {
                     console.log(error);
@@ -224,7 +225,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 ? theme().colors.succes
                                 : theme().colors.primary
                         }
-                        apikey="AIzaSyAazdNjj3DF3yNBf80UqbmN7oVKIGOyEUE"
+                        apikey="AIzaSyDcgOD4krIHh47jFerS_FYKRrn27bGJN6g"
                         mode={"DRIVING"}
                         onReady={(result: any) => {
                             setDistance(result.distance);
@@ -302,6 +303,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                     name="times"
                                     color={theme().colors.white}
                                     size={17}
+                                    style={{ zIndex: 105 }}
                                 />
                             </TouchableOpacity>
                             <View style={{ flexDirection: "row" }}>

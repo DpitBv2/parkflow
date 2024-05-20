@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: theme().colors.danger,
 
+        zIndex: 100,
         position: "absolute",
         top: 10,
         right: 10,

@@ -11,7 +11,7 @@ namespace IOT
     {
         constexpr char *SSID = "Alex's Galaxy S22 Ultra";
         constexpr char *Password = "Alex.26042006";
-        constexpr char *UpdateURL = "http://192.168.93.9:8080/api/v1/hubs/updatedSensors";
+        constexpr char *UpdateURL = "http://192.168.53.9:8080/api/v1/hubs/updatedSensors";
         constexpr char *Token = "parkflow";
     }
 

@@ -114,6 +114,12 @@ const Home = ({ navigation }: { navigation: any }) => {
                     }
                 })
                 .catch((error: any) => {});
+
+            setShowMarkers(false);
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            setShowMarkers(true);
         };
 
         getLocation();
@@ -225,7 +231,7 @@ const Home = ({ navigation }: { navigation: any }) => {
                                 ? theme().colors.succes
                                 : theme().colors.primary
                         }
-                        apikey="AIzaSyDcgOD4krIHh47jFerS_FYKRrn27bGJN6g"
+                        apikey="AIzaSyCl5s1bpul-DSCX2u8TrBO354Hsb2YD6tE"
                         mode={"DRIVING"}
                         onReady={(result: any) => {
                             setDistance(result.distance);

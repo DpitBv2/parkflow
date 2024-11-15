@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cda5ccd7-45f5-4cb6-9b46-0e76365d5da9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/screens/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/screens/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/src/util/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/src/util/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/embedded/arduino/client.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/embedded/arduino/client.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +117,8 @@
       <workItem from="1717054292037" duration="569000" />
       <workItem from="1717668342822" duration="156000" />
       <workItem from="1722336686814" duration="944000" />
+      <workItem from="1725947749798" duration="4000" />
+      <workItem from="1725949125925" duration="10000" />
     </task>
     <servers />
   </component>
